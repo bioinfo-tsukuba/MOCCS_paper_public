@@ -1,0 +1,50 @@
+---
+title: "Figure_script_all"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Figure1
+```{r}
+## Fig. 1B
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1B_plot.R")
+target_ID_Fig1B <- "SRX160844"
+# /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
+Fig1B <- Fig1B_plot(target_ID_Fig1B)
+plot(Fig1B)
+
+## Fig. 1C
+
+## Fig. 1D
+
+## Fig. 1E
+
+## Fig. 1F
+
+## Fig. 1G
+```
+
+# sFigure1
+```{r}
+```
+
+# sFigure3
+```{r}
+```
+
+# Figure4
+```{r}
+```
+
+# Figure5
+```{r}
+```
+
+
+# Figure6
+```{r}
+```
+
