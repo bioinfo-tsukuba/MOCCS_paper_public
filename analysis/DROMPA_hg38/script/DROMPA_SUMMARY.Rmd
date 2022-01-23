@@ -1,0 +1,383 @@
+---
+title: "DROMPA_SUMMARY_1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#0. 準備
+```{r}
+rm (list = ls())
+library(tidyverse)
+```
+
+#1. ファイル読み込み
+```{r}
+path_SSP <-  "/home/s-tahara/DROMPA/SSP_2/hg38"
+path_DROMPA_PLUS <- "/home/s-tahara/DROMPA/DROMPA_PLUS_2/hg38"
+sample_list <- read.delim("/home/s-tahara/DROMPA/code_hg38_2/Antigen_list_hg19.txt", header=F)
+
+# get file lists
+list_files_1 <- list.files(path_DROMPA_PLUS,recursive=T,pattern = "100.tsv")
+length(list_files_1)
+list_files_2 <- list.files(path_SSP,recursive=T,pattern = "jaccard.csv")
+length(list_files_2)
+
+# get SRX_ID from file names
+SRX_ID_pre <- gsub(".100.tsv", "", list_files_1) 
+SRX_ID <- unique(unlist(strsplit(SRX_ID_pre, "/")))
+
+# get skip retry_IDs
+colnames(sample_list) <- c("ID")
+sample_list <- sample_list %>% as_tibble() 
+sample_list_all <- sample_list$ID %>% as.character()
+length(sample_list_all)
+
+retry_ID <- setdiff(sample_list_all, SRX_ID)
+length(retry_ID)
+
+tmp <- tibble(ID = retry_ID)
+write_tsv(tmp, file = "/home/s-tahara/DROMPA/code_hg38_2/sample_list_hg38_left.txt", col_names = FALSE)
+```
+
+#2. make table by each parameters
+```{r}
+# ファイルを１つずつ読み込み、df にそれぞれのファイルのパラメータを足す
+# 列名がSRX ID, 行名がparameter名になるようにして、後から転置する
+file_N <- length(SRX_ID)
+para_names <- c("Library_complexity", "total_reads" , "GC_content" , "NSC", "Bu")
+
+for (file_num in 1:file_N) {
+  target_SRX <- SRX_ID[file_num]
+  target_file_1 <- paste(path_DROMPA_PLUS,list_files_1[file_num], sep="/") 
+  target_file_2 <- paste(path_SSP,list_files_2[file_num], sep="/") 
+  
+  # load files
+  if(sum(file.info(paste(target_file_1,list.files(target_file_1, all.files=TRUE, recursive = TRUE),sep=""))$size) != 0 & sum(file.info(paste(target_file_2,list.files(target_file_2, all.files=TRUE, recursive = TRUE),sep=""))$size) != 0 ){
+  df1 <- suppressMessages(read.delim(target_file_1, skip = 1, nrows=6, header = F))
+  read1 <- suppressMessages(read.delim(target_file_1, skip = 8, nrows=2, header = T))
+  read2 <- read1[2,]
+  df2 <- suppressMessages(read.csv(target_file_2, sep = "\t", nrows=6,header = F))
+  
+  # paramaterごとに変数に格納して、サンプルごとにパラメータをまとめたベクトルを作成する
+  Lc1 <- as.character(df1[3,1])
+  Lc2 <- strsplit(Lc1, " ") %>% unlist()
+  Library_complexity <- gsub("[()]", "", Lc2[3]) %>%  as.numeric()#[]内ではかっこが文字列として扱われる
+  
+  read_N_after_filtering <- read2$total.reads %>% as.character() %>% as.numeric() # library comprexityの分母
+  
+  GC1 <- as.character(df1[6,1])
+  GC_content <- gsub("GC summit: ", "", GC1)  %>% as.numeric()
+  
+  NSC <- df2[1,2] %>% as.numeric()
+  Bu <- df2[6,2] %>% as.numeric()
+  
+  # df_preclustering に df1 の MOCCS2score 列を追加する
+  target_para_vector <- c(Library_complexity, read_N_after_filtering, GC_content, NSC,Bu)
+  target_table <- tibble(para_names = para_names, target_SRX = target_para_vector)
+  colnames(target_table) <- c("para_names", target_SRX)
+  if(file_num == 1){
+    para_df <- target_table
+  }else{
+    para_df <- para_df %>% left_join(target_table, by = "para_names")
+  }
+ } # file size 0 (sum(),  target file2, DROMPA Plus) if
+}# for 
+
+para_df_t <- para_df %>% select(-para_names) %>% t()
+colnames(para_df_t) <- para_names
+
+ID <- rownames(para_df_t)
+df_tidy <- para_df_t %>% as_tibble() %>% mutate(ID = ID) 
+saveRDS(df_tidy, "/home/s-tahara/DROMPA/code_hg38_2/DROMPA_SUMMARY_hg38.rds")
+write_tsv(df_tidy, "/home/s-tahara/DROMPA/code_hg38_2/DROMPA_SUMMARY_hg38.tsv")
+```
+
+
+### analysis
+```{r}
+df_tidy <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/DROMPA_SUMMARY_hg38.rds")
+```
+
+#1. Library_complexity
+```{r}
+df_tidy %>%  ggplot() +
+  geom_histogram(aes(x = Library_complexity,fill = stat(x)), bins = 40) +
+  labs(title = "Library complexity", fill = "Library_complexity") +
+  xlab("Library complexity") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+
+Lc <- df_tidy %>% select(Library_complexity)
+Lc_08 <- para_df_t %>% as_tibble %>% select(Library_complexity) %>% filter(Library_complexity > 0.8)
+summary(Lc)
+summary(Lc_08)
+nrow(df_tidy)
+nrow(Lc)
+nrow(Lc_08)
+
+
+```
+
+#2. reads
+```{r}
+df_tidy %>% ggplot() +
+  geom_histogram(aes(x = total_reads,fill = stat(x)), bins = 40) +
+  labs(title = "total reads", fill = "total_reads") +
+  xlab("number of reads") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+
+df_tidy %>% ggplot() +
+  geom_histogram(aes(x = log(total_reads),fill = stat(x)), bins = 40) +
+  labs(title = "total reads", fill = "total_reads") +
+  xlab("number of reads (log)") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+
+read <- df_tidy %>% select(total_reads)
+read_1000 <- df_tidy %>% select(total_reads) %>% filter(total_reads > 10000000)
+
+summary(read)
+summary(read_1000)
+nrow(df_tidy)
+nrow(read)
+print("read_1000")
+nrow(read_1000)
+```
+
+#3. GC content
+```{r}
+df_tidy %>% ggplot() +
+  geom_histogram(aes(x = GC_content,fill = stat(x)), bins = 40) +
+  xlab("GC content") +
+  labs(title = "GC content", fill = "GC content") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+        #legend.title = element_text(size = 12 , face
+  )
+
+GC <- df_tidy%>% select(GC_content)
+GC_55 <- df_tidy %>% select(GC_content) %>% filter(GC_content < 55)
+nrow(GC_55)
+
+GC_57 <- df_tidy %>% select(GC_content) %>% filter(GC_content < 57)
+nrow(GC_57)
+
+GC_60 <- df_tidy %>% select(GC_content) %>% filter(GC_content < 60)
+summary(GC)
+nrow(GC)
+summary(GC_60)
+nrow(GC_60)
+
+
+```
+
+#4. NSC
+```{r}
+df_tidy %>% ggplot() +
+  geom_histogram(aes(x = NSC,fill = stat(x)), bins = 60) +
+  xlim(0,15) +
+  labs(title = "NSC", fill = "NSC") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+
+NSC <- df_tidy %>% select(NSC) %>% filter(NSC != Inf)
+NSC_2 <- df_tidy %>% select(NSC) %>% filter(NSC > 2 ) 
+summary(NSC)
+nrow(NSC)
+summary(NSC_2)
+nrow(NSC_2)
+```
+
+#5. Background Uniformity
+```{r}
+df_tidy %>% ggplot() +
+  geom_histogram(aes(x = Bu,fill = stat(x)), bins = 100) +
+  xlim(0, 3) +
+  labs(title = "Bu", fill = "Bu") +
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour="black"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+
+Bu <- df_tidy %>% select(Bu) %>% filter(Bu != Inf) %>% filter(Bu < 100)
+Bu_08 <- df_tidy %>% select(Bu) %>% filter(Bu != Inf) %>% filter(Bu > 0.8)
+summary(Bu)
+nrow(Bu)
+summary(Bu_08)
+nrow(Bu_08)
+```
+
+# filter by 5 parameters (DROMPA)
+```{r}
+df_tidy <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/DROMPA_SUMMARY_hg38.rds")
+df_tidy_selected <- df_tidy %>% filter(Library_complexity > 0.8 & total_reads > 10000000 & GC_content < 60 & NSC > 2.0 & Bu  > 0.8)
+summary(df_tidy)
+summary(df_tidy_selected)
+
+nrow(df_tidy_selected)
+
+library(GGally)
+g_pair <- df_tidy %>% select(-ID) %>% filter(Bu != Inf) %>% ggpairs(lower=list(continuous=wrap("points",size=0.05)))+
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "gray"),
+        panel.grid.minor = element_line(colour="gray"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+g_pair
+
+g_pair_filtered <- df_tidy_selected %>% select(-ID) %>% filter(Bu != Inf) %>% ggpairs(lower=list(continuous=wrap("points",size=0.05)))+
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "gray"),
+        panel.grid.minor = element_line(colour="gray"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold")
+  )
+g_pair_filtered
+```
+
+# add peaks annotation to DROMPA data (done)
+```{r}
+experimentList_tab <- read.table("/home/s-tahara/DROMPA/code_hg38_1/experimentList.tab", header = FALSE, sep = "\t", fill = TRUE, quote = "")
+colnames(experimentList_tab) <- c("ID_old", "Genome", "Antigen_class", "Antigen", "Cell_type_class", "Cell_type", "Cell_type_description", "Processin_logs", "Title", "Meta_data1", "Meta_data2", "Meta_data3", "Meta_data4", "Meta_data5")
+
+#Cell_type_classが空欄の行を削除する
+experimentList_tab <- experimentList_tab %>% select("ID_old", "Genome", "Antigen_class", "Antigen", "Cell_type_class", "Cell_type", "Cell_type_description", "Processin_logs", "Title", "Meta_data1", "Meta_data2", "Meta_data3", "Meta_data4", "Meta_data5") %>% as.tibble()
+experimentList_tab2 <- experimentList_tab %>% filter(Cell_type_class != "")
+experimentList_tab2 <- as_tibble(experimentList_tab2)
+
+#ID列をchracter型に変換
+ID <- as.character(experimentList_tab2$ID_old)
+annotation_only <- mutate(experimentList_tab2, ID = ID)
+annotation_only <- select(annotation_only, -ID_old)
+
+#processing logsの列をカンマで分割
+experimentList_tab3 <- experimentList_tab2 %>%
+  separate(Processin_logs, c("#_of_reads", "%_mapped", "%_duplicates", "#_of_peaks[Q<1E-05]"), sep=",")
+
+reads <- experimentList_tab3$`#_of_reads` %>% as.numeric()
+reads[is.na(reads)] <- 0
+
+mapped <- experimentList_tab3$`%_mapped` %>% as.numeric()
+mapped[is.na(mapped)] <- 0
+
+duplicates <- experimentList_tab3$`%_duplicates` %>% as.numeric()
+duplicates[is.na(duplicates)] <- 0
+
+peaks <- experimentList_tab3$`#_of_peaks[Q<1E-05]` %>% as.numeric()
+peaks[is.na(peaks)] <- 0
+
+
+experimentList_tab4 <- tibble(ID = experimentList_tab3$ID_old, Genome = experimentList_tab3$Genome, reads = reads, mapped = mapped, duplicates = duplicates, peaks = peaks)
+annotation_add <- annotation_only %>% select(ID, Antigen_class, Antigen, Cell_type_class, Cell_type) %>% distinct()
+experimentList_tab4 <- experimentList_tab4 %>% left_join(annotation_add, by = "ID")
+saveRDS(experimentList_tab4, "/home/s-tahara/DROMPA/code_hg38_2/experimentList_tab4.rds") #これをFig1の図でも使うだろう
+```
+
+
+# filter by 6 parameters (+peak parameter)
+```{r}
+df_tidy <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/DROMPA_SUMMARY_hg38.rds")
+experimentList_tab4 <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/experimentList_tab4.rds")
+
+peak_threshold <- 100
+experimentList_tab5 <- experimentList_tab4 %>% filter(Genome == "hg38" & Antigen_class == "TFs and others")
+df_tidy_selected <- df_tidy %>% left_join(experimentList_tab5, by = "ID") %>% filter(Library_complexity > 0.8 & total_reads > 10000000 & GC_content < 60 & NSC > 2.0 & Bu  > 0.8)
+nrow(df_tidy_selected)
+
+df_tidy_selected_2 <- df_tidy %>% left_join(experimentList_tab5, by = "ID") %>% filter(Library_complexity > 0.8 & total_reads > 10000000 & GC_content < 60 & NSC > 2.0 & Bu  > 0.8 & peaks > peak_threshold)
+nrow(df_tidy_selected_2)
+
+# no filter
+peaks <- experimentList_tab5$peaks %>% as.numeric() 
+hist(peaks, breaks = 50)
+hist(log(peaks), breaks = 50)
+summary(peaks)
+
+# DROMPA filter
+peaks1 <- df_tidy_selected$peaks %>% as.numeric() 
+hist(peaks1, breaks = 50)
+hist(log(peaks1), breaks = 50)
+summary(peaks1)
+
+# DROMPA + peaks filter
+peaks2 <- df_tidy_selected_2$peaks %>% as.numeric() 
+hist(peaks2, breaks = 50)
+hist(log(peaks2), breaks = 50)
+summary(peaks2)
+
+```
+# remove GFP, Epitope tags, Biotin samples
+```{r}
+df_tidy_selected_3 <- df_tidy_selected_2 %>% filter(Antigen != "Biotin" & Antigen != "GFP" & Antigen != "Epitope tags" & Antigen != "BrdU") 
+nrow(df_tidy_selected_3)
+
+Antigen_uniq <- df_tidy_selected_3$Antigen %>% unique()
+View(Antigen_uniq)
+
+
+hg38_hard_filter_annotation <- df_tidy_selected_3 %>% select(ID, Genome, Antigen_class, Antigen, Cell_type_class, Cell_type, Library_complexity, total_reads, GC_content, NSC, Bu, peaks)
+saveRDS(hg38_hard_filter_annotation, "/home/s-tahara/DROMPA/code_hg38_2/hg38_hard_filter_annotation.rds")
+
+hg38_hard_filter_ID <- hg38_hard_filter_annotation %>% .$ID %>% as.character() %>% unique()
+length(hg38_hard_filter_ID)
+saveRDS(hg38_hard_filter_ID, "/home/s-tahara/DROMPA/code_hg38_2/hg38_hard_filter_ID.rds")
+```
+
