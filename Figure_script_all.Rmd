@@ -17,10 +17,28 @@ Fig1B <- Fig1B_plot(target_ID_Fig1B)
 plot(Fig1B)
 
 ## Fig. 1C
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1C_plot.R")
+target_TF <- "GATA3"
+Fig1C_plot(target_TF)
 
 ## Fig. 1D
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1D_plot.R")
+annotation_path <- ""
+Fig1D <- Fig1D_plot(annotation_path)
+plot(Fig1D)
+
+### Figure1DとsFig3 集計 (NIGのパス、メモ)
+experimentList_tab4 <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/experimentList_tab4.rds")
+hg38_hard_filter_annotation <- readRDS("/home/s-tahara/DROMPA/code_hg38_2/hg38_hard_filter_annotation.rds")
+"/home/s-tahara/MOCCS-DB/WORK/MOCCS/MOCCS-ANALYSIS/output_hg38/MOCCSout_hg38_hard_filter_annotated.rds" #MOCCS output hg38 hard filter(memo)
+"/home/s-tahara/MOCCS-DB/WORK/MOCCS/MOCCS-ANALYSIS/output_hg38/MOCCSout_hg38_all_qval.rds" # MOCCS output hg38 all (qvalあり、annotationなし)
+
 
 ## Fig. 1E
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1E_plot.R")
+target_TF <- ""
+Fig1E <- Fig1E_plot(target_TF)
+plot(Fig1E)
 
 ## Fig. 1F
 
