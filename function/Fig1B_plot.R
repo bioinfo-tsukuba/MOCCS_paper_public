@@ -34,7 +34,7 @@ Fig1B_plot <- function(target_ID_Fig1B){
   p <- MOCCS_output_target_2 %>% ggplot(aes(x = reorder(kmer, desc(MOCCS2score)), y = MOCCS2score)) +
     geom_col() +
     geom_label(aes(label=kmer_label),size=4,hjust=0) +
-    xlab("ID") +
+    xlab("k-mer") +
     ylab("MOCCS2score") +
     ggtitle(paste0(target_ID_Fig1B ," example of MOCCS2score distribution"))+
     theme(axis.text.x = element_blank(),
