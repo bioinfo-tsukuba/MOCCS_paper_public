@@ -36,8 +36,7 @@ Fig1B_plot <- function(target_ID_Fig1B){
     geom_label(aes(label=kmer_label),size=4,hjust=0) +
     xlab("ID") +
     ylab("MOCCS2score") +
-    ggtitle(paste0("GATA3 example of MOCCS2score distribution"))+
-  
+    ggtitle(paste0(target_ID_Fig1B ," example of MOCCS2score distribution"))+
     theme(axis.text.x = element_blank(),
           axis.line.x.bottom  = element_blank(),
           plot.title = element_text(hjust = 0.5),

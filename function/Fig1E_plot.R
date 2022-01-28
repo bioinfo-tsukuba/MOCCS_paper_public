@@ -1,10 +1,11 @@
-Fig1C_plot <- function(target_TF){
+Fig1E_plot <- function(target_TF, filter){
   
   library(tidyverse)
   library(pROC)
   library(RColorBrewer)
   
-  totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_hard_filter_annotated.rds")
+  totalization_path <- paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_", filter, "_filter_annotated.rds")
+  #totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_hard_filter_annotated.rds")
   
   # Added qvalue annotation
   qval_table <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval.rds")
@@ -72,17 +73,13 @@ Fig1C_plot <- function(target_TF){
       ROC <- roc(ROC ~ MOCCS2score, data = df, ci = TRUE) #Xが連続値のMOCCS2score, YがMOCCSのkmerがPWMに含まれているかどうか  
       AUC_list[[target_TF]][[z]] <- ROC$auc
       
-      #png(paste0("~/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1C_", target_TF, ".png" ))
       if(z == 1){
         plot(ROC,col=colors()[z])
       }else{
         plot(ROC, add = TRUE, col=colors()[z])
       }#zのifの終わり
-      #dev.off()
-      
       
     }#ifelseのifの終わり
-    
   }
-  print(paste0("AUC = ", AUC_list[[target_TF]]))
+  return(AUC_list)
 }
