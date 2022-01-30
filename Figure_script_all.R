@@ -41,9 +41,12 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 1G
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1G_plot.R")
-target_TF <- "CTCF"
+target_TF <- "GATA3"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/"
-Fig1G_plot(target_TF, annotation_path)
+Fig1G <- Fig1G_plot(target_TF, annotation_path)
+plot(Fig1G)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1G.pdf"), Fig1G)
+
 
 
 ##################
