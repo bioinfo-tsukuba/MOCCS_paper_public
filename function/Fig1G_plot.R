@@ -42,35 +42,23 @@ Fig1G_plot <- function(target_TF, annotation_path){
   # PWM scoreをsignificant k-merとそれ以外で分けてplot
   df_join2 <- df_join1 %>% mutate(sig_kmer = ifelse(q_value < 0.05, "significant k-mer", "non significant k-mer")) 
   df_join3 <- transform(df_join2, sig_kmer = factor(sig_kmer, levels = c("non significant k-mer", "significant k-mer")))
-  #p <- df_join3 %>% ggplot(aes(x=sig_kmer, y = max_PWMscore, fill = sig_kmer)) +
-    #geom_violin()  +
-    #geom_beeswarm(size = 0.2) +
-    #xlab("k-mer")+
-    #theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          #panel.grid.major = element_line(colour = "gray"),
-          #panel.grid.minor = element_line(colour="gray"),
-          #panel.background = element_blank(), 
-          #axis.line = element_line(colour="black"),
-          #axis.text=element_text(size=12,face="bold"),
-          #axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          #axis.text.y =element_text(size=10,face="bold"),
-          #axis.title=element_text(size=14,face="bold")
-    #)
   
   x <- df_join3 %>% filter(sig_kmer == "significant k-mer") %>% .$max_PWMscore %>% as.numeric()
   y <- df_join3 %>% filter(sig_kmer == "non significant k-mer") %>% .$max_PWMscore %>% as.numeric()
   
   ks <- suppressMessages(ks.test(x,y,alternative="two.sided"))
   p_value <- ks$p.value
+  print(p_value)
   
   
-  p2 <- df_join3 %>% ggplot(aes(x=-log2(max_PWMscore), color = sig_kmer)) +
+  p2 <- df_join3 %>% ggplot(aes(x=log(max_PWMscore), color = sig_kmer)) +
     stat_ecdf(size = 0.7) +
-    xlab("-log2(PWMscore)")+
+    xlab("log(max_PWMscore)")+
     ylab("probability") +
+    ggtitle(target_TF) +
     scale_color_manual(values = c("#696969", "#DC143C")) +
     guides(color = guide_legend(reverse = TRUE)) +
-    annotate("text",x=-Inf,y=Inf,label=paste0("p-value = ", p_value),hjust=-.2,vjust=2, size=5, fontface = "bold") +
+    annotate("text",x=-Inf,y=Inf,label=paste0("p-value < 2.2e-16"),hjust=-.2,vjust=2, size=5, fontface = "bold") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
           panel.grid.minor = element_line(colour="gray"),
