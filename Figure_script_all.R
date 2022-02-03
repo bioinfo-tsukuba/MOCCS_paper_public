@@ -89,9 +89,10 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6C_plot.R")
-target_phenotype <- "CD"
+target_phenotype <- "SLE"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
-Fig6C <- Fig6C_plot(target_phenotype, annotation_path)
+threshold <- 100
+Fig6C <- Fig6C_plot(target_phenotype, annotation_path, threshold)
 plot(Fig6C[[1]])
 plot(Fig6C[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6C_", target_phenotype,"_CL.pdf"), Fig6C[[1]])
@@ -100,11 +101,24 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6D
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6D_plot.R")
-target_phenotype <- "CD"
-target_rs <- "rs17293632"
-target_position <- "chr15_67150258"
+target_phenotype <- "SLE"
+
+#target_rs <- "rs17293632"
+#target_position <- "chr15_67150258"
+
+#target_rs <- "rs1057233"
+#target_position <- "chr11_47354897"
+
+#target_rs <- "rs10769258"
+#target_position <- "chr11_47369488"
+
+#target_rs <- "rs4752829"
+#target_position <- "chr11_47375103"
+
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
-Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path)
+threshold <- 10
+Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+
 plot(Fig6D[[1]])
 plot(Fig6D[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]])
