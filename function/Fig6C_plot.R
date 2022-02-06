@@ -1,4 +1,4 @@
-Fig6C_plot <- function(target_phenotype, annotation_path){
+Fig6C_plot <- function(target_phenotype, annotation_path, threshold){
   
   library(tidyverse)
   target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all.rds"))
@@ -11,10 +11,10 @@ Fig6C_plot <- function(target_phenotype, annotation_path){
   
   ID_snp_for_join <- df_phenotype_binded_all_selected_annotated %>% unite("ID_snp_for_join", c(ID, position)) %>% .$ID_snp_for_join %>% as.character()
   df_phenotype_binded_all_selected_annotated2 <- df_phenotype_binded_all_selected_annotated %>% mutate(ID_snp_join = ID_snp_for_join)
-  df2 <- df_phenotype_binded_all_selected_annotated2 %>% mutate(abs_dMOCCS2score = abs(dMOCCS2score)) %>% group_by(ID, position, Antigen, Cell_type_class) %>% summarise(max_abs_dMOCCS2score = max(abs_dMOCCS2score))
+  df2 <- df_phenotype_binded_all_selected_annotated2 %>% mutate(abs_dMOCCS2score = abs(dMOCCS2score)) %>% group_by(ID, position, Antigen, Cell_type_class, Cell_type) %>% summarise(max_abs_dMOCCS2score = max(abs_dMOCCS2score))
   
-  x_lab_ID <- df2  %>% filter(max_abs_dMOCCS2score > 120) %>% arrange(desc(max_abs_dMOCCS2score)) %>% .$ID %>% as.character()
-  Fig6C_CL <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > 120) %>%
+  x_lab_ID <- df2  %>% filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% .$ID %>% as.character()
+  Fig6C_CL <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > threshold) %>%
     ggplot(aes(x = reorder(ID_position, max_abs_dMOCCS2score), y = max_abs_dMOCCS2score, fill = Cell_type_class))+
     geom_col() +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
@@ -34,7 +34,7 @@ Fig6C_plot <- function(target_phenotype, annotation_path){
     ggtitle(target_phenotype) +
     coord_flip()
   
-  Fig6C_TF <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > 120) %>%
+  Fig6C_TF <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > threshold) %>%
     ggplot(aes(x = reorder(ID_position, max_abs_dMOCCS2score), y = max_abs_dMOCCS2score, fill = Antigen))+
     geom_col() +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
