@@ -60,6 +60,39 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 ##################
 ### Figure4 ###
 #################
+## Fig. 4B
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4B_plot.R")
+simulation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig4/"
+Fig4B <- Fig4B_plot(simulation_path)
+plot(Fig4B[[1]])
+plot(Fig4B[[2]])
+plot(Fig4B[[3]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_alpha.pdf"), Fig4B[[1]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_N.pdf"), Fig4B[[2]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_sigma.pdf"), Fig4B[[3]])
+
+
+## Fig. 4C
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4C_plot.R")
+target_ID1 <- ""
+target_ID2 <- ""
+target_TF <- ""
+Fig4C <- Fig4C_plot(target_ID1, target_ID2, target_TF)
+plot(Fig4C)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4C_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4C)
+
+
+## Fig. 4D
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4D_plot.R")
+target_ID1 <- ""
+target_ID2 <- ""
+target_CL <- ""
+Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CL)
+plot(Fig4D)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4D_", target_CL, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D)
+
+
+
 
 ##################
 ### Figure5 ###
@@ -89,7 +122,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6C_plot.R")
-target_phenotype <- "SLE"
+target_phenotype <- "IBD"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 threshold <- 100
 Fig6C <- Fig6C_plot(target_phenotype, annotation_path, threshold)
@@ -101,10 +134,10 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6D
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6D_plot.R")
-target_phenotype <- "SLE"
+target_phenotype <- "IBD"
 
-#target_rs <- "rs17293632"
-#target_position <- "chr15_67150258"
+target_rs <- "rs17293632"
+target_position <- "chr15_67150258"
 
 #target_rs <- "rs1057233"
 #target_position <- "chr11_47354897"
@@ -118,7 +151,21 @@ target_phenotype <- "SLE"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 threshold <- 10
 Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+plot(Fig6D[[1]])
+plot(Fig6D[[2]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6D_", target_phenotype,"_TF.pdf"), Fig6D[[2]])
 
+### IBDの場合
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6D_plot_2.R")
+target_phenotype <- "IBD"
+
+target_rs <- "rs17293632"
+target_position <- "chr15_67150258"
+
+annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
+threshold <- 100
+Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
 plot(Fig6D[[1]])
 plot(Fig6D[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]])
