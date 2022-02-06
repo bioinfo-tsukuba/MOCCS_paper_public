@@ -74,9 +74,21 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 4C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4C_plot.R")
-target_ID1 <- ""
-target_ID2 <- ""
-target_TF <- ""
+#target_ID1 <- "SRX150600" # JUN K562
+#target_ID2 <- "SRX186614" # JUN K562
+
+#target_ID1 <- "SRX150600" # JUN K562
+#target_ID2 <- "SRX150358" # JUN HUVEC
+
+#target_ID1 <- "SRX150481" # EP300 K562
+#target_ID2 <- "SRX150573" # EP300 K562
+
+#target_ID1 <- "SRX150481" # EP300 K562
+#target_ID2 <- "SRX2343934" # EP300 Cardiovascular Large pulmonary artery endothelial cells
+
+#target_TF <- "JUN"
+#target_TF <- "EP300"
+
 Fig4C <- Fig4C_plot(target_ID1, target_ID2, target_TF)
 plot(Fig4C)
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4C_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4C)
@@ -84,12 +96,17 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 4D
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4D_plot.R")
-target_ID1 <- ""
-target_ID2 <- ""
-target_CL <- ""
-Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CL)
+#target_ID1 <- "SRX150546" #JUN
+#target_ID2 <- "SRX029087" #FOS
+
+target_ID1 <- "SRX150546" #JUN
+target_ID2 <- "SRX190276" #CTCF
+
+
+target_CT <- "K-562"
+Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CT)
 plot(Fig4D)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4D_", target_CL, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4D_", target_CT, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D)
 
 
 
