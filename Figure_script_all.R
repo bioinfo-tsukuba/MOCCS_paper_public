@@ -124,16 +124,19 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 
 ## Fig. 5E
-### scatter plot
+### scatter plot and bar plot
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig5E_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig5/"
-Fig5E <- Fig5E_plot(target_TF, annotation_path)
-plot(Fig5E)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E)
+target_TF <- "GATA3"
+Fig5E <- Fig5E_plot(target_TF, path)
+plot(Fig5E[[1]])
+plot(Fig5E[[2]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5E_scatter_", target_TF,".pdf"), Fig5E[[1]], width = 14, height = 14)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], width = 21, height = 14)
 
 
 
-### bar plot
+
 
 
 
