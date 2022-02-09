@@ -1,5 +1,29 @@
-Fig6B_plot <- function(target_TF, annotation_path){
+Fig6B_plot <- function( annotation_path){
   
+  library(tidyverse)
+  Fig6B_df <- readRDS(paste0(annotation_path, "Fig6B_df.rds"))
+  
+  Fig6B_df$peak <- factor(Fig6B_df$peak, levels = c("without peak", "within peak"))
+  Fig6B_plot <- Fig6B_df %>% ggplot(aes(x = phenotype, y = snp_num, fill = peak)) +
+    geom_bar(stat = "identity", position = "fill") +
+    #geom_text(aes(label = snp_num), size = 2,position = "stack") +
+    scale_fill_manual(values = c("#696969", "#DC143C")) +
+    theme(plot.title = element_text(face="bold",hjust = 0.5), 
+          panel.grid.major = element_line(colour = "gray"),
+          panel.grid.minor = element_line(colour="gray"),
+          panel.background = element_blank(), 
+          axis.line = element_line(colour="black"),
+          axis.text=element_text(size=12,face="bold"),
+          axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
+          axis.text.y =element_text(size=10,face="bold"),
+          axis.title=element_text(size=14,face="bold"),
+          #legend.position = 'none',
+          legend.title = element_blank()
+    )+
+    ggtitle("Number of SNPs") +
+    coord_flip()
+  
+  return(Fig6B_plot)
   
   
 }
