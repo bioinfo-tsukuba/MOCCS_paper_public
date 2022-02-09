@@ -127,16 +127,12 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 ### scatter plot and bar plot
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig5E_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig5/"
-target_TF <- "GATA3"
+target_TF <- "FOXA1"
 Fig5E <- Fig5E_plot(target_TF, path)
 plot(Fig5E[[1]])
 plot(Fig5E[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5E_scatter_", target_TF,".pdf"), Fig5E[[1]], width = 14, height = 14)
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], width = 21, height = 14)
-
-
-
-
 
 
 
@@ -148,7 +144,7 @@ source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6B_
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 Fig6B <- Fig6B_plot(annotation_path)
 plot(Fig6B)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6B_", target_phenotype,".pdf"), Fig6B)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig6/Fig6B.pdf"), Fig6B)
 
 
 ## Fig. 6C
