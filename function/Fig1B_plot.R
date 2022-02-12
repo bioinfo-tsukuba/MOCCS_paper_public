@@ -1,7 +1,7 @@
 Fig1B_plot <- function(target_ID_Fig1B){
   
   library(tidyverse)
-  MOCCS_output_path <- paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/", target_ID_Fig1B, ".auc_count.txt")
+  MOCCS_output_path <- paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/", target_ID_Fig1B, "_6mer_v2.auc_count.txt")
   MOCCS_output_target <- read_tsv(MOCCS_output_path)
   
   # calculate pvalue
@@ -40,7 +40,8 @@ Fig1B_plot <- function(target_ID_Fig1B){
     theme(axis.text.x = element_blank(),
           axis.line.x.bottom  = element_blank(),
           plot.title = element_text(hjust = 0.5),
-          title=element_text(size=12,face="bold"))
+          title=element_text(size=12,face="bold")) +
+    theme(aspect.ratio = 1)
   return(p)
   
 }

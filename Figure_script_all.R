@@ -3,10 +3,12 @@
 #################
 ## Fig. 1B
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1B_plot.R")
-target_ID_Fig1B <- "SRX160844"
+target_ID_Fig1B <- "SRX1156473" #GATA3
 # /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
 Fig1B <- Fig1B_plot(target_ID_Fig1B)
 plot(Fig1B)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1B.pdf"), Fig1B)
+
 
 ## Fig. 1C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1C_plot.R")
