@@ -1,16 +1,25 @@
-Fig1C_plot <- function(target_TF){
+Fig1C_plot <- function(target_TF, load, filter){
   
   library(tidyverse)
   library(pROC)
-  library(RColorBrewer)
+  library(colorspace)
   
-  totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_hard_filter_annotated.rds")
-  
-  # Added qvalue annotation
-  qval_table <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval.rds")
-  qval_table2 <- qval_table %>% unite("ID_kmer", c(ID, kmer)) %>% select(ID_kmer, q_value)
-  ID_kmer <- totalization %>% unite("ID_kmer", c(ID, kmer)) %>% .$ID_kmer %>% as.character()
-  totalization2 <- totalization %>% mutate(ID_kmer = ID_kmer) %>% left_join(qval_table2, by = "ID_kmer")
+  # localから読み込む場合
+  if(load == "local"){
+    totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
+  }else{
+    # figshareから読み込む場合
+    totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
+  }
+  if(filter == "hard"){
+    ID_hard <- readRDS("")
+    totaization2 <- totaliaztion %>% filter(ID %in% ID_hard)
+  }else if(filter == "soft"){
+    ID_soft <- readRDS("")
+    totaization2 <- totaliaztion %>% filter(ID %in% ID_soft)
+  }else{
+    totalization2 <- totalization
+  }
   
   # filter q value < 0.05 k-merに
   hg38_selected <- totalization2 %>%
@@ -24,14 +33,19 @@ Fig1C_plot <- function(target_TF){
     filter(Antigen == target_TF) 
   
   # filter target TF PWM table
-  PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
+  if(load == "local"){
+    #from local repository
+    PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
+  }else{
+    #from figshare
+    PWM_table_all <- readRDS(url("https://figshare.com/ndownloader/files/34065698","rb"))
+  }
   target_PWM <- PWM_table_all[[target_TF]]
   
   ## calculate per sample and plot
   sample_list <- unique(target_MOCCS$ID)
   AUC_list <- list()
-  color_list <-  brewer.pal(12,"Set3")
-  color_list <- rep(color_list, 100000)
+  color_list <- qualitative_hcl(500, "Dark2")
   
   for (z in seq_along(sample_list)) {
     

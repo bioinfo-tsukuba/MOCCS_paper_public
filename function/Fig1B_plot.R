@@ -4,6 +4,14 @@ Fig1B_plot <- function(target_ID_Fig1B){
   MOCCS_output_path <- paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/", target_ID_Fig1B, "_6mer_v2.auc_count.txt")
   MOCCS_output_target <- read_tsv(MOCCS_output_path)
   
+  ## urlで読み込む場合
+  #MOCCS_output_path <- "https://raw.githubusercontent.com/bioinfo-tsukuba/MOCCS-DB_paper/main/data/Fig1/SRX1156473_6mer_v2.auc_count.txt?token=GHSAT0AAAAAABN3UUI2U3BJTJOIVQF3JIBMYQLF4QA"
+  #githubならrowのurlを使う
+  #MOCCS_output_target <- read_tsv(url("https://figshare.com/ndownloader/files/34066733", "rb"))
+  #figshareならdownloadのurlを使う
+  #MOCCS_output_target <- read_tsv(url(MOCCS_output_path, "rb"))
+  
+  
   # calculate pvalue
   W <- 350
   if(nrow(MOCCS_output_target) != 0){
@@ -40,7 +48,8 @@ Fig1B_plot <- function(target_ID_Fig1B){
     theme(axis.text.x = element_blank(),
           axis.line.x.bottom  = element_blank(),
           plot.title = element_text(hjust = 0.5),
-          title=element_text(size=12,face="bold")) +
+          title=element_text(size=12,face="bold"),
+          aspect.ratio = 1) +
     theme(aspect.ratio = 1)
   return(p)
   
