@@ -63,7 +63,9 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/sup
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS8_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 target_phenotype <- "CD"
-target_tf <- "JUN"
+target_tf <- "GATA3"
 FigS8 <- FigS8_plot(path, target_phenotype, target_tf)
-plot(FigS8)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS8.pdf"), FigS8, width = 14, height = 14)
+plot(FigS8[[1]])
+plot(FigS8[[2]])
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS8_", target_tf, ".pdf"), FigS8[[1]], width = 7, height = 7)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS8_all_barplot.pdf"), FigS8[[2]], width = 14, height = 7)
