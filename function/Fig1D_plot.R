@@ -1,7 +1,8 @@
 Fig1D_plot <- function(annotation_path){
   
   library(tidyverse)
-  library(RColorBrewer)
+  #library(RColorBrewer)
+  library(colorspace)
   library(reshape2)
 
   annotation_all <- readRDS(paste0(annotation_path, "experimentList_tab4.rds"))
@@ -20,6 +21,7 @@ Fig1D_plot <- function(annotation_path){
 
   df_plot2 <- transform(df_plot, filter= factor(filter, levels = c("all", "soft", "hard")))
   color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"), "gray")
+  #color_list <- qualitative_hcl(30, "Dark2")
   p1 <- df_plot2 %>% ggplot(aes(x= filter, fill = Cell_type_class)) +
     geom_bar(width = 0.7)+
     scale_fill_manual(values = color_list) +
@@ -31,7 +33,8 @@ Fig1D_plot <- function(annotation_path){
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   
@@ -71,7 +74,8 @@ Fig1D_plot <- function(annotation_path){
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   return(list(p1, p2))

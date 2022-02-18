@@ -71,7 +71,8 @@ Fig1G_plot <- function(target_TF, annotation_path){
           legend.position = c(0.85,0.2),
           legend.background = element_blank(),
           legend.key = element_blank(),
-          legend.box.background = element_rect(colour = "black")
+          legend.box.background = element_rect(colour = "black"),
+          aspect.ratio = 0.7
     )
   
   return(p2)

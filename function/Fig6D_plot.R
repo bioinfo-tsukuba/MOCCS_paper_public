@@ -1,12 +1,13 @@
 Fig6D_plot <- function(target_phenotype, target_rs, target_position, annotation_path, threshold){
   
   library(tidyverse)
-  target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all.rds"))
+  target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all_qval.rds"))
+  #target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all.rds"))
   
   totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
   totalization <- readRDS(totalization_path)
   annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% distinct()
-  df_phenotype_binded_all_selected_annotated <- target_df %>% left_join(annotation, by = "ID")
+  df_phenotype_binded_all_selected_annotated <- target_df %>% left_join(annotation, by = "ID") %>% filter(q_value < 0.05)
   df1 <- df_phenotype_binded_all_selected_annotated %>% mutate(abs_dMOCCS2score = abs(dMOCCS2score)) %>% select(ID, p_value, Cell_type_class, Cell_type, Antigen, abs_dMOCCS2score) %>% distinct()
   
   ID_snp_for_join <- df_phenotype_binded_all_selected_annotated %>% 

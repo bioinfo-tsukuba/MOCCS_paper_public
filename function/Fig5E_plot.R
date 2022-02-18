@@ -64,9 +64,11 @@ Fig5E_plot <- function(target_TF, path){
     bar_df3 <- bar_df2 %>% mutate(color = gsub("_ratio_q005", "", bar_df2$concordant_or_disconcordant))
     
     bar_df3$color2 <- factor(bar_df3$color, levels = c("disconcordant", "concordant"))
+    tf_factor_list <- bar_df3 %>% filter(color2 == "concordant") %>% arrange(desc(ratio)) %>% .$Antigen %>% as.character() %>% unique()
+    bar_df3$Antigen <- factor(bar_df3$Antigen, levels = tf_factor_list)
     p2 <- bar_df3 %>% ggplot(aes(x = Antigen, y = ratio, fill = color2)) +
       geom_bar(stat = "identity", position = "fill") +
-      geom_text(aes(label = ratio), size = 2, hjust = 0.5, vjust = 3, position = "stack") +
+      #geom_text(aes(label = ratio), size = 2, hjust = 0.5, vjust = 3, position = "stack") +
       scale_fill_manual(values = c("#1E90FF", "#DC143C")) +
       theme(plot.title = element_text(face="bold",hjust = 0.5), 
             panel.grid.major = element_line(colour = "gray"),
@@ -76,7 +78,8 @@ Fig5E_plot <- function(target_TF, path){
             axis.text=element_text(size=12,face="bold"),
             axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
             axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold")
+            axis.title=element_text(size=14,face="bold"),
+            aspect.ratio = 1
       )+
       labs(fill = "")
     

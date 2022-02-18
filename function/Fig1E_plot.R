@@ -111,7 +111,8 @@ Fig1E_plot <- function(target_TF, annotation_path){
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   return(p)
 }

@@ -12,11 +12,11 @@ Fig1C_plot <- function(target_TF, load, filter){
     totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
   }
   if(filter == "hard"){
-    ID_hard <- readRDS("")
-    totaization2 <- totaliaztion %>% filter(ID %in% ID_hard)
+    ID_hard <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/hg38_hard_filter_ID.rds")
+    totalization2 <- totalization %>% filter(ID %in% ID_hard)
   }else if(filter == "soft"){
-    ID_soft <- readRDS("")
-    totaization2 <- totaliaztion %>% filter(ID %in% ID_soft)
+    ID_soft <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/ID_soft_filter_hg38.rds")
+    totalization2 <- totalization %>% filter(ID %in% ID_soft)
   }else{
     totalization2 <- totalization
   }
@@ -45,7 +45,8 @@ Fig1C_plot <- function(target_TF, load, filter){
   ## calculate per sample and plot
   sample_list <- unique(target_MOCCS$ID)
   AUC_list <- list()
-  color_list <- qualitative_hcl(500, "Dark2")
+  color_list <- qualitative_hcl(length(sample_list), "Dark2")
+  #color_list <- sample(color_list,500,replace=FALSE)
   
   for (z in seq_along(sample_list)) {
     
@@ -88,9 +89,11 @@ Fig1C_plot <- function(target_TF, load, filter){
       
       #png(paste0("~/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1C_", target_TF, ".png" ))
       if(z == 1){
-        plot(ROC,col=colors()[z])
+        #plot(ROC,col=colors()[z])
+        plot(ROC,col=color_list[z])
       }else{
-        plot(ROC, add = TRUE, col=colors()[z])
+        #plot(ROC, add = TRUE, col=colors()[z])
+        plot(ROC, add = TRUE, col=color_list[z])
       }#zのifの終わり
       #dev.off()
       
@@ -99,4 +102,5 @@ Fig1C_plot <- function(target_TF, load, filter){
     
   }
   print(paste0("AUC = ", AUC_list[[target_TF]]))
+  return(AUC_list[[target_TF]])
 }
