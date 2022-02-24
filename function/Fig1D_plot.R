@@ -1,9 +1,9 @@
 Fig1D_plot <- function(annotation_path){
   
   library(tidyverse)
-  #library(RColorBrewer)
+  library(RColorBrewer)
   library(colorspace)
-  library(reshape2)
+  #library(reshape2)
 
   annotation_all <- readRDS(paste0(annotation_path, "experimentList_tab4.rds"))
   ID_hard <- readRDS(paste0(annotation_path, "hg38_hard_filter_ID.rds"))
@@ -12,14 +12,14 @@ Fig1D_plot <- function(annotation_path){
   Antigen_list <- Antigen_list$X1 %>% as.character() %>% unique()
   
   annotation_hg38 <- annotation_all %>% filter(Genome == "hg38" & Antigen_class == "TFs and others" & ID %in% Antigen_list) %>% select(ID, Antigen_class, Antigen, Cell_type_class, Cell_type) %>% distinct()
-  df_all <- annotation_hg38 %>% mutate(filter = "all")
-  df_hard <- annotation_hg38 %>% filter(ID %in% ID_hard) %>% mutate(filter = "hard")
-  df_soft <- annotation_hg38 %>% filter(ID %in% ID_soft) %>% mutate(filter = "soft")
+  df_all <- annotation_hg38 %>% mutate(filter = "All")
+  df_hard <- annotation_hg38 %>% filter(ID %in% ID_hard) %>% mutate(filter = "Hard")
+  df_soft <- annotation_hg38 %>% filter(ID %in% ID_soft) %>% mutate(filter = "Soft")
   
   df_plot <- rbind(df_all, df_soft)
   df_plot <- rbind(df_plot, df_hard)
 
-  df_plot2 <- transform(df_plot, filter= factor(filter, levels = c("all", "soft", "hard")))
+  df_plot2 <- transform(df_plot, filter= factor(filter, levels = c("All", "Soft", "Hard")))
   color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"), "gray")
   #color_list <- qualitative_hcl(30, "Dark2")
   p1 <- df_plot2 %>% ggplot(aes(x= filter, fill = Cell_type_class)) +
@@ -27,7 +27,7 @@ Fig1D_plot <- function(annotation_path){
     scale_fill_manual(values = color_list) +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
@@ -60,7 +60,7 @@ Fig1D_plot <- function(annotation_path){
   }
   
   df_plot3$Antigen <- factor(df_plot3$Antigen, levels=rev(c( "ESR1","CTCF","AR","BRD4","FOXA1","EP300","RELA","TP53","MYC","NR3C1","SPI1","SMARCA4","RAD21","EZH2","MED1", "PGR","GATA3","REST","RUNX1","HSF1","others")))
-  df_plot3 <- transform(df_plot3, filter= factor(filter, levels = c("all", "soft", "hard")))
+  df_plot3 <- transform(df_plot3, filter= factor(filter, levels = c("All", "Soft", "Hard")))
   color_list2 <- rev(color_list)
   p2 <- df_plot3 %>% ggplot(aes(x=filter, fill = Antigen)) +
     geom_bar(width = 0.7)+
@@ -68,7 +68,7 @@ Fig1D_plot <- function(annotation_path){
     scale_fill_manual(values = color_list2) +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),

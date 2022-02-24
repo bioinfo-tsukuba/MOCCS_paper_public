@@ -70,10 +70,11 @@ Fig4C_plot <- function(target_ID1 = "",
   p1 <- df_join4 %>% ggplot(aes(x = MOCCS2score1, y = MOCCS2score2, color = color)) +
     geom_point() +
     ggtitle(target_TF) +
-    xlab(paste0(target_ID1, "  (", CTC1, ")")) +
-    ylab(paste0(target_ID2, "  (", CTC2, ")")) +
+    xlab(paste0(target_ID1, "  (", CT1, ")")) +
+    ylab(paste0(target_ID2, "  (", CT2, ")")) +
     #xlim(c(-10, 70)) +
     #ylim(c(-10, 70)) +
+    labs(color="") +
     scale_color_manual(values = c("#ff0000", "#000080")) +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
@@ -83,7 +84,8 @@ Fig4C_plot <- function(target_ID1 = "",
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   

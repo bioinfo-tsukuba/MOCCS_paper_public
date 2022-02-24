@@ -7,12 +7,12 @@ Fig6B_plot <- function( annotation_path){
   #Fig6B_df$color[is.na(Fig6B_df$color)] 
   Fig6B_df$color <- factor(Fig6B_df$color, levels = c("without_non-sig", "within_non-sig", "within_sig"))
   Fig6B_plot <- Fig6B_df %>% ggplot(aes(x = phenotype, y = snp_num, fill = color)) +
-    geom_bar(stat = "identity", position = "fill") +
+    geom_bar(stat = "identity", position = "fill", width = 0.7) +
     #geom_text(aes(label = snp_num), size = 2,position = "stack") +
-    scale_fill_manual(values = c("#696969", "#DC143C", "#FF7F50")) +
+    scale_fill_manual(values = c("#696969", "#4169E1", "#DC143C")) +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),

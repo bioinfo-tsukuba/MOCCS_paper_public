@@ -20,7 +20,7 @@ Fig6C_plot <- function(target_phenotype, annotation_path, threshold){
     geom_col() +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
@@ -40,7 +40,7 @@ Fig6C_plot <- function(target_phenotype, annotation_path, threshold){
     geom_col() +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),

@@ -65,15 +65,12 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 ### Figure4 ###
 #################
 ## Fig. 4B
+library(patchwork)
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4B_plot.R")
 simulation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig4/"
 Fig4B <- Fig4B_plot(simulation_path)
-plot(Fig4B[[1]])
-plot(Fig4B[[2]])
-plot(Fig4B[[3]])
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_alpha.pdf"), Fig4B[[1]], width = 14, height = 14)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_N.pdf"), Fig4B[[2]], width = 14, height = 14)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_sigma.pdf"), Fig4B[[3]], width = 14, height = 14)
+Fig4B_plot <- Fig4B[[1]] / Fig4B[[2]] 
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_all.pdf"), Fig4B_plot, width = 21, height = 14)
 
 
 ## Fig. 4C
@@ -81,8 +78,8 @@ source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4C_
 #target_ID1 <- "SRX150600" # JUN K562
 #target_ID2 <- "SRX186614" # JUN K562
 
-#target_ID1 <- "SRX150600" # JUN K562
-#target_ID2 <- "SRX150358" # JUN HUVEC
+target_ID1 <- "SRX150600" # JUN K562
+target_ID2 <- "SRX150358" # JUN HUVEC
 
 #target_ID1 <- "SRX150481" # EP300 K562
 #target_ID2 <- "SRX150573" # EP300 K562
@@ -90,12 +87,12 @@ source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4C_
 #target_ID1 <- "SRX150481" # EP300 K562
 #target_ID2 <- "SRX2343934" # EP300 Cardiovascular Large pulmonary artery endothelial cells
 
-#target_TF <- "JUN"
+target_TF <- "JUN"
 #target_TF <- "EP300"
 
 Fig4C <- Fig4C_plot(target_ID1, target_ID2, target_TF)
 plot(Fig4C)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4C_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4C, width = 14, height = 14)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4C_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4C, width = 7, height = 7)
 
 
 ## Fig. 4D
@@ -110,7 +107,7 @@ target_ID2 <- "SRX190276" #CTCF
 target_CT <- "K-562"
 Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CT)
 plot(Fig4D)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4D_", target_CT, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D, width = 14, height = 14)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4D_", target_CT, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D, width = 7, height = 7)
 
 
 
@@ -153,7 +150,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6C_plot.R")
-target_phenotype <- "CD"
+target_phenotype <- "IBD"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 threshold <- 150
 Fig6C <- Fig6C_plot(target_phenotype, annotation_path, threshold)
@@ -165,7 +162,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6D
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6D_plot.R")
-target_phenotype <- "CD"
+target_phenotype <- "IBD"
 
 target_rs <- "rs17293632"
 target_position <- "chr15_67150258"

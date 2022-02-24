@@ -1,19 +1,15 @@
 ##################
 ### Supplement ###
 #################
-## Fig. S1
+## Fig. S1 (FigS2 in new version (2022/02/21))
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS1_plot.R")
 simulation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/"
 FigS1 <- FigS1_plot(simulation_path)
-plot(FigS1[[1]])
-plot(FigS1[[2]])
-plot(FigS1[[3]])
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS1_alpha.pdf"), FigS1[[1]])
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS1_N.pdf"), FigS1[[2]])
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS1_sigma.pdf"), FigS1[[3]])
+FigS1_plot <- FigS1[[1]] / FigS1[[2]] 
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS1_all.pdf"), FigS1_plot, width = 21, height = 14)
 
 
-## Fig. S2
+## Fig. S2 (FigS1 in new version (2022/02/21))
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS2_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/"
 FigS2 <- FigS2_plot(path)
@@ -54,8 +50,8 @@ annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/dat
 FigS7 <- FigS7_plot(path, target_tf, annotation_path)
 plot(FigS7[[1]])
 plot(FigS7[[2]])
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS7_", target_tf ,".pdf"), FigS7[[1]], width = 14, height = 14)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS7_position_", target_tf ,".pdf"), FigS7[[2]], width = 21, height = 14)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS7_", target_tf ,".pdf"), FigS7[[1]], width = 7, height = 7)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS7_position_", target_tf ,".pdf"), FigS7[[2]], width = 42, height = 7)
 
 
 

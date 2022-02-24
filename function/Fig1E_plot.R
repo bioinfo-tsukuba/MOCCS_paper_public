@@ -4,7 +4,6 @@ Fig1E_plot <- function(target_TF, annotation_path){
   library(pROC)
   library(RColorBrewer)
   
-  # ここを全てのMOCCS outにする必要がある
   totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_rbinded.rds"
   totalization <- readRDS(totalization_path)
   ID_hard <- readRDS(paste0(annotation_path, "hg38_hard_filter_ID.rds"))

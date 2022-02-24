@@ -71,6 +71,7 @@ Fig4D_plot <- function(target_ID1 = "",
     ggtitle(target_CT) +
     xlab(paste0(target_ID1, "  (", TF1, ")")) +
     ylab(paste0(target_ID2, "  (", TF2, ")")) +
+    labs(color="") +
     scale_color_manual(values = c("#ff0000", "#000080")) +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
@@ -80,7 +81,8 @@ Fig4D_plot <- function(target_ID1 = "",
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   
