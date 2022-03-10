@@ -1,6 +1,5 @@
-# MOCCS-DB paper
-MOCCS-DBの再現性が一通り取れるようにするための場所。
+# MOCCS paper public
 
-MOCCS-DB論文のFigureの図が作れるにするための場所。
+To publish github repository
 
-(公開用にできれば嬉しいが、現段階では再解析と再現性を取るための場所としている)
+To confirm the reproducibility
