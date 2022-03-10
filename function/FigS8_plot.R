@@ -1,91 +1,170 @@
-FigS8_plot <- function(path, target_phenotype, target_tf){
+FigS8_plot <- function(path, simu_kind){
   
   library(tidyverse)
-  target_df <- readRDS(paste0(path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all_qval.rds"))
+  simu_result <- readRDS(paste0(path, "result_a01-02_N12000_varW5_stranded_sameA_func5_", simu_kind, ".rds"))
+  simu_name <- paste0("a01-02_N12000_varW5_stranded_sameA_func5_", simu_kind)
   
-  totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
-  totalization <- readRDS(totalization_path)
-  annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% distinct()
-  df_phenotype_binded_all_selected_annotated <- target_df %>% left_join(annotation, by = "ID")
+  # remove 1bp shifted k-mer
+  B1_and_B2 <- simu_result %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2" | true_kmer_anotation == "A") %>% select(kmer, simu_num, true_kmer_anotation)
+  B1_and_B2 %>% group_by(simu_num, true_kmer_anotation) %>% summarise(n=n())
   
-  # 1.number of peak-overlapping snps (target tf)
-  df1 <- df_phenotype_binded_all_selected_annotated %>% filter(Antigen == target_tf) %>% drop_na(dMOCCS2score)
-  df2 <- df1 %>% mutate(significant = ifelse(q_value < 0.05, "significant", "non-significant"))
-  df3 <- df2 %>% group_by(ID, significant) %>% summarise(snp_num = n()) 
-  
-  df4 <- df3 %>% pivot_wider(names_from = "significant", values_from = "snp_num")
-  colnames(df4) <- c("ID", "non_significant", "significant")
-  df5 <- df4 %>% pivot_longer(-ID, names_to = "significant", values_to = "snp_num")
-  
-  p1 <- df5 %>%  ggplot(aes(x = reorder(ID, -snp_num),  y = snp_num, fill = significant)) +
-    geom_bar(stat = "identity") +
-    scale_fill_manual(values = c("#696969", "#DC143C"), labels = c(ratio_nonsig = "non significant", ratio_sig ="significant")) +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          #legend.position = 'none',
-          legend.title = element_blank(),
-          aspect.ratio = 1
-    )+
-    ggtitle(target_tf) +
-    ylab("Number of peak-overlapping snps") +
-    labs(fill = "") 
-  
-  
-  # 2. all TFs number of snps (mean per sample)
-  tf_list <- c("CTCF", "FOXA1", "BRD4", "ESR1", "SPI1", "EP300", "JUND", "MYCN", "MAX", "EZH2", "SUMO2", "CEBPB", "GATA2", "GATA3", "HDAC2", "FOS")
-  df_all <- tibble()
-  for(i in 1:length(tf_list)){
-    target_tf <- tf_list[i]
-    df11 <- df_phenotype_binded_all_selected_annotated %>% filter(Antigen == target_tf) %>% drop_na(dMOCCS2score)
-    df12 <- df11 %>% mutate(significant = ifelse(q_value < 0.05, "significant", "non-significant"))
-    df13 <- df12 %>% group_by(ID, significant) %>% summarise(snp_num = n()) 
-    df14 <- df13 %>% pivot_wider(names_from = "significant", values_from = "snp_num")
-    colnames(df14) <- c("ID", "non_significant", "significant")
-    df14 <- df14 %>% drop_na(non_significant)  %>% drop_na(significant)
-    
-    nonsig_mean_num <- mean(as.numeric(df14$non_significant))
-    sig_mean_num <- mean(as.numeric(df14$significant))
-    
-    df_part <- tibble(tf = target_tf, nonsig_mean_num = nonsig_mean_num, sig_mean_num = sig_mean_num)
-    
-    if(nrow(df_all) == 0){
-      df_all <- df_part
-    }else{
-      df_all <- df_all %>% add_row(df_part)
+  B1_and_B2_shifted <- list()
+  for (j in 1:50) {
+    target_B1_and_B2 <- B1_and_B2 %>% filter(simu_num == j) %>%.$kmer %>% as.character() %>% unique()
+    target_B1_and_B2_shifted <- c()
+    for (i in 1:length(target_B1_and_B2)) {
+      target_kmer <- target_B1_and_B2[i]
+      tmp <- substring(target_kmer, 2, 6)
+      target_kmer_shifted <- c()
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "C"))
+      
+      tmp2 <- substring(target_kmer, 1, 5)
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp2))
+      target_kmer_shifted <- unique(target_kmer_shifted)
+      
+      target_B1_and_B2_shifted <- c(target_B1_and_B2_shifted, target_kmer_shifted) 
+      B1_and_B2_shifted[j] <- list(unique(target_B1_and_B2_shifted))
     }
   }
   
+  for (j in 1:50) {
+    target_rm_kmer <- B1_and_B2_shifted[[j]]
+    target_df <-simu_result %>% filter(simu_num == j) %>% filter((true_kmer_anotation == "C") & (!kmer %in% target_rm_kmer))
+    if(j == 1){
+      simu_result_new <- target_df 
+    }else{
+      simu_result_new <- rbind(simu_result_new, target_df)
+    }
+  }
   
-  df_all2 <- df_all %>% pivot_longer(-tf, names_to = "significant", values_to = "snp_num_mean")
-  p2 <- df_all2 %>% ggplot(aes(x = reorder(tf, -snp_num_mean),  y = snp_num_mean, fill = significant))+
-    geom_bar(stat = "identity") +
-    scale_fill_manual(values = c("#696969", "#DC143C"), labels = c(nonsig_mean_num = "non significant", sig_mean_num ="significant")) +
+  only_A_B <- simu_result %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "B2")
+  simu_result_new <- rbind(simu_result_new, only_A_B)
+  
+  
+  # remove 2bp shifted k-mer
+  B1_and_B2_shifted <- list()
+  for (j in 1:50) {
+    target_B1_and_B2 <- B1_and_B2 %>% filter(simu_num == j) %>%.$kmer %>% as.character() %>% unique()
+    target_B1_and_B2_shifted <- c()
+    for (i in 1:length(target_B1_and_B2)) {
+      target_kmer <- target_B1_and_B2[i]
+      
+      tmp <- substring(target_kmer, 2, 6)
+      target_kmer_shifted <- c()
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "C"))
+      
+      tmp2 <- substring(target_kmer, 1, 5)
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp2))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp2))
+      
+      tmp3 <- substring(target_kmer, 3, 6)
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AA"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AT"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AG"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AC"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TA"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TT"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TG"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TC"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GA"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GT"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GG"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GC"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CA"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CT"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CG"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CC"))
+      
+      tmp4 <- substring(target_kmer, 1, 4)
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("AA", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("AT", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("AG", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("AC", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("TA", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("TT", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("TG", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("TC", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("GA", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("GT", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("GG", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("GC", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("CA", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("CT", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("CG", tmp4))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("CC", tmp4))
+      
+      tmp5 <- substring(target_kmer, 2, 5)
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "C"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "C"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "C"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "A"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "T"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "G"))
+      target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "C"))
+      
+      target_kmer_shifted <- unique(target_kmer_shifted)
+      
+      target_B1_and_B2_shifted <- c(target_B1_and_B2_shifted, target_kmer_shifted) 
+      B1_and_B2_shifted[j] <- list(unique(target_B1_and_B2_shifted))
+    }
+  }
+  
+  for (j in 1:50) {
+    target_rm_kmer <- B1_and_B2_shifted[[j]]
+    target_df <- simu_result %>% filter(simu_num == j) %>% filter((true_kmer_anotation == "C") & (!kmer %in% target_rm_kmer))
+    if(j == 1){
+      simu_result_new2 <- target_df 
+    }else{
+      simu_result_new2 <- rbind(simu_result_new2, target_df)
+    }
+  }
+  
+  simu_result_new2 <- rbind(simu_result_new2, only_A_B)
+  
+  p <- simu_result_new2 %>% mutate(color = ifelse(q_value < 0.05, "differential", "nondifferential")) %>%
+    ggplot(aes(x = MOCCS2score, y = MOCCS2score2, color = color)) +
+    geom_point(size = 1) +
+    scale_colour_manual(
+      values = c(
+        differential = "red",
+        nondifferential = "gray"
+      )
+    )+
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
+          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
           axis.title=element_text(size=14,face="bold"),
-          #legend.position = 'none',
-          legend.title = element_blank(),
-          aspect.ratio = 0.7
-    )+
-    ggtitle("Number of peak-overlapping snps (mean)") +
-    ylab("Number of peak-overlapping snps") +
-    labs(fill = "") 
+          legend.title = element_blank()
+    ) +
+    xlab("MOCCS2score1") +
+    ggtitle(paste0(simu_name, "_q005"))
   
+  return(p)
   
-  
-  return(list(p1, p2))
   
 }
