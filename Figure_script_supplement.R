@@ -1,7 +1,7 @@
 ##################
 ### Supplement ###
 #################
-## Fig. S1 (FigS2 in new version (2022/02/21))
+## Fig. S1 (FigS2 in new version (2022/02/21)) --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS1_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/"
 FigS1 <- FigS1_plot(path)
@@ -9,7 +9,7 @@ FigS1
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS1B.pdf"), FigS1, width = 14, height = 14)
 
 
-## Fig. S2 (FigS1 in new version (2022/02/21))
+## Fig. S2 (FigS1 in new version (2022/02/21)) --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS2_plot.R")
 simulation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/"
 FigS2 <- FigS2_plot(simulation_path)
@@ -17,7 +17,7 @@ FigS2_plot <- FigS2[[1]] / FigS2[[2]] /FigS2[[3]]
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS2_all.pdf"), FigS2_plot, width = 14, height = 14)
 
 
-## Fig. S3
+## Fig. S3 --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS3_plot.R")
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/"
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/"
@@ -30,7 +30,17 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/sup
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS3_q001_density.pdf"), FigS3[[3]], width = 7, height = 7)
 
 
-## Fig. S6
+## Fig. S4 --------
+
+## Fig. S5 --------
+
+## Fig. S6 --------
+
+## Fig. S7 --------
+
+
+
+## Fig. S8 --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS6_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/simulation/"
 simu_kind <- "l100m50"
@@ -40,7 +50,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/sup
 
 
 
-## Fig. S7
+## Fig. S9 --------
 library(patchwork)
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS7_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/supplement/FigS7/"
@@ -56,7 +66,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/sup
 
 
 
-## Fig. S8
+## Fig. S10 --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/FigS8_plot.R")
 path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 target_phenotype <- "CD"
@@ -67,7 +77,7 @@ plot(FigS8[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS8_", target_tf, ".pdf"), FigS8[[1]], width = 7, height = 7)
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/supplement/FigS8_all_barplot.pdf"), FigS8[[2]], width = 14, height = 7)
 
-## Fig. S9
+## Fig. S11 --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6C_plot.R")
 target_phenotype <- "IBD"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
