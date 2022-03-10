@@ -7,7 +7,7 @@ target_ID_Fig1B <- "SRX1156473" #GATA3
 # /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
 Fig1B <- Fig1B_plot(target_ID_Fig1B)
 plot(Fig1B)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1B.pdf"), Fig1B, width = 14, height = 14)
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1B.pdf"), Fig1B, width = 7, height = 7)
 
 
 ## Fig. 1C
@@ -69,8 +69,8 @@ library(patchwork)
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4B_plot.R")
 simulation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig4/"
 Fig4B <- Fig4B_plot(simulation_path)
-Fig4B_plot <- Fig4B[[1]] / Fig4B[[2]] 
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_all.pdf"), Fig4B_plot, width = 21, height = 14)
+Fig4B_plot <- Fig4B[[1]] / Fig4B[[2]] / Fig4B[[3]]
+ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig4/Fig4B_all.pdf"), Fig4B_plot, width = 14, height = 14)
 
 
 ## Fig. 4C
@@ -103,7 +103,6 @@ source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig4D_
 target_ID1 <- "SRX150546" #JUN
 target_ID2 <- "SRX190276" #CTCF
 
-
 target_CT <- "K-562"
 Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CT)
 plot(Fig4D)
@@ -117,8 +116,8 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 #################
 ## Fig. 5C
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig5C_plot.R")
-target_TF <- "FOXA1"
-path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig5/"
+target_TF <- "HOXB13"
+annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig5/"
 Fig5C <- Fig5C_plot(target_TF, annotation_path)
 plot(Fig5C)
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig5/Fig5C_", target_TF,".pdf"), Fig5C, width = 7, height = 7)

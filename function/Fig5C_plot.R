@@ -6,8 +6,8 @@ Fig5C_plot <- function(target_TF, annotation_path){
   annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% filter(Antigen == target_TF) %>% distinct()
   target_df <- target_df %>% left_join(annotation, by = "ID")
   
-  p1 <- target_df %>% ggplot(aes(x = dMOCCS2score, y = pbs))+
-    geom_point(size = 0.5, alpha = 0.3)+
+  p1 <- target_df  %>% ggplot(aes(x = dMOCCS2score, y = pbs))+
+    geom_point(size = 1, alpha = 1)+
     geom_smooth(se = FALSE, method = lm) +
     ggtitle(target_TF)+
     theme(plot.title = element_text(face="bold",hjust = 0.5), 

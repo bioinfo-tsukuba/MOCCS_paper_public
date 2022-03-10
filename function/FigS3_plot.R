@@ -17,13 +17,14 @@ FigS3_plot <- function(annotation_path, path){
     ylab("sample count") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   
@@ -40,13 +41,14 @@ FigS3_plot <- function(annotation_path, path){
     ylab("significant k-mer count") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   p3_df <- totalization_joined %>% mutate(signigicance = ifelse(q_value < 0.01, "significant", "non significant")) %>%
@@ -60,13 +62,14 @@ FigS3_plot <- function(annotation_path, path){
     ylab("significant k-mer count (q<0.01)") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
+          panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold")
+          axis.title=element_text(size=14,face="bold"),
+          aspect.ratio = 1
     )
   
   return(list(p1, p2, p3))

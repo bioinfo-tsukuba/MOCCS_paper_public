@@ -66,7 +66,7 @@ Fig4C_plot <- function(target_ID1 = "",
   
   
   # plot
-  df_join4 <- df_join3 %>% mutate(color = ifelse(q_value < 0.05, "differential", "non differential"))
+  df_join4 <- df_join3 %>% mutate(color = ifelse(q_value < 0.05, "differential", "non differential")) %>% distinct()
   p1 <- df_join4 %>% ggplot(aes(x = MOCCS2score1, y = MOCCS2score2, color = color)) +
     geom_point() +
     ggtitle(target_TF) +
