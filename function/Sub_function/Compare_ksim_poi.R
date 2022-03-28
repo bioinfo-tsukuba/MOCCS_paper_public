@@ -166,8 +166,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
     theme(panel.grid.minor = element_blank()) +
     facet_wrap(~ Similarity, ncol = 1)
 
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_cor_bar.pdf"), plot = p_bar, width = 21, height = 4)  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_cor_bar.pdf"), plot = p_bar, width = 21, height = 4)  
   
   
   return()
@@ -217,10 +217,10 @@ Plot_group_1 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 3)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 3)
   
-  #svg(file=paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
+  #svg(file=paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
   #plot(p_dist)
   #dev.off()
   
@@ -271,10 +271,10 @@ Plot_group_2 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.pdf"), plot = p_dist, width = 15, height = 4)  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_suppl.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_suppl.pdf"), plot = p_dist, width = 15, height = 4)  
   
-  #svg(file=paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.svg"), width = 21, height = 6)
+  #svg(file=paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_suppl.svg"), width = 21, height = 6)
   #plot(p_dist)
   #dev.off()
   
@@ -325,10 +325,10 @@ Plot_group_3 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.pdf"), plot = p_dist, width = 7, height = 4)  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_all.pdf"), plot = p_dist, width = 7, height = 4)  
   
-  #svg(file=paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.svg"), width = 21, height = 6)
+  #svg(file=paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_dist_all.svg"), width = 21, height = 6)
   #plot(p_dist)
   #dev.off()
   
@@ -361,11 +361,11 @@ Plot_group_2d <- function(df_gg_2){
     # theme(axis.text.x = element_text(size = 6)) +
     theme(panel.grid.minor = element_blank())
   
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_1_2d.pdf"), plot = p_2d_1, width = 18, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_1_2d.pdf"), plot = p_2d_1, width = 18, height = 6)
   
-  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_2_2d.pdf"), plot = p_2d_2, width = 18, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_2_2d.pdf"), plot = p_2d_2, width = 18, height = 6)
   
 }
 

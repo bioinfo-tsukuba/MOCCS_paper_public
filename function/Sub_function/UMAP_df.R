@@ -17,7 +17,7 @@ UMAP_df <- function(df_raw, df_fam){
 
   df_raw_4 <- df_raw_3[, 4:length(df_raw_3)]
   
-  saveRDS(df_raw_3$ID[rowSums(df_raw_4) == 0], "~/MOCCS-DB_paper/all_non_sig_ID_list.rds")
+  saveRDS(df_raw_3$ID[rowSums(df_raw_4) == 0], "~/MOCCS_paper_public/data/Fig2/obj/all_non_sig_ID_list.rds")
   
   res.umap <- umap::umap(df_raw_4, metric = "pearson", spread = 10)
   
@@ -30,8 +30,8 @@ UMAP_df <- function(df_raw, df_fam){
     mutate(Family = df_fam$Family[df_raw_2$Antigen != "CTCF"]) -> df_umap
   colnames(df_umap)[1:2] <- c("UMAP1", "UMAP2")
     
-  saveRDS(df_umap, "~/MOCCS-DB_paper/results/df_umap.rds")
-  df_umap <- readRDS("~/MOCCS-DB_paper/results/df_umap.rds")
+  saveRDS(df_umap, "~/MOCCS_paper_public/data/Fig2/obj/df_umap.rds")
+  df_umap <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_umap.rds")
   
   df_umap_2 <- c()
   annot_vec <- c("Antigen", "Family")
@@ -86,14 +86,14 @@ UMAP_df <- function(df_raw, df_fam){
     theme(panel.grid.minor = element_blank()) +
     facet_wrap(~ Plot)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2C/Fig2C_umap_ant.png"), plot = p_umap_1, width = 5)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 5)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.png"), plot = p_umap_1, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 5)
 
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2C/Fig2C_umap_fam.png"), plot = p_umap_2, width = 5)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 5)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.png"), plot = p_umap_2, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 5)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3B/Fig3B_umap.png"), plot = p_umap_3, width = 5)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 5)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.png"), plot = p_umap_3, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 5)
   
 
   return()
