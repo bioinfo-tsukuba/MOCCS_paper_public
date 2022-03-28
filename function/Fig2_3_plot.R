@@ -1,5 +1,4 @@
-Fig2_3_plot <- function(data_path,
-                        calc_opt = TRUE){
+Fig2_3_plot <- function(calc_opt = TRUE){
   
   library(dplyr)
   

@@ -43,8 +43,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   df_p_3_poi_nc_2_tmp_1 %>% rbind(df_p_3_poi_nc_2_tmp_2) %>%
     rbind(df_p_3_poi_nc_2_tmp_3) -> df_gg
   
-  saveRDS(df_gg, "~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
-  df_gg <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
+  #saveRDS(df_gg, "~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
+  #df_gg <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
   
   # Figure 2B
   group_vec <- c("A", "B", "C", "D", "E", "F", "G")
@@ -90,8 +90,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
                      c("N", "Same family", "N", "Same cell type"),
                      c("Same antigen", "N", "Same cell type class", "Same cell type"))
   df_gg_2_2 <- Plot_group_3(df_gg, group_vec, group_mat)
-  saveRDS(df_gg_2_2, "~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
-  df_gg_2_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
+  #saveRDS(df_gg_2_2, "~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
+  #df_gg_2_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
   
   Plot_group_2d(df_gg_2_2)
   
