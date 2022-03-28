@@ -54,12 +54,10 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 
 ##################
-### Figure2 ###
+### Figure2-3 ###
 #################
-
-##################
-### Figure3 ###
-#################
+source("~/MOCCS_paper_public/function/Fig2_3_plot.R")
+Fig2_3_plot(calc_opt = FALSE)
 
 ##################
 ### Figure4 ###
