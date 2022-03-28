@@ -43,8 +43,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   df_p_3_poi_nc_2_tmp_1 %>% rbind(df_p_3_poi_nc_2_tmp_2) %>%
     rbind(df_p_3_poi_nc_2_tmp_3) -> df_gg
   
-  saveRDS(df_gg, "~/MOCCS-DB_paper/results/df_gg.rds")
-  df_gg <- readRDS("~/MOCCS-DB_paper/results/df_gg.rds")
+  saveRDS(df_gg, "~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
+  df_gg <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
   
   # Figure 2B
   group_vec <- c("A", "B", "C", "D", "E", "F", "G")
@@ -90,8 +90,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
                      c("N", "Same family", "N", "Same cell type"),
                      c("Same antigen", "N", "Same cell type class", "Same cell type"))
   df_gg_2_2 <- Plot_group_3(df_gg, group_vec, group_mat)
-  saveRDS(df_gg_2_2, "~/MOCCS-DB_paper/results/df_gg_2_2.rds")
-  df_gg_2_2 <- readRDS("~/MOCCS-DB_paper/results/df_gg_2_2.rds")
+  saveRDS(df_gg_2_2, "~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
+  df_gg_2_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
   
   Plot_group_2d(df_gg_2_2)
   
@@ -149,8 +149,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   print("P-values of correlation coefficient are...")
   print(df_cor_1$p)
   
-  saveRDS(df_cor_1, "~/MOCCS-DB_paper/results/df_cor_1.rds")
-  df_cor_1 <- readRDS("~/MOCCS-DB_paper/results/df_cor_1.rds")
+  saveRDS(df_cor_1, "~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
+  df_cor_1 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
   
   df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_1"] <- "2_k_sim_Jaccard"
   df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_2"] <- "1_k_sim_Pearson"
@@ -166,8 +166,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
     theme(panel.grid.minor = element_blank()) +
     facet_wrap(~ Similarity, ncol = 1)
 
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_cor_bar.pdf"), plot = p_bar, width = 21, height = 4)  
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
+  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_cor_bar.pdf"), plot = p_bar, width = 21, height = 4)  
   
   
   return()
@@ -217,12 +217,12 @@ Plot_group_1 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
   ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 3)
   
-  svg(file=paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
-  plot(p_dist)
-  dev.off()
+  #svg(file=paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
+  #plot(p_dist)
+  #dev.off()
   
   return(df_gg_2)
   
@@ -271,12 +271,12 @@ Plot_group_2 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_suppl.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_suppl.pdf"), plot = p_dist, width = 15, height = 4)  
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.pdf"), plot = p_dist, width = 15, height = 4)  
   
-  svg(file=paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_suppl.svg"), width = 21, height = 6)
-  plot(p_dist)
-  dev.off()
+  #svg(file=paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_suppl.svg"), width = 21, height = 6)
+  #plot(p_dist)
+  #dev.off()
   
   return(df_gg_2)
   
@@ -325,12 +325,12 @@ Plot_group_3 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_all.pdf"), plot = p_dist, width = 7, height = 4)  
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.pdf"), plot = p_dist, width = 7, height = 4)  
   
-  svg(file=paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_dist_all.svg"), width = 21, height = 6)
-  plot(p_dist)
-  dev.off()
+  #svg(file=paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_dist_all.svg"), width = 21, height = 6)
+  #plot(p_dist)
+  #dev.off()
   
   return(df_gg_2)
   
@@ -361,11 +361,11 @@ Plot_group_2d <- function(df_gg_2){
     # theme(axis.text.x = element_text(size = 6)) +
     theme(panel.grid.minor = element_blank())
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_1_2d.pdf"), plot = p_2d_1, width = 18, height = 6)
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
+  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_1_2d.pdf"), plot = p_2d_1, width = 18, height = 6)
   
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/FigS4/FigS4_k_sim_2_2d.pdf"), plot = p_2d_2, width = 18, height = 6)
+  #ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
+  ggsave(paste0("~/MOCCS-DB_paper/plot/FigS4/FigS4_k_sim_2_2d.pdf"), plot = p_2d_2, width = 18, height = 6)
   
 }
 

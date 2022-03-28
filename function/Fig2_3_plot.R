@@ -10,24 +10,19 @@ Fig2_3_plot <- function(data_path,
 
     source("~/MOCCS_paper_public/function/sub_function/Read_df.R")
     df_raw <- Read_df()
-    saveRDS(df_raw, "~/MOCCS_paper_public/results/df_raw.rds")
+    saveRDS(df_raw, "~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Annot_DBDs_of_CIS_BP.R")
     df_fam <- Annot_DBDs_of_CIS_BP(df_raw)
-    saveRDS(df_fam, "~/MOCCS_paper_public/results/df_fam.rds")
+    saveRDS(df_fam, "~/MOCCS_paper_public/data/Fig2/obj/df_fam.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Annot_pairs.R")
     df_p_1 <- Annot_pairs(df_fam)
-    saveRDS(df_p_1, "~/MOCCS_paper_public/results/df_p_1.rds")
+    saveRDS(df_p_1, "~/MOCCS_paper_public/data/Fig2/obj/df_p_1.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Calc_pairs.R")
     df_p_2 <- Calc_pairs(df_raw)
-    saveRDS(df_p_2, "~/MOCCS_paper_public/results/df_p_2.rds")
-    
-    # non-sig version
-    # source("~/MOCCS_paper_public/function/sub_function/Calc_pairs_2.R")
-    # df_p_2_remain_non_sig <- Calc_pairs_2(df_raw)
-    # saveRDS(df_p_2_remain_non_sig, "~/MOCCS_paper_public/results/df_p_2_remain_non_sig.rds")
+    saveRDS(df_p_2, "~/MOCCS_paper_public/data/Fig2/obj/df_p_2.rds")
     
     # Join
     df_p_1 %>%
@@ -36,31 +31,28 @@ Fig2_3_plot <- function(data_path,
       mutate(ID_pair = paste0(ID1, ID2)) %>%
       dplyr::select(ID_pair, k_sim_1, k_sim_2) -> df_p_2_2
     inner_join(df_p_1_2, df_p_2_2, by = "ID_pair") -> df_p_3
-    saveRDS(df_p_3, "~/MOCCS_paper_public/results/df_p_3.rds")
+    saveRDS(df_p_3, "~/MOCCS_paper_public/data/Fig2/obj/df_p_3.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Group_df.R")
     df_p_3_gp <- Group_df(df_p_3)
-    saveRDS(df_p_3_gp, "~/MOCCS_paper_public/results/df_p_3_gp.rds")
+    saveRDS(df_p_3_gp, "~/MOCCS_paper_public/data/Fig2/obj/df_p_3_gp.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Collect_poi.R")
     df_poi <- Collect_poi()
-    saveRDS(df_poi, "~/MOCCS_paper_public/results/df_poi.rds")
+    saveRDS(df_poi, "~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
     
   } else {
     
-    df_raw <- readRDS("~/MOCCS_paper_public/results/df_raw.rds")
-    df_fam <- readRDS("~/MOCCS_paper_public/results/df_fam.rds")
-    df_p_1 <- readRDS("~/MOCCS_paper_public/results/df_p_1.rds")
-    df_p_2 <- readRDS("~/MOCCS_paper_public/results/df_p_2.rds")
-    df_p_3 <- readRDS("~/MOCCS_paper_public/results/df_p_3.rds")
-    df_p_3_gp <- readRDS("~/MOCCS_paper_public/results/df_p_3_gp.rds")
-    df_poi <- readRDS("~/MOCCS_paper_public/results/df_poi.rds")
+    df_raw <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds") # FIMXE: figshare
+    df_fam <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_fam.rds")
+    df_p_1 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_1.rds")
+    df_p_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_2.rds")
+    df_p_3 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_3.rds")
+    df_p_3_gp <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_3_gp.rds")
+    df_poi <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds") # FIXME: figshare
     
   }
 
-  rm(list = ls())
-  df_p_3_gp <- readRDS("~/MOCCS_paper_public/results/df_p_3_gp.rds")
-  df_poi <- readRDS("~/MOCCS_paper_public/results/df_poi.rds")
   # Fig. 2B and S4: Comparison with poi
   source("~/MOCCS_paper_public/function/sub_function/Compare_ksim_poi.R")
   Compare_ksim_poi(df_p_3_gp, df_poi)
@@ -88,7 +80,7 @@ Fig2_3_plot <- function(data_path,
   TF_graph_sel_2(rt_list = c("FOS", "JUN"), t_ctc = "Breast")
   TF_graph_sel_2(rt_list = c("FOS", "JUN"), t_ctc = "Cardiovascular")
   source("~/MOCCS_paper_public/function/sub_function/TF_graph_sel_3.R")
-  sig_symbol_list <- readRDS("~/MOCCS_paper_public/results/sig_symbol_list.rds")
+  sig_symbol_list <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/sig_symbol_list.rds")
   sig_symbol_list_2 <- sig_symbol_list[!sig_symbol_list %in% c("AR", "FOS")]
   for (a1_ind in 1:length(sig_symbol_list_2)){
     TF_graph_sel_3(a1 = sig_symbol_list_2[a1_ind], t_ctc = NULL, t_num = 15)
