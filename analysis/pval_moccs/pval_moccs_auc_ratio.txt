@@ -1,0 +1,1 @@
+[1] "ratio of S.D. of empirical over theoretical: 1.0064"
