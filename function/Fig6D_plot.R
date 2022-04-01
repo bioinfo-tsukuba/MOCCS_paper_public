@@ -25,7 +25,10 @@ Fig6D_plot <- function(target_phenotype, target_rs, target_position, annotation_
     group_by(ID, Antigen, Cell_type_class, position) %>% 
     summarise(max_abs_dMOCCS2score = max(abs_dMOCCS2score))
   
-  x_lab_ID <- df2  %>% filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% .$ID %>% as.character()
+  #x_lab_ID <- df2  %>% filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% .$ID %>% as.character()
+  x_lab_ID <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% select(ID_position)
+  x_lab_ID2 <- x_lab_ID %>% separate(ID_position, into = c("ID", "chr", "position"), sep = "_") %>% .$ID %>% as.character() %>% rev()
+  
   Fig6D_CL <- df2  %>% unite("ID_position", c(ID, position)) %>% filter(max_abs_dMOCCS2score > threshold) %>%
     ggplot(aes(x = reorder(ID_position, max_abs_dMOCCS2score), y = max_abs_dMOCCS2score, fill = Cell_type_class))+
     geom_col() +
@@ -41,7 +44,7 @@ Fig6D_plot <- function(target_phenotype, target_rs, target_position, annotation_
           #legend.position = 'none',
           legend.title = element_blank()
     )+
-    scale_x_discrete("ID", labels = x_lab_ID) +
+    scale_x_discrete("ID", labels = x_lab_ID2) +
     ylab("max(|dMOCCS2score|)") +
     ggtitle(paste0(target_rs, " ", target_phenotype)) +
     coord_flip()
@@ -61,7 +64,7 @@ Fig6D_plot <- function(target_phenotype, target_rs, target_position, annotation_
           #legend.position = 'none',
           legend.title = element_blank()
     )+
-    scale_x_discrete("ID", labels = x_lab_ID) +
+    scale_x_discrete("ID", labels = x_lab_ID2) +
     ylab("max(|dMOCCS2score|)") +
     ggtitle(paste0(target_rs, " ", target_phenotype)) +
     coord_flip()

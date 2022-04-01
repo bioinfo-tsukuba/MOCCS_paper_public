@@ -146,7 +146,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 
 ## Fig. 6C --------
-source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6C_plot.R")
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS_paper_public/function/Fig6C_plot.R")
 target_phenotype <- "IBD"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 threshold <- 150
@@ -158,8 +158,8 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 
 ## Fig. 6D --------
-source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig6D_plot.R")
-target_phenotype <- "IBD"
+source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS_paper_public/function/Fig6D_plot.R")
+target_phenotype <- "CD"
 
 target_rs <- "rs17293632"
 target_position <- "chr15_67150258"

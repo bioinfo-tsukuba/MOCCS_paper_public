@@ -88,3 +88,5 @@ plot(Fig6C[[2]])
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS_paper_public/plot/Fig6/Fig6C_", target_phenotype,"_CL.pdf"), Fig6C[[1]], width = 7, height = 7)
 ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS_paper_public/plot/Fig6/Fig6C_", target_phenotype,"_TF.pdf"), Fig6C[[2]], width = 7, height = 7)
 
+## Fig. S12 ---------
+
