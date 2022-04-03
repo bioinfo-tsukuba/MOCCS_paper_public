@@ -7,7 +7,7 @@ target_ID_Fig1B <- "SRX1156473" #GATA3
 # /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
 Fig1B <- Fig1B_plot(target_ID_Fig1B)
 plot(Fig1B)
-ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig1/Fig1B.pdf"), Fig1B, width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1B.pdf"), Fig1B, width = 7, height = 7)
 
 
 ## Fig. 1C --------
