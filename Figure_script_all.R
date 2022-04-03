@@ -2,7 +2,7 @@
 ### Figure1 ###
 #################
 ## Fig. 1B --------
-source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/function/Fig1B_plot.R")
+source("~/MOCCS_paper_public/function/Fig1B_plot.R")
 target_ID_Fig1B <- "SRX1156473" #GATA3
 # /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
 Fig1B <- Fig1B_plot(target_ID_Fig1B)
@@ -147,7 +147,7 @@ ggsave(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/plot/Fig
 
 ## Fig. 6C --------
 source("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS_paper_public/function/Fig6C_plot.R")
-target_phenotype <- "IBD"
+target_phenotype <- "CD"
 annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
 threshold <- 150
 Fig6C <- Fig6C_plot(target_phenotype, annotation_path, threshold)
