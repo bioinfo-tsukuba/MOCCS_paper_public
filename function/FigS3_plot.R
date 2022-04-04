@@ -1,11 +1,11 @@
 FigS3_plot <- function(annotation_path, path){
   
   library(tidyverse)
-  totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
-  totalization <- readRDS(totalization_path)
+  totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
   ID_hard <- readRDS(paste0(annotation_path, "hg38_hard_filter_ID.rds"))
   
-  experimentList_tab4 <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/experimentList_tab4.rds")
+  #experimentList_tab4 <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/experimentList_tab4.rds")
+  experimentList_tab4 <- readRDS(url("https://figshare.com/ndownloader/files/34065671", "rb"))
   experimentList_tab5 <- experimentList_tab4 %>% filter(Genome == "hg38" & Antigen_class == "TFs and others" & ID %in% ID_hard) %>% select(ID, peaks)
   totalization_joined <- totalization %>% filter(ID %in% ID_hard) %>% left_join(experimentList_tab5, by = "ID") %>% distinct()
   

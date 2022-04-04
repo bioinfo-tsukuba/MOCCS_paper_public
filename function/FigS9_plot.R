@@ -1,12 +1,16 @@
-FigS9_plot <- function(path, target_tf, annotation_path){
+FigS9_plot <- function(path, target_TF){
   
   
   library(tidyverse)
   
   # difference among position of SNPs in k-mer
-  target_df <- read_tsv(paste0(annotation_path, "SNP_SELEX/dMOCCS2score_hg38_", target_tf, "_all.tsv"))
-  totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
-  annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% filter(Antigen == target_tf) %>% distinct()
+  if(target_TF == "GATA3"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336355", "rb"))
+  }else if(target_TF == "FOXA1"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336352", "rb"))
+  }
+  totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
+  annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% filter(Antigen == target_TF) %>% distinct()
   target_df <- target_df %>% left_join(annotation, by = "ID")
   
   p_list <- list()
@@ -17,9 +21,7 @@ FigS9_plot <- function(path, target_tf, annotation_path){
     
     p_list[[i]] <- target_df2 %>% ggplot(aes(x = dMOCCS2score, y = pbs))+
       geom_point(size = 1)+
-      #scale_fill_viridis_c(breaks= c(100, 500, 1500, 2500, 4000))+
       geom_smooth(se = FALSE, method = lm) +
-      #ggtitle(target_tf)+
       xlab("") +
       ylab("") +
       annotate("text", x=-Inf,y=Inf, label= paste0("cor = ", cor),hjust=-.2,vjust=3,fontface="bold", colour="blue",size=7) +
@@ -37,12 +39,19 @@ FigS9_plot <- function(path, target_tf, annotation_path){
     
   }
   
-  
-  original_df <- read_tsv(paste0(path, "ADASTRA_data/" , target_tf, "_HUMAN.tsv"))
+  if(target_TF == "GATA3"){
+    original_df <- read_tsv(url("https://figshare.com/ndownloader/files/34337135", "rb"))
+  }else if(target_TF == "FOXA1"){
+    original_df <- read_tsv(url("https://figshare.com/ndownloader/files/34337141", "rb"))
+  }
   pwm_df <- original_df %>% select('#chr', pos, motif_log_pref, motif_log_palt, motif_fc, motif_pos) %>% unite("snp", c('#chr', pos))
   
   # dMOCCS2scoreのデータと結合
-  df <- readRDS(paste0(path, "dMOCCS2score/ADASTRA_dMOCCS2score_", target_tf, "_all.rds"))
+  #df <- readRDS(paste0(path, "dMOCCS2score/ADASTRA_dMOCCS2score_", target_tf, "_all.rds"))
+  url_list <- read_csv("~/MOCCS_paper_public/data/Fig5/Fig5E_url_list.csv", col_names = FALSE)
+  colnames(url_list) <- c("TF", "url")
+  target_url <- url_list %>% filter(TF == target_TF) %>% .$url %>% as.character()
+  df <- readRDS(url(target_url, "rb"))
   df2 <- df %>% mutate(pos = end + posi - 6) %>% unite("snp", c(chr, pos))
   df3 <- left_join(df2, pwm_df, by = "snp")
   df4 <- df3 %>% #mutate(color = ifelse((q_value < 0.05 & (motif_fc > 2 | motif_fc < -2)), "differential", "non-differential"))
@@ -52,12 +61,10 @@ FigS9_plot <- function(path, target_tf, annotation_path){
     ggplot(aes(x = dMOCCS2score, y = motif_fc)) +
     geom_bin_2d(bins = 100) +
     scale_fill_viridis_c(breaks= c(100, 500, 1500, 2500, 4000))+
-    #geom_point(size = 0.1, alpha = 0.2) +
-    #scale_color_manual(values = c("#DC143C", "#696969")) +
     geom_smooth(se = FALSE, method = lm) +
     ylab("motif fc") +
     xlab("dMOCCS2score") +
-    ggtitle(target_tf)+
+    ggtitle(target_TF)+
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
           panel.grid.minor = element_blank(),

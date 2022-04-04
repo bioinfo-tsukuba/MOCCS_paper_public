@@ -3,7 +3,7 @@ FigS1_plot <- function(path){
   library(tidyverse)
   library(GGally)
   df_tidy <- readRDS(paste0(path, "DROMPA_SUMMARY_hg38.rds"))
-  experimentList_tab4 <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/experimentList_tab4.rds")
+  experimentList_tab4 <- readRDS(url("https://figshare.com/ndownloader/files/34065671", "rb"))
   experimentList_tab5 <- experimentList_tab4 %>% filter(Genome == "hg38" & Antigen_class == "TFs and others") %>% select(ID, peaks)
   df_tidy_joined <- df_tidy %>% left_join(experimentList_tab5, by = "ID")  
   df_tidy_joined_selected <- df_tidy_joined %>% filter(Library_complexity > 0.8 & total_reads > 10000000 & GC_content < 60 & NSC > 2.0 & Bu  > 0.8)
