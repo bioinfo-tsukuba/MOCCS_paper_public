@@ -130,7 +130,7 @@ target_TF <- "FOXA1"
 Fig5E <- Fig5E_plot(target_TF, path)
 plot(Fig5E[[1]])
 plot(Fig5E[[2]])
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_scatter_", target_TF,".pdf"), Fig5E[[1]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_scatter_", target_TF,".pdf"), Fig5E[[1]], width = 7, height = 7, dpi = 300)
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], width = 7, height = 7)
 
 
@@ -155,11 +155,22 @@ Fig6C <- Fig6C_plot(target_phenotype, annotation_path, threshold)
 plot(Fig6C[[1]])
 plot(Fig6C[[2]])
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6C_", target_phenotype,"_CL.pdf"), Fig6C[[1]], width = 7, height = 7)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6C_", target_phenotype,"_TF.pdf"), Fig6C[[2]], width = 7, height = 7)
-
+#ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6C_", target_phenotype,"_TF.pdf"), Fig6C[[2]], width = 7, height = 7)
 
 ## Fig. 6D --------
 source("~/MOCCS_paper_public/function/Fig6D_plot.R")
+target_phenotype <- "SLE"
+annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
+threshold <- 150
+Fig6D <- Fig6D_plot(target_phenotype, annotation_path, threshold)
+plot(Fig6D[[1]])
+plot(Fig6D[[2]])
+#ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_TF.pdf"), Fig6D[[2]], width = 7, height = 7)
+
+
+## Fig. 6E --------
+source("~/MOCCS_paper_public/function/Fig6E_plot.R")
 target_phenotype <- "CD"
 
 target_rs <- "rs17293632"
@@ -176,14 +187,14 @@ target_position <- "chr15_67150258"
 
 annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
 threshold <- 100
-Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
-plot(Fig6D[[1]])
-plot(Fig6D[[2]])
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]], width = 7, height = 7)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_TF.pdf"), Fig6D[[2]], width = 7, height = 7)
+Fig6E <- Fig6E_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+plot(Fig6E[[1]])
+plot(Fig6E[[2]])
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_CL.pdf"), Fig6E[[1]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_TF.pdf"), Fig6E[[2]], width = 7, height = 7)
 
 ### IBDの場合
-source("~/MOCCS_paper_public/function/Fig6D_plot_2.R")
+source("~/MOCCS_paper_public/function/Fig6E_plot.R")
 target_phenotype <- "IBD"
 
 target_rs <- "rs17293632"
@@ -191,11 +202,11 @@ target_position <- "chr15_67150258"
 
 annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
 threshold <- 100
-Fig6D <- Fig6D_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
-plot(Fig6D[[1]])
-plot(Fig6D[[2]])
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_CL.pdf"), Fig6D[[1]], width = 14, height = 14)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_TF.pdf"), Fig6D[[2]], width = 14, height = 14)
+Fig6E <- Fig6E_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+plot(Fig6E[[1]])
+plot(Fig6E[[2]])
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_CL.pdf"), Fig6E[[1]], width = 14, height = 14)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_TF.pdf"), Fig6E[[2]], width = 14, height = 14)
 
 
 
