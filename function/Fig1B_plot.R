@@ -1,7 +1,7 @@
 Fig1B_plot <- function(target_ID_Fig1B){
   
   library(tidyverse)
-  MOCCS_output_path <- paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/", target_ID_Fig1B, "_6mer_v2.auc_count.txt")
+  MOCCS_output_path <- paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1B, "_6mer_v2.auc_count.txt")
   MOCCS_output_target <- read_tsv(MOCCS_output_path)
   
   ## urlで読み込む場合
@@ -30,7 +30,7 @@ Fig1B_plot <- function(target_ID_Fig1B){
     # IDとpvalueとqvalueを足したtableにして返す 
     MOCCS_output_target_2 <- MOCCS_output_target %>% mutate(p_value = p_list, q_value = q_list, ID = rep(target_ID_Fig1B, nrow(MOCCS_output_target)))
   } #if
-  saveRDS(MOCCS_output_target_2, paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/", target_ID_Fig1B, "_MOCCSout_qval.rds"))
+  saveRDS(MOCCS_output_target_2, paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1B, "_MOCCSout_qval.rds"))
   
   
   # plot

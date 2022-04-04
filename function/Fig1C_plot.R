@@ -6,16 +6,16 @@ Fig1C_plot <- function(target_TF, load, filter){
   
   # localから読み込む場合
   if(load == "local"){
-    totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
+    totalization <- readRDS("~/MOCCS_paper_public/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
   }else{
     # figshareから読み込む場合
     totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
   }
   if(filter == "hard"){
-    ID_hard <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/hg38_hard_filter_ID.rds")
+    ID_hard <- readRDS("~/MOCCS_paper_public/data/Fig1/hg38_hard_filter_ID.rds")
     totalization2 <- totalization %>% filter(ID %in% ID_hard)
   }else if(filter == "soft"){
-    ID_soft <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/ID_soft_filter_hg38.rds")
+    ID_soft <- readRDS("~/MOCCS_paper_public/data/Fig1/ID_soft_filter_hg38.rds")
     totalization2 <- totalization %>% filter(ID %in% ID_soft)
   }else{
     totalization2 <- totalization
@@ -35,7 +35,7 @@ Fig1C_plot <- function(target_TF, load, filter){
   # filter target TF PWM table
   if(load == "local"){
     #from local repository
-    PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
+    PWM_table_all <- readRDS("~/MOCCS_paper_public/data/Fig1/PWM_likelihood_HOMER.rds")
   }else{
     #from figshare
     PWM_table_all <- readRDS(url("https://figshare.com/ndownloader/files/34065698","rb"))
