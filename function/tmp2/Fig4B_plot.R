@@ -1,4 +1,4 @@
-Fig4C_plot <- function(simulation_path){
+Fig4B_plot <- function(simulation_path){
   
   library(tidyverse)
   library(patchwork)

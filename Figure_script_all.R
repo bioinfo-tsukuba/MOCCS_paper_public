@@ -18,6 +18,14 @@ filter <- "all" #soft or hard or all
 Fig1C_plot(target_TF, load, filter)
 
 ## Fig. 1D ------
+source("~/MOCCS_paper_public/function/Fig1D_plot.R")
+target_TF <- "CTCF"
+annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
+target_ID <- "SRX067516"
+Fig1D <- Fig1D_plot(target_TF, annotation_path)
+plot(Fig1D)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_", target_TF, "_", target_ID,  ".pdf"), Fig1D, width = 7, height = 7)
+
 
 ## Fig. 1E --------
 source("~/MOCCS_paper_public/function/Fig1E_plot.R")
@@ -38,24 +46,12 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1F_", target_TF,".pdf"), Fig1F,
 
 
 ## Fig. 1G ------
-
-
-
-## Fig. 1F(old) --------
-source("~/MOCCS_paper_public/function/Fig1F_plot.R")
-annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-Fig1F <- Fig1F_plot(annotation_path)
-plot(Fig1F)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1F.pdf"), Fig1F, width = 7, height = 7)
-
-
-## Fig. 1G(old) --------
 source("~/MOCCS_paper_public/function/Fig1G_plot.R")
-target_TF <- "CTCF"
 annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-Fig1G <- Fig1G_plot(target_TF, annotation_path)
+Fig1G <- Fig1G_plot(annotation_path)
 plot(Fig1G)
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1G.pdf"), Fig1G, width = 7, height = 7)
+
 
 
 
@@ -69,38 +65,37 @@ Fig2_3_plot(calc_opt = FALSE)
 ### Figure4 ###
 #################
 ## Fig. 4B --------
-library(patchwork)
 source("~/MOCCS_paper_public/function/Fig4B_plot.R")
-simulation_path <- "~/MOCCS_paper_public/data/Fig4/"
-Fig4B <- Fig4B_plot(simulation_path)
-Fig4B_plot <- Fig4B[[1]] / Fig4B[[2]] / Fig4B[[3]]
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4B_all.pdf"), Fig4B_plot, width = 14, height = 14)
+simu_name <- "a01-02_N12000_varW5_stranded_sameA_func5_m90l45"
+Fig4B_plot <- Fig4B_plot(simu_name)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4B.pdf"), Fig4B_plot, width = 7, height = 7)
 
 
 ## Fig. 4C --------
+library(patchwork)
 source("~/MOCCS_paper_public/function/Fig4C_plot.R")
+simulation_path <- "~/MOCCS_paper_public/data/Fig4/"
+Fig4C <- Fig4C_plot(simulation_path)
+Fig4C_plot <- Fig4C[[1]] / Fig4C[[2]] / Fig4C[[3]]
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4C_all.pdf"), Fig4C_plot, width = 14, height = 14)
+
+
+## Fig. 4D --------
+source("~/MOCCS_paper_public/function/Fig4D_plot.R")
 #target_ID1 <- "SRX150600" # JUN K562
 #target_ID2 <- "SRX186614" # JUN K562
 
 target_ID1 <- "SRX150600" # JUN K562
 target_ID2 <- "SRX150358" # JUN HUVEC
 
-#target_ID1 <- "SRX150481" # EP300 K562
-#target_ID2 <- "SRX150573" # EP300 K562
-
-#target_ID1 <- "SRX150481" # EP300 K562
-#target_ID2 <- "SRX2343934" # EP300 Cardiovascular Large pulmonary artery endothelial cells
-
 target_TF <- "JUN"
-#target_TF <- "EP300"
 
-Fig4C <- Fig4C_plot(target_ID1, target_ID2, target_TF)
-plot(Fig4C)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4C_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4C, width = 7, height = 7)
+Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_TF)
+plot(Fig4D)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4D_", target_TF, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D, width = 7, height = 7)
 
-
-## Fig. 4D --------
-source("~/MOCCS_paper_public/function/Fig4D_plot.R")
+## Fig. 4E --------
+source("~/MOCCS_paper_public/function/Fig4E_plot.R")
 #target_ID1 <- "SRX150546" #JUN
 #target_ID2 <- "SRX029087" #FOS
 
@@ -108,9 +103,9 @@ target_ID1 <- "SRX150546" #JUN
 target_ID2 <- "SRX190276" #CTCF
 
 target_CT <- "K-562"
-Fig4D <- Fig4D_plot(target_ID1, target_ID2, target_CT)
-plot(Fig4D)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4D_", target_CT, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4D, width = 7, height = 7)
+Fig4E <- Fig4E_plot(target_ID1, target_ID2, target_CT)
+plot(Fig4E)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4E_", target_CT, "_", target_ID1, "_", target_ID2, ".pdf"), Fig4E, width = 7, height = 7)
 
 
 

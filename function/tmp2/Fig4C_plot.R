@@ -1,4 +1,4 @@
-Fig4D_plot <- function(target_ID1 = "", 
+Fig4C_plot <- function(target_ID1 = "", 
                        target_ID2 = "", 
                        target_TF = ""){
   

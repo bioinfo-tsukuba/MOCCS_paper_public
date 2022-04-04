@@ -1,0 +1,731 @@
+---
+title: "a001_005_N12000_varW5_analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r import results} 
+rm(list=ls())
+simu_result <- readRDS("/home/s-tahara/simulation_fixed_v3/result/result_a01-02_N12000_varW5_stranded_sameA_func5_m90l45.rds")
+simu_name <- "a01-02_N12000_varW5_stranded_sameA_func5_m90l45"
+```
+
+```{r check dataframe}
+head(simu_result)
+dim(simu_result)
+colnames(simu_result)
+```
+
+
+```{r remove 1/2bp shifted k-mer in C}
+# remove 1bp shifted k-mer 
+B1_and_B2 <- simu_result %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2" | true_kmer_anotation == "A") %>% select(kmer, simu_num, true_kmer_anotation)
+B1_and_B2 %>% group_by(simu_num, true_kmer_anotation) %>% summarise(n=n())
+
+B1_and_B2_shifted <- list()
+for (j in 1:50) {
+  target_B1_and_B2 <- B1_and_B2 %>% filter(simu_num == j) %>%.$kmer %>% as.character() %>% unique()
+  target_B1_and_B2_shifted <- c()
+  for (i in 1:length(target_B1_and_B2)) {
+    target_kmer <- target_B1_and_B2[i]
+    tmp <- substring(target_kmer, 2, 6)
+    target_kmer_shifted <- c()
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "C"))
+  
+    tmp2 <- substring(target_kmer, 1, 5)
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp2))
+    target_kmer_shifted <- unique(target_kmer_shifted)
+  
+    target_B1_and_B2_shifted <- c(target_B1_and_B2_shifted, target_kmer_shifted) 
+    B1_and_B2_shifted[j] <- list(unique(target_B1_and_B2_shifted))
+  }
+}
+
+for (j in 1:50) {
+  target_rm_kmer <- B1_and_B2_shifted[[j]]
+  target_df <-simu_result %>% filter(simu_num == j) %>% filter((true_kmer_anotation == "C") & (!kmer %in% target_rm_kmer))
+  if(j == 1){
+    simu_result_new <- target_df 
+  }else{
+    simu_result_new <- rbind(simu_result_new, target_df)
+  }
+}
+
+only_A_B <- simu_result %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "B2")
+simu_result_new <- rbind(simu_result_new, only_A_B)
+
+
+# remove 2bp shifted k-mer
+B1_and_B2_shifted <- list()
+for (j in 1:50) {
+  target_B1_and_B2 <- B1_and_B2 %>% filter(simu_num == j) %>%.$kmer %>% as.character() %>% unique()
+  target_B1_and_B2_shifted <- c()
+  for (i in 1:length(target_B1_and_B2)) {
+    target_kmer <- target_B1_and_B2[i]
+    
+    # 1bp??????
+    tmp <- substring(target_kmer, 2, 6)
+    target_kmer_shifted <- c()
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp, "C"))
+  
+    tmp2 <- substring(target_kmer, 1, 5)
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp2))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp2))
+    
+    # 2bp??????
+    tmp3 <- substring(target_kmer, 3, 6)
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AA"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AT"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AG"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "AC"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TA"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TT"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TG"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "TC"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GA"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GT"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GG"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "GC"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CA"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CT"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CG"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0(tmp3, "CC"))
+  
+    tmp4 <- substring(target_kmer, 1, 4)
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("AA", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("AT", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("AG", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("AC", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("TA", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("TT", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("TG", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("TC", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("GA", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("GT", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("GG", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("GC", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("CA", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("CT", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("CG", tmp4))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("CC", tmp4))
+    
+    tmp5 <- substring(target_kmer, 2, 5)
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("A", tmp5, "C"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("T", tmp5, "C"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("G", tmp5, "C"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "A"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "T"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "G"))
+    target_kmer_shifted <- c(target_kmer_shifted,paste0("C", tmp5, "C"))
+    
+    target_kmer_shifted <- unique(target_kmer_shifted)
+  
+    target_B1_and_B2_shifted <- c(target_B1_and_B2_shifted, target_kmer_shifted) 
+    B1_and_B2_shifted[j] <- list(unique(target_B1_and_B2_shifted))
+  }
+}
+
+for (j in 1:50) {
+  target_rm_kmer <- B1_and_B2_shifted[[j]]
+  target_df <- simu_result %>% filter(simu_num == j) %>% filter((true_kmer_anotation == "C") & (!kmer %in% target_rm_kmer))
+  if(j == 1){
+    simu_result_new2 <- target_df 
+  }else{
+    simu_result_new2 <- rbind(simu_result_new2, target_df)
+  }
+}
+
+simu_result_new2 <- rbind(simu_result_new2, only_A_B)
+
+# check
+dim(simu_result)
+dim(simu_result_new)
+dim(simu_result_new2)
+simu_result %>% group_by(simu_num, true_kmer_anotation) %>% summarise(n = n())
+simu_result_new %>% group_by(simu_num, true_kmer_anotation) %>% summarise(n = n())
+simu_result_new2 %>% group_by(simu_num, true_kmer_anotation) %>% summarise(n = n())
+saveRDS(simu_result_new2, paste0("/home/s-tahara/simulation_fixed_v3/plot/",simu_name,"_new2.rds"))
+```
+
+```{r plot (q<0.05)}
+p <- simu_result_new2 %>% mutate(color = ifelse(q_value < 0.05, "differential", "nondifferential")) %>%
+  ggplot(aes(x = MOCCS2score, y = MOCCS2score2, color = color)) +
+  geom_point(size = 1) +
+  scale_colour_manual(
+    values = c(
+      differential = "red",
+      nondifferential = "gray"
+    )
+  )+
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "gray"),
+        panel.grid.minor = element_line(colour="gray"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold"),
+        legend.title = element_blank()
+    ) +
+  xlab("MOCCS2score1") +
+  ggtitle(paste0(simu_name, "_q005"))
+p
+
+ggsave(file = paste0("/home/s-tahara/simulation_fixed_v3/plot/",simu_name,"_q005.png"), plot = p, width = 9, height = 7)
+
+for (i in 1:5) {
+  p <- simu_result_new2 %>% filter(simu_num == i)%>% mutate(color = ifelse(q_value < 0.05, "differential", "nondifferential")) %>%
+  ggplot(aes(x = MOCCS2score, y = MOCCS2score2, color = color)) +
+  geom_point(size = 1) +
+  scale_colour_manual(
+    values = c(
+      differential = "red",
+      nondifferential = "gray"
+    )
+  )+
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "gray"),
+        panel.grid.minor = element_line(colour="gray"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold"),
+        legend.title = element_blank()
+    ) +
+  xlab("MOCCS2score1") +
+  ggtitle(paste0(simu_name, "_q005"))
+plot(p)
+}
+
+simu1 <- simu_result_new2 %>% filter(simu_num == 1) %>% select(kmer, auc, count, MOCCS2score, auc2, count2, MOCCS2score2, q_value, simu_num, true_kmer_anotation) %>% filter(true_kmer_anotation == "A")
+#View(simu1)
+```
+
+```{r plot (q<0.01)}
+p2 <- simu_result_new2  %>% mutate(color = ifelse(q_value < 0.05, "differential", "nondifferential")) %>%
+  ggplot(aes(x = MOCCS2score, y = MOCCS2score2, color = color)) +
+  geom_point(size = 1) +
+  scale_colour_manual(
+    values = c(
+      differential = "blue",
+      nondifferential = "gray"
+    )
+  )+
+  theme(plot.title = element_text(face="bold",hjust = 0.5), 
+        panel.grid.major = element_line(colour = "gray"),
+        panel.grid.minor = element_line(colour="gray"),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour="black"),
+        axis.text=element_text(size=12,face="bold"),
+        axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+        axis.text.y =element_text(size=10,face="bold"),
+        axis.title=element_text(size=14,face="bold"),
+        legend.title = element_blank()
+    ) +
+  xlab("MOCCS2score1") +
+  ggtitle(paste0(simu_name, "_q001"))
+p2
+
+
+
+# count difference between S1 and S2
+simu_result_new2 %>% filter(simu_num == 1 & true_kmer_anotation == "A") %>% select(kmer, auc, count, MOCCS2score, auc2, count2, MOCCS2score2) %>% pivot_longer(!c(kmer, auc, MOCCS2score, auc2, MOCCS2score2), names_to = "Sequence", values_to = "count") %>%
+  ggplot() +
+  geom_histogram(aes(x = count, fill = Sequence),position = "identity", alpha = 0.5)
+```
+
+
+```{r summarise result (q<0.05)}
+# A
+A <- simu_result_new2 %>% filter(true_kmer_anotation == "A")
+A_kmer_num <- A %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_kmer_num_mean <- mean(A_kmer_num$kmer_num)
+print(paste0("A_num = ", A_kmer_num_mean))
+
+A_sig_kmer_num_q_1 <- A %>% filter(q_list_sig_1 < 0.05 | q_list_sig_2 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_sig_kmer_num_q_1 <- tibble(simu_num = 1:50) %>% left_join(A_sig_kmer_num_q_1 , by = "simu_num")
+A_sig_kmer_num_q_1 <- replace_na(A_sig_kmer_num_q_1, replace = list(kmer_num = 0))
+A_sig_kmer_num_mean_q_1 <- mean(A_sig_kmer_num_q_1$kmer_num)
+print(paste0("A_sig = ", A_sig_kmer_num_mean_q_1 ))
+
+A_sig_kmer_num_q <- A %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_sig_kmer_num_q <- tibble(simu_num = 1:50) %>% left_join(A_sig_kmer_num_q , by = "simu_num")
+A_sig_kmer_num_q <- replace_na(A_sig_kmer_num_q, replace = list(kmer_num = 0))
+A_sig_kmer_num_mean_q <- mean(A_sig_kmer_num_q$kmer_num)
+print(paste0("A_dif = ", A_sig_kmer_num_mean_q ))
+
+# B1
+B1 <- simu_result_new2 %>% filter(true_kmer_anotation == "B1")
+B1_kmer_num <- B1 %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_kmer_num_mean <- mean(B1_kmer_num$kmer_num)
+print(paste0("B1_num = ", B1_kmer_num_mean))
+
+B1_sig_kmer_num_q_1 <- B1 %>% filter(q_list_sig_1 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_sig_kmer_num_mean_q_1 <- mean(B1_sig_kmer_num_q_1$kmer_num)
+print(paste0("B1_sig1 = " , B1_sig_kmer_num_mean_q_1))
+
+B1_sig_kmer_num_q <- B1 %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_sig_kmer_num_mean_q <- mean(B1_sig_kmer_num_q$kmer_num)
+print(paste0("B1_dif = ", B1_sig_kmer_num_mean_q))
+
+# B2
+B2 <- simu_result_new2 %>% filter(true_kmer_anotation == "B2")
+B2_kmer_num <- B2 %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_kmer_num_mean <- mean(B2_kmer_num$kmer_num)
+print(paste0("B2_num = ", B2_kmer_num_mean ))
+
+B2_sig_kmer_num_q_2 <- B2 %>% filter(q_list_sig_2 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_sig_kmer_num_mean_q_2 <- mean(B2_sig_kmer_num_q_2$kmer_num)
+print(paste0("B2_sig2 = ", B2_sig_kmer_num_mean_q_2 ))
+
+B2_sig_kmer_num_q <- B2 %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_sig_kmer_num_mean_q <- mean(B2_sig_kmer_num_q$kmer_num)
+print(paste0("B2_dif = ", B2_sig_kmer_num_mean_q ))
+
+# C
+print("C")
+C <- simu_result_new2 %>% filter(true_kmer_anotation == "C")
+C_kmer_num <- C %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+C_kmer_num_mean <- mean(C_kmer_num$kmer_num)
+print(paste0("C_num = ", C_kmer_num_mean ))
+
+C_sig_kmer_num_q_1 <- C %>% filter(q_list_sig_1 < 0.05 | q_list_sig_2 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+C_sig_kmer_num_q_1 <- tibble(simu_num = 1:50) %>% left_join(C_sig_kmer_num_q_1 , by = "simu_num")
+C_sig_kmer_num_q_1 <- replace_na(C_sig_kmer_num_q_1, replace = list(kmer_num = 0))
+C_sig_kmer_num_mean_q_1 <- mean(C_sig_kmer_num_q_1$kmer_num)
+print(paste0("C_sig = ", C_sig_kmer_num_mean_q_1 ))
+
+C_sig_kmer_num_q <- C %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+C_sig_kmer_num_q <- tibble(simu_num = 1:50) %>% left_join(C_sig_kmer_num_q , by = "simu_num")
+C_sig_kmer_num_q <- replace_na(C_sig_kmer_num_q, replace = list(kmer_num = 0))
+C_sig_kmer_num_mean_q <- mean(C_sig_kmer_num_q$kmer_num)
+print(paste0("C_dif = ", C_sig_kmer_num_mean_q ))
+
+
+# sensitivity
+A_B1 <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B1_sig <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1") %>% filter(q_list_sig_1 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+A_B2 <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B2_sig <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2") %>% filter(q_list_sig_2 < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("sig_sensi = ",mean(A_B1_sig$kmer_num/A_B1$kmer_num) , ", ", mean(A_B2_sig$kmer_num/A_B2$kmer_num)))
+
+
+# specificity
+B2_C <- simu_result_new2 %>% filter(true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% filter(q_list_sig_1 >= 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+B1_C <- simu_result_new2 %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% filter(q_list_sig_2 >= 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+print(paste0("sig_spe = ", mean(B2_C_sig$kmer_num/B2_C$kmer_num), " ", mean(B1_C_sig$kmer_num/B1_C$kmer_num)))
+
+
+# sensitivity
+B1_dif <- simu_result_new2 %>% filter(true_kmer_anotation == "B1") %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_dif <- simu_result_new2 %>% filter(true_kmer_anotation == "B2") %>% filter(q_value < 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("dif_sensi = ", mean(B1_dif$kmer_num)/B1_kmer_num_mean, ", ",mean(B2_dif$kmer_num)/B2_kmer_num_mean))
+
+# specificity
+A_B2_C <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B2_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% filter(q_value >= 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+A_B1_C <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B1_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% filter(q_value >= 0.05) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("dif_spe = ", mean(A_B2_C_sig$kmer_num)/mean(A_B2_C$kmer_num)," ", mean(A_B1_C_sig$kmer_num)/mean(A_B1_C$kmer_num)))
+
+# FDR (sig)
+print("FDR significant")
+true_sig <- simu_result_new2 %>% filter(q_list_sig_1 < 0.05 | q_list_sig_2 < 0.05)  %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+true_sig_mean <- mean(true_sig$kmer_num)
+true_sig_mean
+
+true_sig_B <- simu_result_new2 %>% filter(q_list_sig_1 < 0.05 | q_list_sig_2 < 0.05)  %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2" | true_kmer_anotation == "A") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+true_sig_B_mean <- mean(true_sig_B$kmer_num)
+true_sig_B_mean
+
+FP <- true_sig_mean-true_sig_B_mean
+print(paste0("FP sig = ", FP))
+print(paste0("true FDR sig = ", FP/true_sig_mean))
+
+# FDR (dif)
+print("FDR differential")
+true_dif <- simu_result_new2 %>% filter(q_value < 0.05)  %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+true_dif_mean <- mean(true_dif$kmer_num)
+true_dif_mean
+
+true_dif_B <- simu_result_new2 %>% filter(q_value < 0.05)  %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+true_dif_B_mean <- mean(true_dif_B$kmer_num)
+true_dif_B_mean
+
+FP <- true_dif_mean-true_dif_B_mean
+print(paste0("FP dif = ", FP))
+print(paste0("true FDR dif = ", FP/true_dif_mean))
+```
+
+```{r make table for submission (q < 0.05)}
+# A 
+## A kmer num
+A_kmer_num
+## all
+A
+A_simu <- tibble(a = rep("001-005", 50), N = rep(6000, 50), d = rep("W5", 50), q_threshold = rep(0.05, 50), simu_num = 1:50)
+
+colnames(A_kmer_num) <- c("simu_num", "A_kmer_num")
+A_simu <- left_join(A_simu, A_kmer_num, by = "simu_num")
+colnames(A_sig_kmer_num_q_1) <- c("simu_num", "A_sig")
+A_simu <- left_join(A_simu, A_sig_kmer_num_q_1, by = "simu_num")
+colnames(A_sig_kmer_num_q) <- c("simu_num", "A_dif")
+A_simu <- left_join(A_simu, A_sig_kmer_num_q, by = "simu_num")
+A_simu <- replace_na(A_simu, replace = list(A_kmer_num = 0, A_sig = 0, A_dif = 0))
+
+# B1
+## B1 kmer num
+B1_kmer_num
+## all
+B1
+B1_simu <- tibble( simu_num = 1:50)
+
+colnames(B1_kmer_num) <- c("simu_num", "B1_kmer_num")
+B1_simu <- left_join(B1_simu, B1_kmer_num, by = "simu_num")
+colnames(B1_sig_kmer_num_q_1) <- c("simu_num", "B1_sig")
+B1_simu <- left_join(B1_simu, B1_sig_kmer_num_q_1, by = "simu_num")
+colnames(B1_sig_kmer_num_q) <- c("simu_num", "B1_dif")
+B1_simu <- left_join(B1_simu, B1_sig_kmer_num_q, by = "simu_num")
+B1_simu <- replace_na(B1_simu, replace = list(B1_kmer_num = 0, B1_sig = 0, B1_dif = 0))
+
+
+# B2 
+## B2 kmer num
+B2_kmer_num
+## all
+B2
+
+B2_simu <- tibble(simu_num = 1:50)
+
+colnames(B2_kmer_num) <- c("simu_num", "B2_kmer_num")
+B2_simu <- left_join(B2_simu, B2_kmer_num, by = "simu_num")
+colnames(B2_sig_kmer_num_q_2) <- c("simu_num", "B2_sig")
+B2_simu <- left_join(B2_simu, B2_sig_kmer_num_q_2, by = "simu_num")
+colnames(B2_sig_kmer_num_q) <- c("simu_num", "B2_dif")
+B2_simu <- left_join(B2_simu, B2_sig_kmer_num_q, by = "simu_num")
+B2_simu <- replace_na(B2_simu, replace = list(B2_kmer_num = 0, B2_sig = 0, B2_dif = 0))
+
+# C 
+## C kmer num
+C_kmer_num
+## all
+C
+C_simu <- tibble(simu_num = 1:50)
+
+colnames(C_kmer_num) <- c("simu_num", "C_kmer_num")
+C_simu <- left_join(C_simu, C_kmer_num, by = "simu_num")
+colnames(C_sig_kmer_num_q_1) <- c("simu_num", "C_sig")
+C_simu <- left_join(C_simu, C_sig_kmer_num_q_1, by = "simu_num")
+colnames(C_sig_kmer_num_q) <- c("simu_num", "C_dif")
+C_simu <- left_join(C_simu, C_sig_kmer_num_q, by = "simu_num")
+C_simu <- replace_na(C_simu, replace = list(C_kmer_num = 0, C_sig = 0, C_dif = 0))
+
+
+# join
+simu_all <- left_join(A_simu, B1_simu, by = "simu_num")
+simu_all <- left_join(simu_all, B2_simu, by = "simu_num")
+simu_all <- left_join(simu_all, C_simu, by = "simu_num")
+
+
+# add sensi and spe colum
+simu_all_2 <- simu_all %>% mutate(sig_sensi_1 = A_B1_sig$kmer_num/A_B1$kmer_num, sig_sensi_2 = A_B2_sig$kmer_num/A_B2$kmer_num, sig_sensi = (sig_sensi_1 + sig_sensi_2)/2, sig_spe_1 = B2_C_sig$kmer_num/B2_C$kmer_num, sig_spe_2 = B1_C_sig$kmer_num/B1_C$kmer_num, sig_spe = (sig_spe_1 + sig_spe_2)/2) 
+
+pre_dif_sensi_1 <- B1_dif %>% full_join(B1_kmer_num, by = "simu_num")
+pre_dif_sensi_1 <- replace_na(pre_dif_sensi_1, replace = list(kmer_num = 0, B1_kmer_num = 0))
+pre_dif_sensi_1 <- pre_dif_sensi_1 %>% mutate(dif_sensi_1 = kmer_num/B1_kmer_num)
+pre_dif_sensi_2 <- B2_dif %>% full_join(B2_kmer_num, by = "simu_num")
+pre_dif_sensi_2 <- replace_na(pre_dif_sensi_2, replace = list(kmer_num = 0, B2_kmer_num = 0))
+pre_dif_sensi_2 <- pre_dif_sensi_2 %>% mutate(dif_sensi_2 = kmer_num/B2_kmer_num)
+simu_all_3 <- simu_all_2 %>% mutate(dif_sensi_1 = pre_dif_sensi_1$dif_sensi_1, dif_sensi_2 = pre_dif_sensi_2$dif_sensi_2, dif_sensi = (dif_sensi_1 + dif_sensi_2)/2)
+
+pre_dif_spe_1 <- A_B2_C_sig %>% full_join(A_B2_C, by = "simu_num")
+pre_dif_spe_1 <- replace_na(pre_dif_spe_1, replace = list(kmer_num.x = 0, kmwe_num.y = 0))
+pre_dif_spe_1 <- pre_dif_spe_1 %>% mutate(dif_spe_1 = kmer_num.x/kmer_num.y)
+pre_dif_spe_2 <- A_B1_C_sig %>% full_join(A_B1_C, by = "simu_num")
+pre_dif_spe_2 <- replace_na(pre_dif_spe_2, replace = list(kmer_num.x = 0, kmer_num.y = 0))
+pre_dif_spe_2 <- pre_dif_spe_2 %>% mutate(dif_spe_2 = kmer_num.x/kmer_num.y)
+simu_all_3 <- simu_all_3 %>% mutate(dif_spe_1 = pre_dif_spe_1$dif_spe_1 , dif_spe_2 = pre_dif_spe_2$dif_spe_2, dif_spe = (dif_spe_1 + dif_spe_2)/2 )
+
+pre_true_sig <- full_join(true_sig, true_sig_B, by = "simu_num")
+pre_true_sig <- pre_true_sig %>% mutate(kmer_num_C = kmer_num.x - kmer_num.y, true_FDR = kmer_num_C/kmer_num.x)
+pre_true_dif <- full_join(true_dif, true_dif_B, by = "simu_num")
+pre_true_dif <- pre_true_dif %>% mutate(kmer_num_AC = kmer_num.x - kmer_num.y, true_FDR = kmer_num_AC/kmer_num.x)
+
+pre_true_sig2 <- pre_true_sig %>% select(simu_num, true_FDR)
+colnames(pre_true_sig2) <- c("simu_num", "sig_true_FDR")
+pre_true_dif2 <- pre_true_dif %>% select(simu_num, true_FDR)
+colnames(pre_true_dif2) <- c("simu_num", "dif_true_FDR")
+simu_all_4 <- simu_all_3 %>% left_join(pre_true_sig2, by = "simu_num") %>% left_join(pre_true_dif2, by ="simu_num")
+#simu_all_4 <- simu_all_3 %>% mutate(sig_true_FDR = pre_true_sig$true_FDR, dif_true_FDR = pre_true_dif$true_FDR)
+saveRDS(simu_all_4, paste0("/home/s-tahara/simulation_fixed_v3/result/summmary_", simu_name, "_005.rds"))
+```
+
+```{r summarise result (q < 0.01)}
+# A
+A <- simu_result_new2 %>% filter(true_kmer_anotation == "A")
+A_kmer_num <- A %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_kmer_num_mean <- mean(A_kmer_num$kmer_num)
+print(paste0("A_num = ", A_kmer_num_mean))
+
+A_sig_kmer_num_q_1 <- A %>% filter(q_list_sig_1 < 0.01 | q_list_sig_2 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_sig_kmer_num_q_1 <- tibble(simu_num = 1:50) %>% left_join(A_sig_kmer_num_q_1 , by = "simu_num")
+A_sig_kmer_num_q_1 <- replace_na(A_sig_kmer_num_q_1, replace = list(kmer_num = 0))
+A_sig_kmer_num_mean_q_1 <- mean(A_sig_kmer_num_q_1$kmer_num)
+print(paste0("A_sig = ", A_sig_kmer_num_mean_q_1 ))
+
+A_sig_kmer_num_q <- A %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_sig_kmer_num_q <- tibble(simu_num = 1:50) %>% left_join(A_sig_kmer_num_q , by = "simu_num")
+A_sig_kmer_num_q <- replace_na(A_sig_kmer_num_q, replace = list(kmer_num = 0))
+A_sig_kmer_num_mean_q <- mean(A_sig_kmer_num_q$kmer_num)
+print(paste0("A_dif = ", A_sig_kmer_num_mean_q ))
+
+# B1
+B1 <- simu_result_new2 %>% filter(true_kmer_anotation == "B1")
+B1_kmer_num <- B1 %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_kmer_num_mean <- mean(B1_kmer_num$kmer_num)
+print(paste0("B1_num = ", B1_kmer_num_mean))
+
+B1_sig_kmer_num_q_1 <- B1 %>% filter(q_list_sig_1 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_sig_kmer_num_mean_q_1 <- mean(B1_sig_kmer_num_q_1$kmer_num)
+print(paste0("B1_sig1 = " , B1_sig_kmer_num_mean_q_1))
+
+B1_sig_kmer_num_q <- B1 %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_sig_kmer_num_mean_q <- mean(B1_sig_kmer_num_q$kmer_num)
+print(paste0("B1_dif = ", B1_sig_kmer_num_mean_q))
+
+# B2
+B2 <- simu_result_new2 %>% filter(true_kmer_anotation == "B2")
+B2_kmer_num <- B2 %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_kmer_num_mean <- mean(B2_kmer_num$kmer_num)
+print(paste0("B2_num = ", B2_kmer_num_mean ))
+
+B2_sig_kmer_num_q_2 <- B2 %>% filter(q_list_sig_2 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_sig_kmer_num_mean_q_2 <- mean(B2_sig_kmer_num_q_2$kmer_num)
+print(paste0("B2_sig2 = ", B2_sig_kmer_num_mean_q_2 ))
+
+B2_sig_kmer_num_q <- B2 %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_sig_kmer_num_mean_q <- mean(B2_sig_kmer_num_q$kmer_num)
+print(paste0("B2_dif = ", B2_sig_kmer_num_mean_q ))
+
+# C
+print("C")
+C <- simu_result_new2 %>% filter(true_kmer_anotation == "C")
+C_kmer_num <- C %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+C_kmer_num_mean <- mean(C_kmer_num$kmer_num)
+print(paste0("C_num = ", C_kmer_num_mean ))
+
+C_sig_kmer_num_q_1 <- C %>% filter(q_list_sig_1 < 0.01 | q_list_sig_2 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+C_sig_kmer_num_q_1 <- tibble(simu_num = 1:50) %>% left_join(C_sig_kmer_num_q_1 , by = "simu_num")
+C_sig_kmer_num_q_1 <- replace_na(C_sig_kmer_num_q_1, replace = list(kmer_num = 0))
+C_sig_kmer_num_mean_q_1 <- mean(C_sig_kmer_num_q_1$kmer_num)
+print(paste0("C_sig = ", C_sig_kmer_num_mean_q_1 ))
+
+C_sig_kmer_num_q <- C %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+C_sig_kmer_num_q <- tibble(simu_num = 1:50) %>% left_join(C_sig_kmer_num_q , by = "simu_num")
+C_sig_kmer_num_q <- replace_na(C_sig_kmer_num_q, replace = list(kmer_num = 0))
+C_sig_kmer_num_mean_q <- mean(C_sig_kmer_num_q$kmer_num)
+print(paste0("C_dif = ", C_sig_kmer_num_mean_q ))
+
+
+# sensitivity
+A_B1 <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B1_sig <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1") %>% filter(q_list_sig_1 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+A_B2 <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B2_sig <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2") %>% filter(q_list_sig_2 < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("sig_sensi = ",mean(A_B1_sig$kmer_num/A_B1$kmer_num) , ", ", mean(A_B2_sig$kmer_num/A_B2$kmer_num)))
+
+
+# specificity
+B2_C <- simu_result_new2 %>% filter(true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% filter(q_list_sig_1 >= 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+B1_C <- simu_result_new2 %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B1_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% filter(q_list_sig_2 >= 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+print(paste0("sig_spe = ", mean(B2_C_sig$kmer_num/B2_C$kmer_num), " ", mean(B1_C_sig$kmer_num/B1_C$kmer_num)))
+
+
+# sensitivity
+B1_dif <- simu_result_new2 %>% filter(true_kmer_anotation == "B1") %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+B2_dif <- simu_result_new2 %>% filter(true_kmer_anotation == "B2") %>% filter(q_value < 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("dif_sensi = ", mean(B1_dif$kmer_num)/B1_kmer_num_mean, ", ",mean(B2_dif$kmer_num)/B2_kmer_num_mean))
+
+# specificity
+A_B2_C <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B2_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B2" | true_kmer_anotation == "C") %>% filter(q_value >= 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+A_B1_C <- simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+A_B1_C_sig <-simu_result_new2 %>% filter(true_kmer_anotation == "A" | true_kmer_anotation == "B1" | true_kmer_anotation == "C") %>% filter(q_value >= 0.01) %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+print(paste0("dif_spe = ", mean(A_B2_C_sig$kmer_num)/mean(A_B2_C$kmer_num)," ", mean(A_B1_C_sig$kmer_num)/mean(A_B1_C$kmer_num)))
+
+# FDR (sig)
+print("FDR significant")
+true_sig <- simu_result_new2 %>% filter(q_list_sig_1 < 0.01 | q_list_sig_2 < 0.01)  %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+true_sig_mean <- mean(true_sig$kmer_num)
+true_sig_mean
+
+true_sig_B <- simu_result_new2 %>% filter(q_list_sig_1 < 0.01 | q_list_sig_2 < 0.01)  %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2" | true_kmer_anotation == "A") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+true_sig_B_mean <- mean(true_sig_B$kmer_num)
+true_sig_B_mean
+
+FP <- true_sig_mean-true_sig_B_mean
+print(paste0("FP sig = ", FP))
+print(paste0("true FDR sig = ", FP/true_sig_mean))
+
+# FDR (dif)
+print("FDR differential")
+true_dif <- simu_result_new2 %>% filter(q_value < 0.01)  %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+true_dif_mean <- mean(true_dif$kmer_num)
+true_dif_mean
+
+true_dif_B <- simu_result_new2 %>% filter(q_value < 0.01)  %>% filter(true_kmer_anotation == "B1" | true_kmer_anotation == "B2") %>% group_by(simu_num) %>% summarise(kmer_num = n()) 
+
+true_dif_B_mean <- mean(true_dif_B$kmer_num)
+true_dif_B_mean
+
+FP <- true_dif_mean-true_dif_B_mean
+print(paste0("FP dif = ", FP))
+print(paste0("true FDR dif = ", FP/true_dif_mean))
+```
+
+```{r make table for submission (q < 0.01)}
+# A 
+## A kmer num
+A_kmer_num
+## all
+A
+A_simu <- tibble(a = rep("001-005", 50), N = rep(6000, 50), d = rep("W5", 50), q_threshold = rep(0.05, 50), simu_num = 1:50)
+
+colnames(A_kmer_num) <- c("simu_num", "A_kmer_num")
+A_simu <- left_join(A_simu, A_kmer_num, by = "simu_num")
+colnames(A_sig_kmer_num_q_1) <- c("simu_num", "A_sig")
+A_simu <- left_join(A_simu, A_sig_kmer_num_q_1, by = "simu_num")
+colnames(A_sig_kmer_num_q) <- c("simu_num", "A_dif")
+A_simu <- left_join(A_simu, A_sig_kmer_num_q, by = "simu_num")
+A_simu <- replace_na(A_simu, replace = list(A_kmer_num = 0, A_sig = 0, A_dif = 0))
+
+# B1
+## B1 kmer num
+B1_kmer_num
+## all
+B1
+B1_simu <- tibble( simu_num = 1:50)
+
+colnames(B1_kmer_num) <- c("simu_num", "B1_kmer_num")
+B1_simu <- left_join(B1_simu, B1_kmer_num, by = "simu_num")
+colnames(B1_sig_kmer_num_q_1) <- c("simu_num", "B1_sig")
+B1_simu <- left_join(B1_simu, B1_sig_kmer_num_q_1, by = "simu_num")
+colnames(B1_sig_kmer_num_q) <- c("simu_num", "B1_dif")
+B1_simu <- left_join(B1_simu, B1_sig_kmer_num_q, by = "simu_num")
+B1_simu <- replace_na(B1_simu, replace = list(B1_kmer_num = 0, B1_sig = 0, B1_dif = 0))
+
+
+# B2 
+## B2 kmer num
+B2_kmer_num
+## all
+B2
+
+B2_simu <- tibble(simu_num = 1:50)
+
+colnames(B2_kmer_num) <- c("simu_num", "B2_kmer_num")
+B2_simu <- left_join(B2_simu, B2_kmer_num, by = "simu_num")
+colnames(B2_sig_kmer_num_q_2) <- c("simu_num", "B2_sig")
+B2_simu <- left_join(B2_simu, B2_sig_kmer_num_q_2, by = "simu_num")
+colnames(B2_sig_kmer_num_q) <- c("simu_num", "B2_dif")
+B2_simu <- left_join(B2_simu, B2_sig_kmer_num_q, by = "simu_num")
+B2_simu <- replace_na(B2_simu, replace = list(B2_kmer_num = 0, B2_sig = 0, B2_dif = 0))
+
+# C 
+## C kmer num
+C_kmer_num
+## all
+C
+C_simu <- tibble(simu_num = 1:50)
+
+colnames(C_kmer_num) <- c("simu_num", "C_kmer_num")
+C_simu <- left_join(C_simu, C_kmer_num, by = "simu_num")
+colnames(C_sig_kmer_num_q_1) <- c("simu_num", "C_sig")
+C_simu <- left_join(C_simu, C_sig_kmer_num_q_1, by = "simu_num")
+colnames(C_sig_kmer_num_q) <- c("simu_num", "C_dif")
+C_simu <- left_join(C_simu, C_sig_kmer_num_q, by = "simu_num")
+C_simu <- replace_na(C_simu, replace = list(C_kmer_num = 0, C_sig = 0, C_dif = 0))
+
+
+# join
+simu_all <- left_join(A_simu, B1_simu, by = "simu_num")
+simu_all <- left_join(simu_all, B2_simu, by = "simu_num")
+simu_all <- left_join(simu_all, C_simu, by = "simu_num")
+
+
+# add sensi and spe colum
+simu_all_2 <- simu_all %>% mutate(sig_sensi_1 = A_B1_sig$kmer_num/A_B1$kmer_num, sig_sensi_2 = A_B2_sig$kmer_num/A_B2$kmer_num, sig_sensi = (sig_sensi_1 + sig_sensi_2)/2, sig_spe_1 = B2_C_sig$kmer_num/B2_C$kmer_num, sig_spe_2 = B1_C_sig$kmer_num/B1_C$kmer_num, sig_spe = (sig_spe_1 + sig_spe_2)/2) 
+
+pre_dif_sensi_1 <- B1_dif %>% full_join(B1_kmer_num, by = "simu_num")
+pre_dif_sensi_1 <- replace_na(pre_dif_sensi_1, replace = list(kmer_num = 0, B1_kmer_num = 0))
+pre_dif_sensi_1 <- pre_dif_sensi_1 %>% mutate(dif_sensi_1 = kmer_num/B1_kmer_num)
+pre_dif_sensi_2 <- B2_dif %>% full_join(B2_kmer_num, by = "simu_num")
+pre_dif_sensi_2 <- replace_na(pre_dif_sensi_2, replace = list(kmer_num = 0, B2_kmer_num = 0))
+pre_dif_sensi_2 <- pre_dif_sensi_2 %>% mutate(dif_sensi_2 = kmer_num/B2_kmer_num)
+simu_all_3 <- simu_all_2 %>% mutate(dif_sensi_1 = pre_dif_sensi_1$dif_sensi_1, dif_sensi_2 = pre_dif_sensi_2$dif_sensi_2, dif_sensi = (dif_sensi_1 + dif_sensi_2)/2)
+
+pre_dif_spe_1 <- A_B2_C_sig %>% full_join(A_B2_C, by = "simu_num")
+pre_dif_spe_1 <- replace_na(pre_dif_spe_1, replace = list(kmer_num.x = 0, kmwe_num.y = 0))
+pre_dif_spe_1 <- pre_dif_spe_1 %>% mutate(dif_spe_1 = kmer_num.x/kmer_num.y)
+pre_dif_spe_2 <- A_B1_C_sig %>% full_join(A_B1_C, by = "simu_num")
+pre_dif_spe_2 <- replace_na(pre_dif_spe_2, replace = list(kmer_num.x = 0, kmer_num.y = 0))
+pre_dif_spe_2 <- pre_dif_spe_2 %>% mutate(dif_spe_2 = kmer_num.x/kmer_num.y)
+simu_all_3 <- simu_all_3 %>% mutate(dif_spe_1 = pre_dif_spe_1$dif_spe_1 , dif_spe_2 = pre_dif_spe_2$dif_spe_2, dif_spe = (dif_spe_1 + dif_spe_2)/2 )
+
+pre_true_sig <- full_join(true_sig, true_sig_B, by = "simu_num")
+pre_true_sig <- pre_true_sig %>% mutate(kmer_num_C = kmer_num.x - kmer_num.y, true_FDR = kmer_num_C/kmer_num.x)
+pre_true_dif <- full_join(true_dif, true_dif_B, by = "simu_num")
+pre_true_dif <- pre_true_dif %>% mutate(kmer_num_AC = kmer_num.x - kmer_num.y, true_FDR = kmer_num_AC/kmer_num.x)
+
+pre_true_sig2 <- pre_true_sig %>% select(simu_num, true_FDR)
+colnames(pre_true_sig2) <- c("simu_num", "sig_true_FDR")
+pre_true_dif2 <- pre_true_dif %>% select(simu_num, true_FDR)
+colnames(pre_true_dif2) <- c("simu_num", "dif_true_FDR")
+simu_all_4 <- simu_all_3 %>% left_join(pre_true_sig2, by = "simu_num") %>% left_join(pre_true_dif2, by ="simu_num")
+#simu_all_4 <- simu_all_3 %>% mutate(sig_true_FDR = pre_true_sig$true_FDR, dif_true_FDR = pre_true_dif$true_FDR)
+saveRDS(simu_all_4, paste0("/home/s-tahara/simulation_fixed_v3/result/summmary_", simu_name, "_001.rds"))
+```
