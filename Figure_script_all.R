@@ -115,11 +115,11 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4E_", target_CT, "_", target_ID
 #################
 ## Fig. 5C --------
 source("~/MOCCS_paper_public/function/Fig5C_plot.R")
-target_TF <- "HOXB13"
+target_TF <- "FOXA1"
 annotation_path <- "~/MOCCS_paper_public/data/Fig5/"
 Fig5C <- Fig5C_plot(target_TF, annotation_path)
 plot(Fig5C)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5C_", target_TF,".pdf"), Fig5C, width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5C_", target_TF,".pdf"), Fig5C, width = 7, height = 7, dpi = 300)
 
 
 ## Fig. 5E --------
@@ -140,7 +140,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], 
 #################
 ## Fig. 6B --------
 source("~/MOCCS_paper_public/function/Fig6B_plot.R")
-annotation_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/"
+annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
 Fig6B <- Fig6B_plot(annotation_path)
 plot(Fig6B)
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6B.pdf"), Fig6B, width = 7, height = 7)

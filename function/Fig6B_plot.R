@@ -4,7 +4,6 @@ Fig6B_plot <- function( annotation_path){
   Fig6B_df <- read_csv(paste0(annotation_path, "Fig6B_df.csv"))
   Fig6B_df <- Fig6B_df %>% unite("color", c(peak, significant), sep = "_")
   
-  #Fig6B_df$color[is.na(Fig6B_df$color)] 
   Fig6B_df$color <- factor(Fig6B_df$color, levels = c("without_non-sig", "within_non-sig", "within_sig"))
   Fig6B_plot <- Fig6B_df %>% ggplot(aes(x = phenotype, y = snp_num, fill = color)) +
     geom_bar(stat = "identity", position = "fill", width = 0.7) +

@@ -1,8 +1,17 @@
 Fig5C_plot <- function(target_TF, annotation_path){
   
   library(tidyverse)
-  target_df <- read_tsv(paste0(annotation_path, "SNP_SELEX/dMOCCS2score_hg38_", target_TF, "_all.tsv"))
-  totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
+  if(target_TF == "HOXB13"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336358", "rb"))
+  }else if(target_TF == "GATA3"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336355", "rb"))
+  }else if(target_TF == "FOXA1"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336352", "rb"))
+  }else{
+  }
+  #target_df <- read_tsv(paste0(annotation_path, "SNP_SELEX/dMOCCS2score_hg38_", target_TF, "_all.tsv"))
+  #totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
+  totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
   annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% filter(Antigen == target_TF) %>% distinct()
   target_df <- target_df %>% left_join(annotation, by = "ID")
   
