@@ -1,8 +1,6 @@
 Fig6C_plot <- function(target_phenotype, annotation_path, threshold){
   
   library(tidyverse)
-  #target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all.rds"))
-  #target_df <- readRDS(paste0(annotation_path, "result_output_binded_all/", target_phenotype, "_peak_rand_binded_all_qval.rds"))
   if(target_phenotype == "CD"){
     target_df <- readRDS(url("https://figshare.com/ndownloader/files/34065827", "rb"))
   }else if(target_phenotype == "MS"){
@@ -13,8 +11,6 @@ Fig6C_plot <- function(target_phenotype, annotation_path, threshold){
     target_df <- readRDS(url("https://figshare.com/ndownloader/files/34660132", "rb"))
   }
   
-  #totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
-  #totalization <- readRDS(totalization_path)
   totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
   annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% distinct()
   df_phenotype_binded_all_selected_annotated <- target_df %>% left_join(annotation, by = "ID") %>% filter(q_value < 0.05)
