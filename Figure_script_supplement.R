@@ -95,7 +95,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/FigS11/FigS11_", target_phenotype,"_TF.
 
 ## Fig. S12 ---------
 source("~/MOCCS_paper_public/function/FigS12_plot.R")
-target_phenotype <- "SLE"
+target_phenotype <- "IBD"
 path <- "~/MOCCS_paper_public/data/supplement/FigS12/"
 FigS12 <- FigS12_plot(target_phenotype, path)
 plot(FigS12[[1]])
