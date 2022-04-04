@@ -1,6 +1,14 @@
 FigS12_plot <- function(target_phenotype, path){
   library(tidyverse)
-  df_joined <- readRDS(paste0(path, target_phenotype, "_df_joined.rds"))
+  if(target_phenotype == "CD"){
+    df_joined <- readRDS(url("https://figshare.com/ndownloader/files/34669810", "rb"))
+  }else if(target_phenotype == "MS"){
+    df_joined <- readRDS(url("https://figshare.com/ndownloader/files/34669816", "rb"))
+  }else if(target_phenotype == "SLE"){
+    df_joined <- readRDS(url("https://figshare.com/ndownloader/files/34669831", "rb"))
+  }else if(target_phenotype == "IBD"){
+    df_joined <- readRDS(url("https://figshare.com/ndownloader/files/34669801", "rb"))
+  }
   df_joined %>%
     mutate(
       category_allele_frequency = cut_interval(risk_allele_frequency, n=5),
