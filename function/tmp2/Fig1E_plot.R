@@ -1,17 +1,29 @@
-Fig1F_plot <- function(target_TF, annotation_path){
+Fig1E_plot <- function(target_TF, annotation_path){
   
   library(tidyverse)
   library(pROC)
   library(RColorBrewer)
   
+  totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_rbinded.rds"
+  totalization <- readRDS(totalization_path)
   ID_hard <- readRDS(paste0(annotation_path, "hg38_hard_filter_ID.rds"))
   ID_soft <- readRDS(paste0(annotation_path, "ID_soft_filter_hg38.rds"))
   Antigen_list <- read_tsv(paste0(annotation_path, "Antigen_list_hg38.txt"), col_names = FALSE)
   Antigen_list <- Antigen_list$X1 %>% as.character() %>% unique()
-  totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
-
+  
+  # Added qvalue annotation
+  qval_table <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval.rds")
+  qval_table2 <- qval_table %>% unite("ID_kmer", c(ID, kmer)) %>% select(ID_kmer, q_value)
+  ID_kmer <- totalization %>% unite("ID_kmer", c(ID, kmer)) %>% .$ID_kmer %>% as.character()
+  totalization2 <- totalization %>% mutate(ID_kmer = ID_kmer) %>% left_join(qval_table2, by = "ID_kmer") %>% filter(ID %in% Antigen_list)
+  
+  # Add annotation
+  annotation <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/experimentList_tab4.rds")
+  annotation <- annotation %>% filter(Genome == "hg38" & Antigen_class == "TFs and others") %>% select(ID, Antigen_class, Antigen, Cell_type_class, Cell_type)
+  totalization3 <- totalization2 %>% left_join(annotation, by = "ID")
+  
   # filter q value < 0.05 k-merに
-  hg38_selected <- totalization %>%
+  hg38_selected <- totalization3 %>%
     filter(Cell_type_class != "Unclassified") %>% 
     filter(q_value < 0.05)%>%
     select(ID, Antigen, Cell_type_class, Cell_type,kmer, MOCCS2score)
@@ -22,7 +34,7 @@ Fig1F_plot <- function(target_TF, annotation_path){
     filter(Antigen == target_TF) 
   
   # filter target TF PWM table
-  PWM_table_all <- readRDS(url("https://figshare.com/ndownloader/files/34065698","rb")) #PWM_likelihood_HOMER.rds
+  PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
   target_PWM <- PWM_table_all[[target_TF]]
   
   ## calculate per sample and plot

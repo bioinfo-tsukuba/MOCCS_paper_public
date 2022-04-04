@@ -1,4 +1,4 @@
-Fig1G_plot <- function(annotation_path){
+Fig1F_plot <- function(annotation_path){
   
   library(tidyverse)
   library(RColorBrewer)

@@ -1,17 +1,15 @@
-Fig1D_plot <- function(target_TF, annotation_path){
+Fig1G_plot <- function(target_TF, annotation_path){
   
   library(tidyverse)
   library(RColorBrewer)
   library(Biostrings)
   
-  #totalization_path <- "~/MOCCS_paper_public/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
-  #totalization <- readRDS(totalization_path)
-  totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
+  totalization_path <- "/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds"
+  totalization <- readRDS(totalization_path)
   ID_hard <- readRDS(paste0(annotation_path, "hg38_hard_filter_ID.rds"))
   
   # filter target TF PWM table
-  #PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
-  PWM_table_all <- readRDS(url("https://figshare.com/ndownloader/files/34065698","rb")) #PWM_likelihood_HOMER.rds
+  PWM_table_all <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/PWM_likelihood_HOMER.rds")
   target_PWM <- PWM_table_all[[target_TF]]
   target_PWM2 <- target_PWM %>% group_by(kmer) %>% summarise(max_PWMscore = max(PWMscore))
   
