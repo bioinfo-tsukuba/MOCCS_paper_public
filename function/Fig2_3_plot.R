@@ -6,7 +6,7 @@ Fig2_3_plot <- function(calc_opt = TRUE){
 
     source("~/MOCCS_paper_public/function/sub_function/Read_df.R")
     df_raw <- Read_df()
-    saveRDS(df_raw, "~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds")
+    # saveRDS(df_raw, "~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds")
     
     source("~/MOCCS_paper_public/function/sub_function/Annot_DBDs_of_CIS_BP.R")
     df_fam <- Annot_DBDs_of_CIS_BP(df_raw)
@@ -35,7 +35,7 @@ Fig2_3_plot <- function(calc_opt = TRUE){
     
     source("~/MOCCS_paper_public/function/sub_function/Collect_poi.R")
     df_poi <- Collect_poi()
-    saveRDS(df_poi, "~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
+    # saveRDS(df_poi, "~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
     
     # Get ID list whose k-mers are all non-significant
     source("~/MOCCS_paper_public/function/sub_function/Get_ans.R")
@@ -44,13 +44,17 @@ Fig2_3_plot <- function(calc_opt = TRUE){
     
   } else {
     
-    df_raw <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds") # FIMXE: figshare
+    system("wget https://figshare.com/ndownloader/files/34692295 -P ~/MOCCS_paper_public/data/Fig2/obj")
+    system("mv ~/MOCCS_paper_public/data/Fig2/obj/34692295 ~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds")
+    df_raw <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_raw.rds")
     df_fam <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_fam.rds")
     df_p_1 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_1.rds")
     df_p_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_2.rds")
     df_p_3 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_3.rds")
     df_p_3_gp <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_3_gp.rds")
-    df_poi <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds") # FIXME: figshare
+    system("wget https://figshare.com/ndownloader/files/34692271 -P ~/MOCCS_paper_public/data/Fig2/obj")
+    system("mv ~/MOCCS_paper_public/data/Fig2/obj/34692271 ~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
+    df_poi <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
     all_ns <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/all_ns.rds")
     
   }
