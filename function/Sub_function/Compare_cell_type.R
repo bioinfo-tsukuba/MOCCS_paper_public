@@ -1,4 +1,4 @@
-Compare_cell_type <- function(df_p_3_gp, plot_ant, skip_opt){
+Compare_cell_type <- function(df_p_3_gp, plot_ant){
   
   library(patchwork)
   library(ComplexHeatmap)
@@ -8,35 +8,23 @@ Compare_cell_type <- function(df_p_3_gp, plot_ant, skip_opt){
 
   ant_list <- union(unique(df_p_3_gp$ID1_Antigen), unique(df_p_3_gp$ID2_Antigen))
   
-  if (!skip_opt){
-    # Remove samples whose all k-mers are non-significant
-    df_p_3_gp[is.na(df_p_3_gp)] <- 0
-    all_non_sig_ID_list <- readRDS("~/MOCCS-DB_paper/all_non_sig_ID_list.rds")
-    df_p_3_gp_f <- df_p_3_gp
-    for (non_sig_i in 1:length(all_non_sig_ID_list)){
-      del_id <- all_non_sig_ID_list[non_sig_i]
-      del_flag <- df_p_3_gp_f$ID1 == del_id | df_p_3_gp_f$ID2 == del_id
-      df_p_3_gp_f <- df_p_3_gp_f[!del_flag, ]
-    }
-    saveRDS(df_p_3_gp_f, "~/MOCCS-DB_paper/results/df_p_3_gp_f.rds")
-  }
-  
-  df_p_3_gp_f <- readRDS("~/MOCCS-DB_paper/results/df_p_3_gp_f.rds")
+  df_p_3_gp[is.na(df_p_3_gp)] <- 0
   
   # ant_list <- c("FOS", "JUN", "JUND", "GATA2")
-  
-  sig_flag_list <- readRDS("~/MOCCS-DB_paper/results/sig_flag_list.rds")
-  
+
   sig_flag_list <- c()
   p_val_list <- c()
   for (ant_ind in 1:length(ant_list)){
-    res.viol <- Violinplot(df_p_3_gp_f, target_ant = ant_list[ant_ind], plot_ant)
-    Heatmap(df_p_3_gp_f, target_ant = ant_list[ant_ind], res.viol$sig_flag, plot_ant)
+    res.viol <- Violinplot(df_p_3_gp, target_ant = ant_list[ant_ind], plot_ant)
+    Heatmap(df_p_3_gp, target_ant = ant_list[ant_ind], res.viol$sig_flag, plot_ant)
     sig_flag_list <- append(sig_flag_list, res.viol$sig_flag)
     p_val_list <- append(p_val_list, res.viol$p_val)
   }
   
-  all_Violin_plot(df_p_3_gp_f, ant_list, sig_flag_list)
+  saveRDS(sig_flag_list, "~/MOCCS_paper_public/data/Fig3/obj/sig_flag_list.rds")
+  saveRDS(p_val_list, "~/MOCCS_paper_public/data/Fig3/obj/p_val_list.rds")
+  
+  all_Violin_plot(df_p_3_gp, ant_list, sig_flag_list)
   
   
   # Make table of cell-type dependent TFs
@@ -50,10 +38,10 @@ Compare_cell_type <- function(df_p_3_gp, plot_ant, skip_opt){
   
 }
 
-Violinplot <- function(df_p_3_gp_f, target_ant, plot_ant){
+Violinplot <- function(df_p_3_gp, target_ant, plot_ant){
 
-  target_flag <- df_p_3_gp_f$ID1_Antigen == target_ant & df_p_3_gp_f$ID2_Antigen == target_ant
-  target_df <- df_p_3_gp_f[target_flag, ]
+  target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
+  target_df <- df_p_3_gp[target_flag, ]
 
   target_df[target_df$s_ctc == 1, ] %>%
     mutate(Group = "Same") -> df_same
@@ -98,23 +86,13 @@ Violinplot <- function(df_p_3_gp_f, target_ant, plot_ant){
     }
 
     if (target_ant %in% plot_ant){
-      ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sel/Fig3D_violin_plot_k_sim_1_",
-                    target_ant, ".png"),
-             plot = p_violin, width = 3, height = 6)
-      ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sel/Fig3D_violin_plot_k_sim_1_",
+      # ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_violin_plot_k_sim_jaccard_",
+      #              target_ant, ".png"),
+      #       plot = p_violin, width = 3, height = 6)
+      ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_violin_plot_k_sim_jaccard_",
                     target_ant, ".svg"),
              plot = p_violin, width = 3, height = 6)
     }
-    
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/violin_plot/png/violin_plot_k_sim_1_",
-                  target_ant, ".png"),
-           plot = p_violin, width = 3)
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/violin_plot/pdf/violin_plot_k_sim_1_",
-                  target_ant, ".pdf"),
-           plot = p_violin, width = 3, height = 7)
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/violin_plot/svg/violin_plot_k_sim_1_",
-                  target_ant, ".svg"),
-           plot = p_violin, width = 3)
     
     return(list(sig_flag = sig_flag,
                 p_val = p_val,
@@ -124,10 +102,10 @@ Violinplot <- function(df_p_3_gp_f, target_ant, plot_ant){
   
 }
 
-Violinplot_2 <- function(df_p_3_gp_f, target_ant){
+Violinplot_2 <- function(df_p_3_gp, target_ant){
   
-  target_flag <- df_p_3_gp_f$ID1_Antigen == target_ant & df_p_3_gp_f$ID2_Antigen == target_ant
-  target_df <- df_p_3_gp_f[target_flag, ]
+  target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
+  target_df <- df_p_3_gp[target_flag, ]
   
   target_df[target_df$s_ctc == 1, ] %>%
     mutate(Group = "Same") -> df_same
@@ -165,11 +143,11 @@ Violinplot_2 <- function(df_p_3_gp_f, target_ant){
   
 }
 
-all_Violin_plot <- function(df_p_3_gp_f, ant_list, sig_flag_list){
+all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
   
   p_violin_list <- vector("list", length(ant_list))
   for (ant_ind in 1:length(ant_list)){
-    res.viol <- Violinplot_2(df_p_3_gp_f, target_ant = ant_list[ant_ind])
+    res.viol <- Violinplot_2(df_p_3_gp, target_ant = ant_list[ant_ind])
     p_violin_list[[ant_ind]] <- res.viol$p_violin
   }
   
@@ -202,24 +180,24 @@ all_Violin_plot <- function(df_p_3_gp_f, ant_list, sig_flag_list){
     p_patch_3 <- p_patch_3 + p_violin_list[[i_2]]
   }
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS6/FigS8_viol_1.pdf", paper = "a4")
+  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_1.pdf", paper = "a4")
   plot(p_patch_1 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS6/FigS9_viol_1.pdf", paper = "a4")
+  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_1.pdf", paper = "a4")
   plot(p_patch_2 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS6/FigS9_viol_2.pdf", paper = "a4")
+  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_2.pdf", paper = "a4")
   plot(p_patch_3 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
 }
 
-Heatmap <- function(df_p_3_gp_f, target_ant, sig_flag, plot_ant){
+Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
   
-  target_flag <- df_p_3_gp_f$ID1_Antigen == target_ant & df_p_3_gp_f$ID2_Antigen == target_ant
-  target_df <- df_p_3_gp_f[target_flag, ]
+  target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
+  target_df <- df_p_3_gp[target_flag, ]
   
   if (nrow(target_df) == 0){
     
@@ -291,7 +269,7 @@ Heatmap <- function(df_p_3_gp_f, target_ant, sig_flag, plot_ant){
                   seq(from = 5, to = 20, by = 5))
       col_20_2 <- col_20[col_id]
       
-      png(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/heatmap/png/heatmap_k_sim_1_", target_ant, ".png"),
+      png(paste0("~/MOCCS_paper_public/plot/FigS6/heatmap_k_sim_jaccard_", target_ant, ".png"),
           width = 900, height = 720)
       NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
                     labRow = NA, labCol = NA,
@@ -302,63 +280,10 @@ Heatmap <- function(df_p_3_gp_f, target_ant, sig_flag, plot_ant){
                     fontsize = 20)
       dev.off()
 
-      pdf(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/heatmap/pdf/heatmap_k_sim_1_", target_ant, ".pdf"),
-          width = 8, height = 5)
-      NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                    labRow = NA, labCol = NA,
-                    annCol = annot, annRow = annot,
-                    annColors = list(Cell_type_class = col_20_2),
-                    main = mtxt,
-                    color = "Reds",
-                    fontsize = 20)
-      dev.off()
-      
-      svg(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_ALL/heatmap/svg/heatmap_k_sim_1_", target_ant, ".svg"),
-          width = 8, height = 7.2)
-      NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                    labRow = NA, labCol = NA,
-                    annCol = annot, annRow = annot,
-                    annColors = list(col_20_2),
-                    main = mtxt,
-                    color = "Reds")
-      dev.off()
-      
-      if (sig_flag == "*"){
-        svg(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sig/heatmap/svg/heatmap_k_sim_1_", target_ant, ".svg"),
-            width = 8, height = 7.2)
-        NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                      labRow = NA, labCol = NA,
-                      annCol = annot, annRow = annot,
-                      annColors = list(col_20_2),
-                      main = mtxt,
-                      color = "Reds")
-        dev.off()
-        png(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sig/heatmap/png/heatmap_k_sim_1_", target_ant, ".png"),
-            width = 900, height = 720)
-        NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                      labRow = NA, labCol = NA,
-                      annCol = annot, annRow = annot,
-                      annColors = list(col_20_2),
-                      main = mtxt,
-                      color = "Reds",
-                      fontsize = 20)
-        dev.off()
-      }
         
       if (target_ant %in% plot_ant){
         
-        png(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sel/Fig3D_heatmap_k_sim_1_", target_ant, ".png"),
-            width = 900, height = 720)
-        NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                      labRow = NA, labCol = NA,
-                      annCol = annot, annRow = annot,
-                      annColors = list(col_20_2),
-                      main = mtxt,
-                      color = "Reds",
-                      fontsize = 20)
-        dev.off()
-          
-        svg(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sel/Fig3D_heatmap_k_sim_1_", target_ant, ".svg"),
+        svg(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".svg"),
             width = 8, height = 7.2)
         NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
                       labRow = NA, labCol = NA,
@@ -369,7 +294,7 @@ Heatmap <- function(df_p_3_gp_f, target_ant, sig_flag, plot_ant){
                       width = 0.3, height = 0.3)
         dev.off()
 
-        pdf(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3D/Fig3D_sel/Fig3D_heatmap_k_sim_1_", target_ant, ".pdf"),
+        pdf(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".pdf"),
             width = 8, height = 7.2)
         NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
                       labRow = NA, labCol = NA,
@@ -414,30 +339,28 @@ CircleChart <- function(sig_flag_list){
                                            paste0((length(sig_flag_list_2) - sig_num), "/", length(sig_flag_list_2)))), 
               size = 4.5,  color = c("white", "black"),  vjust = 4)
 
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3E/Fig3E_circle_chart.png"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.svg"),
          plot = p_circ_1, width = 10)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3E/Fig3E_circle_chart.svg"),
-         plot = p_circ_1, width = 10)
-  ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3E/Fig3E_circle_chart.pdf"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.pdf"),
          plot = p_circ_1, width = 10)
   
 }
 
 Make_TF_table <- function(ant_list){
   
-  sig_flag_list <- readRDS("~/MOCCS-DB_paper/results/sig_flag_list.rds")
+  sig_flag_list <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/sig_flag_list.rds")
   
   sig_symbol_list <- ant_list[sig_flag_list == "*"]
   sig_symbol_list_2 <- ant_list[sig_flag_list == ""]
   sig_symbol_list_3 <- ant_list[sig_flag_list == "NULL"]
-  saveRDS(sig_symbol_list, "~/MOCCS-DB_paper/results/sig_symbol_list.rds")
-  saveRDS(sig_symbol_list_2, "~/MOCCS-DB_paper/results/sig_symbol_list_2.rds")
-  saveRDS(sig_symbol_list_3, "~/MOCCS-DB_paper/results/sig_symbol_list_3.rds")
-  sig_symbol_list <- readRDS("~/MOCCS-DB_paper/results/sig_symbol_list.rds")
-  sig_symbol_list_2 <- readRDS("~/MOCCS-DB_paper/results/sig_symbol_list_2.rds")
-  sig_symbol_list_3 <- readRDS("~/MOCCS-DB_paper/results/sig_symbol_list_3.rds")
+  saveRDS(sig_symbol_list, "~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list.rds")
+  saveRDS(sig_symbol_list_2, "~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list_2.rds")
+  saveRDS(sig_symbol_list_3, "~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list_3.rds")
+  sig_symbol_list <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list.rds")
+  sig_symbol_list_2 <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list_2.rds")
+  sig_symbol_list_3 <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/sig_symbol_list_3.rds")
   
-  p_val_list <- readRDS("~/MOCCS-DB_paper/results/p_val_list.rds")
+  p_val_list <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/p_val_list.rds")
   
   p_val_list_2 <- p_val_list[sig_flag_list == "*"]
   p_val_list_3 <- p_val_list[sig_flag_list == ""]
@@ -454,11 +377,11 @@ Make_TF_table <- function(ant_list){
   df_ctd_tf_5 <- cbind(sig_symbol_list_3, p_val_list_4)
   colnames(df_ctd_tf_5) <- c("Symbol", "p-value")
   
-  write.table(df_ctd_tf_2[,"Symbol"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_1.txt", row.names = FALSE, col.names = FALSE)
-  write.table(df_ctd_tf_2[,"p-value"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_2.txt", row.names = FALSE, col.names = FALSE)
-  write.table(df_ctd_tf_4[,"Symbol"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_3.txt", row.names = FALSE, col.names = FALSE)
-  write.table(df_ctd_tf_4[,"p-value"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_4.txt", row.names = FALSE, col.names = FALSE)
-  write.table(df_ctd_tf_5[,"Symbol"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_5.txt", row.names = FALSE, col.names = FALSE)
-  write.table(df_ctd_tf_5[,"p-value"], "~/MOCCS-DB_paper/results/Table_S1/Supplementary_table_S1_parts_6.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_2[,"Symbol"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_1.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_2[,"p-value"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_2.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_4[,"Symbol"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_3.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_4[,"p-value"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_4.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_5[,"Symbol"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_5.txt", row.names = FALSE, col.names = FALSE)
+  write.table(df_ctd_tf_5[,"p-value"], "~/MOCCS_paper_public/data/TableS1/Supplementary_table_S1_parts_6.txt", row.names = FALSE, col.names = FALSE)
   
 }

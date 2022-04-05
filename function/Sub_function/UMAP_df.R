@@ -1,9 +1,13 @@
-UMAP_df <- function(df_raw, df_fam){
+UMAP_df <- function(df_raw, df_fam, all_ns){
 
   library(ggplot2)
   library(dplyr)
 
-  df_raw_sg <- df_raw
+  set.seed(123)
+  
+  flag_1 <- !(df_raw$ID %in% all_ns)
+
+  df_raw_sg <- df_raw[flag_1, ]
   df_raw_sg$MOCCS2score[df_raw_sg$q_value >= 0.05] <- 0
   
   df_raw_sg[, c("kmer", "MOCCS2score", "ID", "Antigen", "Cell_type_class")] %>%
@@ -12,26 +16,18 @@ UMAP_df <- function(df_raw, df_fam){
     tidyr::pivot_wider(names_from = "kmer", values_from = "MOCCS2score" ) -> df_raw_2
   df_raw_2[is.na(df_raw_2)] <- 0
 
-  # Remove CTCF
   df_raw_3 <- df_raw_2[df_raw_2$Antigen != "CTCF", ]
+  df_raw_4 <- left_join(df_raw_3, df_fam[, c("ID", "Family")], by = "ID")
+  df_raw_5 <- df_raw_4[, 4:(ncol(df_raw_4) - 1)]
 
-  df_raw_4 <- df_raw_3[, 4:length(df_raw_3)]
-  
-  saveRDS(df_raw_3$ID[rowSums(df_raw_4) == 0], "~/MOCCS_paper_public/data/Fig2/obj/all_non_sig_ID_list.rds")
-  
-  res.umap <- umap::umap(df_raw_4, metric = "pearson", spread = 10)
-  
-  browser()
+  res.umap <- umap::umap(df_raw_5, metric = "pearson", spread = 10)
   
   as_tibble(res.umap$layout) %>%
-    mutate(ID = df_raw_3$ID) %>%
-    mutate(Antigen = df_raw_3$Antigen) %>%
-    mutate(Cell_type_class = df_raw_3$Cell_type_class) %>%
-    mutate(Family = df_fam$Family[df_raw_2$Antigen != "CTCF"]) -> df_umap
+    mutate(ID = df_raw_4$ID) %>%
+    mutate(Antigen = df_raw_4$Antigen) %>%
+    mutate(Cell_type_class = df_raw_4$Cell_type_class) %>%
+    mutate(Family = df_raw_4$Family) -> df_umap
   colnames(df_umap)[1:2] <- c("UMAP1", "UMAP2")
-    
-  saveRDS(df_umap, "~/MOCCS_paper_public/data/Fig2/obj/df_umap.rds")
-  df_umap <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_umap.rds")
   
   df_umap_2 <- c()
   annot_vec <- c("Antigen", "Family")
@@ -87,13 +83,13 @@ UMAP_df <- function(df_raw, df_fam){
     facet_wrap(~ Plot)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.png"), plot = p_umap_1, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 6, height = 6)
 
   #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.png"), plot = p_umap_2, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 6, height = 6)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.png"), plot = p_umap_3, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 5)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 6, height = 6)
   
 
   return()

@@ -90,6 +90,11 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
                      c("N", "Same family", "N", "Same cell type"),
                      c("Same antigen", "N", "Same cell type class", "Same cell type"))
   df_gg_2_2 <- Plot_group_3(df_gg, group_vec, group_mat)
+  system("rm ~/MOCCS_paper_public/data/Fig2/pair_num/pair_num.txt")
+  for (g in 1:length(group_vec)){
+    ot <- paste0(group_vec[g], " pairs: ", sum(df_gg_2_2$Group == group_vec[g]))
+    write.table(ot, "~/MOCCS_paper_public/data/Fig2/pair_num/pair_num.txt", row.names = FALSE, append = TRUE)
+  }
   #saveRDS(df_gg_2_2, "~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
   #df_gg_2_2 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg_2_2.rds")
   

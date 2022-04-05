@@ -3,20 +3,14 @@ TF_graph_sel <- function(ctc_spe, df_p_3){
   library(ggraph)
   library(igraph)
   
-  receiver_tf_list <- c("EGR1", "MYC", "GATA2", "STAT3",
-                        "CUX1",
-                        "FOXP1", "FOXA1", "FOXA2", "FOXM1", "FOXF1",
-                        "SPI1", "ERG", "ELK4", "ELK1", "GABPA", "ETS1", "ELF3", "ETV1", "ELF1", "EHF", "SPDEF", "FLI1", "ETV6", "ETV5", "ELF2",
-                        "TFAP2A", "TFAP2C",
-                        "JUN", "FOS", "JUNB", "ATF3", "JUND", "BATF", "CEBPB", "ATF4", "JUN", "NFE2", "CREB1", "MAFK", "MAFF", "ATF1", "ATF2", "FOSL2" )
+  receiver_tf_list <- c("FOS", "JUN", "ELK1", "FOXF1")
   t_num <- 10
   
   for (i in 1:length(receiver_tf_list)){
   
     at_1 <- receiver_tf_list[i]
-    system(paste0("mkdir ~/MOCCS-DB_paper/plot/Fig2/Fig2E/Top_10_ver/Fig2E_", at_1, "/"))
-    
-    k_sim_2_mat <- readRDS(paste0("~/MOCCS-DB_paper/results/k_sim_2_mat/k_sim_2_mat_", at_1, ".rds"))
+
+    k_sim_2_mat <- readRDS(paste0("~/MOCCS_paper_public/data/Fig2/obj/k_sim_pearson_mat/k_sim_pearson_mat_", at_1, ".rds"))
 
     if (is.null(ctc_spe)){
       tf_non_na_num_list <- c()
@@ -69,7 +63,7 @@ TF_graph_sel <- function(ctc_spe, df_p_3){
     } else {
       col_max <- "red"
     }
-    pdf (paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2E/Top_10_ver/Fig2E_", at_1, "/Fig2E_top_10_", at_1, "_color_legend.pdf"))
+    pdf (paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_", at_1, "_color_legend.pdf"))
     RColorBrewer::display.brewer.pal(9, "Reds")
     dev.off()
     
@@ -98,8 +92,8 @@ TF_graph_sel <- function(ctc_spe, df_p_3){
       theme_graph() +
       theme(legend.position = "none") +
       coord_equal()
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2E/Top_10_ver/Fig2E_", at_1, "/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig2/Fig2E/Top_10_ver/Fig2E_", at_1, "/Fig2E_top_10_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    # ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
+    ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
     
   }
   

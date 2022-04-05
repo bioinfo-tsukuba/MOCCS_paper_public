@@ -1,4 +1,4 @@
-Top_k_sim <- function(df_p_1, df_p_2, calc_opt){
+Top_k_sim <- function(df_p_1, df_p_2, calc_opt, perm_num = 1000){
   
   library(dplyr)
   library(ggplot2)
@@ -20,35 +20,34 @@ Top_k_sim <- function(df_p_1, df_p_2, calc_opt){
   # Calculate same ratio
   res_orig_top <- Collect_top_n(df_p_3)
   res_orig_not_top <- Collect_not_top_n(df_p_3)
-  saveRDS(res_orig_top, "~/MOCCS-DB_paper/results/res_orig_top.rds")
-  # res_orig_top <- readRDS("~/MOCCS-DB_paper/results/res_orig_top.rds")
+  saveRDS(res_orig_top, "~/MOCCS_paper_public/data/Fig2/obj/res_orig_top.rds")
+  # res_orig_top <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/res_orig_top.rds")
   
-  print(res_orig_top$fam_lab_list_2[order(res_orig_top$fam_col_list_2, decreasing = TRUE)][1:5])
-  print(unique(df_p_3[df_p_3$ID1_Family == "CUT,Homeodomain",]$ID1_Antigen))
-  print(unique(df_p_3[df_p_3$ID1_Family == "Forkhead",]$ID1_Antigen))
-  print(unique(df_p_3[df_p_3$ID1_Family == "Ets",]$ID1_Antigen))
-  print(unique(df_p_3[df_p_3$ID1_Family == "AP-2",]$ID1_Antigen))
-  print(unique(df_p_3[df_p_3$ID1_Family == "bZIP",]$ID1_Antigen))
-  print(res_orig_top$ctc_lab_list_2[order(res_orig_top$ctc_col_list_2, decreasing = TRUE)][1:5])
+  print("Top families:")
+  print(res_orig_top$fam_lab_list_2[order(res_orig_top$fam_col_list_2, decreasing = TRUE)][1:10])
+  # print(unique(df_p_3[df_p_3$ID1_Family == "CUT,Homeodomain",]$ID1_Antigen))
+  # print(unique(df_p_3[df_p_3$ID1_Family == "Forkhead",]$ID1_Antigen))
+  # print(unique(df_p_3[df_p_3$ID1_Family == "Ets",]$ID1_Antigen))
+  # print(unique(df_p_3[df_p_3$ID1_Family == "AP-2",]$ID1_Antigen))
+  # print(unique(df_p_3[df_p_3$ID1_Family == "bZIP",]$ID1_Antigen))
+  print(unique(df_p_3[df_p_3$ID1_Family == "p53",]$ID1_Antigen))
+  print(unique(df_p_3[df_p_3$ID1_Family == "Nuclear receptor",]$ID1_Antigen))
+  # print(res_orig_top$ctc_lab_list_2[order(res_orig_top$ctc_col_list_2, decreasing = TRUE)][1:5])
   
   # Chi square test
   Heatmap_chi_sq_test(res_orig_top, res_orig_not_top)
   
   ## Permutation test
   if (calc_opt){
-    perm_num <- 1000
     res_orig_top_perm_list <- vector("list", perm_num)
     for (perm_ind in 1:perm_num){
       df_p_3_perm <- Perm_df(df_p_3, perm_seed = perm_ind)
       res_orig_top_perm_list[[perm_ind]] <- Collect_top_n(df_p_3_perm)
     }
-    saveRDS(res_orig_top_perm_list, "~/MOCCS-DB_paper/results/res_orig_top_perm_list.rds")
+    saveRDS(res_orig_top_perm_list, "~/MOCCS_paper_public/data/Fig2/obj/res_orig_top_perm_list.rds")
   }
-  res_orig_top_perm_list <- readRDS("~/MOCCS-DB_paper/results/res_orig_top_perm_list.rds")
+  res_orig_top_perm_list <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/res_orig_top_perm_list.rds")
   
-  print(paste0("Check TRUE:", res_orig_top$fam_col_list_2[df$fam_lab_list_2 == "No_annotation_2"] == 0))
-  print(paste0("Check TRUE:", res_orig_top$ctc_col_list_2[df$ctc_lab_list_2 == "Others_2"] == 0))
-  print(paste0("Check TRUE:", res_orig_top$ctc_col_list_2[df$ctc_lab_list_2 == "Uncalssified_2"] == 0))
   sum_chk_1 <- 0
   sum_chk_2 <- 0
   sum_chk_3 <- 0
@@ -353,14 +352,14 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   ant_mat <- rbind(c(top_ant, not_top_ant),
                    c(top_ant_rev, not_top_ant_rev))
   p_ant_chi <- chisq.test(ant_mat)$p.value
-  print(p_ant_chi)
+  print(paste0("p value on antigen permutation:", p_ant_chi))
   ant_txt <- rbind(as.character(c(round(top_ant), round(not_top_ant))),
                    as.character(c(round(top_ant_rev), round(not_top_ant_rev))))
   
   annot_1 <- data.frame(label = c("top", "not top"))
   annot_2 <- data.frame(label = c("same", "different"))
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS5/FigS5_chi_ant.pdf")
+  pdf("~/MOCCS_paper_public/plot/FigS5/FigS5_chi_ant.pdf")
   NMF::aheatmap(ant_mat, Rowv = NA, Colv = NA,
                 labRow = NA, labCol = NA,
                 annCol = annot_1, annRow = annot_2,
@@ -378,11 +377,11 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   fam_mat <- rbind(c(top_fam, not_top_fam),
                    c(top_fam_rev, not_top_fam_rev))
   p_fam_chi <- chisq.test(fam_mat)$p.value
-  print(p_fam_chi)
+  print(paste0("p value on family permutation:", p_fam_chi))
   fam_txt <- rbind(as.character(c(round(top_fam), round(not_top_fam))),
                    as.character(c(round(top_fam_rev), round(not_top_fam_rev))))
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS5/FigS5_chi_fam.pdf")
+  pdf("~/MOCCS_paper_public/plot/FigS5/FigS5_chi_fam.pdf")
   NMF::aheatmap(fam_mat, Rowv = NA, Colv = NA,
                 labRow = NA, labCol = NA,
                 annCol = annot_1, annRow = annot_2,
@@ -400,11 +399,11 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   ctc_mat <- rbind(c(top_ctc, not_top_ctc),
                    c(top_ctc_rev, not_top_ctc_rev))
   p_ctc_chi <- chisq.test(ctc_mat)$p.value
-  print(p_ctc_chi)
+  print(paste0("p value on cell type class permutation:", p_ctc_chi))
   ctc_txt <- rbind(as.character(c(round(top_ctc), round(not_top_ctc))),
                    as.character(c(round(top_ctc_rev), round(not_top_ctc_rev))))
   
-  pdf("~/MOCCS-DB_paper/plot/Fig2/FigS5/FigS5_chi_ctc.pdf")
+  pdf("~/MOCCS_paper_public/plot/FigS5/FigS5_chi_ctc.pdf")
   NMF::aheatmap(ctc_mat, Rowv = NA, Colv = NA,
                 labRow = NA, labCol = NA,
                 annCol = annot_1, annRow = annot_2,
@@ -449,10 +448,13 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
   }
   ant_ecdf <- ecdf(ant_sum_list)
   ant_ecdf_p <- 1 - ant_ecdf(sum(res_orig_top$ant_col_list_2))
+  print(paste0("ant_ecdf_p: ", ant_ecdf_p))
   fam_ecdf <- ecdf(fam_sum_list)
   fam_ecdf_p <- 1 - fam_ecdf(sum(res_orig_top$fam_col_list_2))
+  print(paste0("fam_ecdf_p: ", fam_ecdf_p))
   ctc_ecdf <- ecdf(ctc_sum_list)
   ctc_ecdf_p <- 1 - ctc_ecdf(sum(res_orig_top$ctc_col_list_2))
+  print(paste0("ctc_ecdf_p: ", ctc_ecdf_p))
   
   ant_sum_list_2 <- rep(0, length(res_orig_top_perm_list[[perm_num]]$ant_col_list_2))
   fam_sum_list_2 <- rep(0, length(res_orig_top_perm_list[[perm_num]]$fam_col_list_2))
@@ -510,7 +512,7 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_1
   
-  ggsave("~/MOCCS-DB_paper/plot/Fig2/Fig2D/Fig2D_ant.pdf", plot = p_l_1, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_ant.pdf", plot = p_l_1, width = 6)
 
   df_l_2 <- tibble(
     Label = append(fam_lab_list_2_ord, fam_lab_list_3_orig),
@@ -532,7 +534,7 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_2
   
-  ggsave("~/MOCCS-DB_paper/plot/Fig2/Fig2D/Fig2D_fam.pdf", plot = p_l_2, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_fam.pdf", plot = p_l_2, width = 6)
   
   df_l_3 <- tibble(
     Label = append(ctc_lab_list_2_ord, ctc_lab_list_3_orig),
@@ -555,7 +557,7 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_3
 
-  ggsave("~/MOCCS-DB_paper/plot/Fig3/Fig3C/Fig3C_ctc.pdf", plot = p_l_3, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig3/Fig3C/Fig3C_ctc.pdf", plot = p_l_3, width = 6)
   
   df_l_1 %>% mutate(Group = "Antigen") -> df_l_1_tmp
   df_l_2 %>% mutate(Group = "Family") -> df_l_2_tmp
@@ -576,7 +578,7 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_comb
   
-  ggsave("~/MOCCS-DB_paper/plot/Fig2/Fig2D/Fig2D_comb.pdf", plot = p_l_comb, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_comb.pdf", plot = p_l_comb, width = 6)
   
   
   return()

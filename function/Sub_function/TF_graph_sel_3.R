@@ -7,10 +7,7 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
   library(ggraph)
   library(igraph)
   
-  system(paste0("mkdir ~/MOCCS-DB_paper/plot/Fig3/Fig3G/Fig3G_", a1, "/"))
-  system(paste0("rm -rf ~/MOCCS-DB_paper/plot/Fig3/Fig3G/Fig3G_", a1, "/*"))
-  
-  a1_mat <- readRDS(paste0("~/MOCCS-DB_paper/results/k_sim_1_mat/k_sim_1_mat_", a1, ".rds"))
+  a1_mat <- readRDS(paste0("~/MOCCS_paper_public/data/Fig3/obj/k_sim_jaccard_mat/k_sim_jaccard_mat_", a1, ".rds"))
   
   if (is.null(t_ctc_list)){
     s_num_list <- c()
@@ -68,7 +65,7 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
   } else {
     col_max <- "red"
   }
-  pdf (paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3G/Fig3G_", a1, "/Fig3G_", a1, "_color_legend.pdf"))
+  pdf (paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_color_legend.pdf"))
   RColorBrewer::display.brewer.pal(9, "Reds")
   dev.off()
 
@@ -101,8 +98,8 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
       theme(legend.position = "none") +
       coord_equal()
       # labs(title = paste0(a1 , " in ", t_ctc))
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3G/Fig3G_", a1, "/Fig3G_", a1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-    ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3G/Fig3G_", a1, "/Fig3G_", a1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    # ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
+    ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
 
   }
     

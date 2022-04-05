@@ -18,7 +18,7 @@ TF_graph_sel_2 <- function(rt_list, t_ctc_list, t_num = 10){
       
       at_1 <- rt_list[i]
       print(at_1)
-      k_sim_1_mat <- readRDS(paste0("~/MOCCS-DB_paper/results/k_sim_1_mat/k_sim_1_mat_", at_1, ".rds"))
+      k_sim_1_mat <- readRDS(paste0("~/MOCCS_paper_public/data/Fig3/obj/k_sim_jaccard_mat/k_sim_jaccard_mat_", at_1, ".rds"))
       
       t_row <- k_sim_1_mat[rownames(k_sim_1_mat) == t_ctc]
       names(t_row) <- colnames(k_sim_1_mat)
@@ -61,9 +61,8 @@ TF_graph_sel_2 <- function(rt_list, t_ctc_list, t_num = 10){
     for (i in 1:length(rt_list)){
       
       at_1 <- rt_list[i]
-      system(paste0("mkdir ~/MOCCS-DB_paper/plot/Fig3/Fig3F/Fig3F_", at_1, "/"))
-      
-      k_sim_2_mat <- readRDS(paste0("~/MOCCS-DB_paper/results/k_sim_2_mat/k_sim_2_mat_", at_1, ".rds"))
+
+      k_sim_2_mat <- readRDS(paste0("~/MOCCS_paper_public/data/Fig2/obj/k_sim_pearson_mat/k_sim_pearson_mat_", at_1, ".rds"))
       
       t_row <- k_sim_2_mat[rownames(k_sim_2_mat) == t_ctc]
       names(t_row) <- colnames(k_sim_2_mat)
@@ -103,8 +102,8 @@ TF_graph_sel_2 <- function(rt_list, t_ctc_list, t_num = 10){
         theme_graph() +
         theme(legend.position = "none") +
         coord_equal()
-      ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3F/Fig3F_", at_1, "/Fig3F_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-      ggsave(paste0("~/MOCCS-DB_paper/plot/Fig3/Fig3F/Fig3F_", at_1, "/Fig3F_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+      # ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
+      ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
       
     }
     
