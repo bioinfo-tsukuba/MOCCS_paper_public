@@ -1,4 +1,4 @@
-Fig2_3_plot <- function(calc_opt = TRUE){
+Fig2_3_plot <- function(calc_opt = FALSE){
   
   library(dplyr)
   
@@ -60,28 +60,40 @@ Fig2_3_plot <- function(calc_opt = TRUE){
   }
   
 
+  print("Fig. 2B and S4: Comparison with poi")
+  
   # Fig. 2B and S4: Comparison with poi
   source("~/MOCCS_paper_public/function/sub_function/Compare_ksim_poi.R")
   flag_1 <- !(df_p_3_gp$ID1 %in% all_ns | df_p_3_gp$ID2 %in% all_ns)
   flag_2 <- !(df_poi$ID1 %in% all_ns | df_poi$ID2 %in% all_ns)
   Compare_ksim_poi(df_p_3_gp[flag_1, ], df_poi[flag_2, ])
   
+  print("Fig. 2C and 3B: UMAP")
+  
   # Fig. 2C and 3B: UMAP
   source("~/MOCCS_paper_public/function/sub_function/Umap_df.R")
   UMAP_df(df_raw, df_fam, all_ns)
+  
+  print("Fig 2D, 3C and S5: Permutation and Chi squared tests")
   
   # Fig 2D, 3C and S5: Permutation and Chi squared tests
   source("~/MOCCS_paper_public/function/sub_function/Top_k_sim.R")
   flag_3 <- !(df_p_1$ID1 %in% all_ns | df_p_1$ID2 %in% all_ns)
   flag_4 <- !(df_p_2$ID1 %in% all_ns | df_p_2$ID2 %in% all_ns)
-  Top_k_sim(df_p_1[flag_3, ], df_p_2[flag_4, ], calc_opt = TRUE, perm_num = 1000)
+  Top_k_sim(df_p_1[flag_3, ], df_p_2[flag_4, ], calc_opt = FALSE, perm_num = 1000)
+  
+  print("Fig. 2E")
   
   # Fig. 2E
-  source("~/MOCCS_paper_public/function/sub_function/TF_graph_2.R")
   flag_5 <- !(df_p_3$ID1 %in% all_ns | df_p_3$ID2 %in% all_ns)
-  TF_graph_2(df_p_3[flag_5, ])
+  if (calc_opt){
+    source("~/MOCCS_paper_public/function/sub_function/TF_graph_2.R")
+    TF_graph_2(df_p_3[flag_5, ])
+  }
   source("~/MOCCS_paper_public/function/sub_function/TF_graph_sel.R")
   TF_graph_sel(ctc_spe = NULL, df_p_3[flag_5, ])
+  
+  print("Fig. 3D and 3E: Cell type comparison")
   
   # Fig. 3D and 3E: Cell type comparison
   source("~/MOCCS_paper_public/function/sub_function/Compare_cell_type.R")
@@ -89,9 +101,14 @@ Fig2_3_plot <- function(calc_opt = TRUE){
   Compare_cell_type(df_p_3_gp[flag_1, ],
                     plot_ant = c("FOS", "JUN", "GATA2", "MYC"))
   
+  print("Fig. 3F")
+  
   # Fig. 3F
-  source("~/MOCCS_paper_public/function/sub_function/TF_graph_3.R")
-  TF_graph_3(df_p_3)
+  flag_5 <- !(df_p_3$ID1 %in% all_ns | df_p_3$ID2 %in% all_ns)
+  if (calc_opt){
+    source("~/MOCCS_paper_public/function/sub_function/TF_graph_3.R")
+    TF_graph_3(df_p_3[flag_5, ])
+  }
   source("~/MOCCS_paper_public/function/sub_function/TF_graph_sel_3.R")
   TF_graph_sel_3(a1 = "JUN", t_ctc = NULL, t_num = 15)
   TF_graph_sel_3(a1 = "GATA2", t_ctc = NULL, t_num = 15)
