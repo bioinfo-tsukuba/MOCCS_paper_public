@@ -4,3 +4,5 @@ data/.DS_Store
 data/Fig2/qval/MOCCSout_hg38_all_qval.rds
 data/Fig2/out/MOCCSout_hg38_hard_filter_annotated.rds
 data/.DS_Store
+data/Fig2/obj/df_raw.rds
+data/Fig2/obj/df_poi.rds
