@@ -269,16 +269,20 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
                   seq(from = 5, to = 20, by = 5))
       col_20_2 <- col_20[col_id]
       
-      png(paste0("~/MOCCS_paper_public/plot/FigS6/heatmap_k_sim_jaccard_", target_ant, ".png"),
-          width = 900, height = 720)
-      NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
-                    labRow = NA, labCol = NA,
-                    annCol = annot, annRow = annot,
-                    annColors = list(Cell_type_class = col_20_2),
-                    main = mtxt,
-                    color = "Reds",
-                    fontsize = 20)
-      dev.off()
+      if (sig_flag == "*"){
+      
+        png(paste0("~/MOCCS_paper_public/plot/FigS6/heatmap_k_sim_jaccard_", target_ant, ".png"),
+            width = 900, height = 720)
+        NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
+                      labRow = NA, labCol = NA,
+                      annCol = annot, annRow = annot,
+                      annColors = list(Cell_type_class = col_20_2),
+                      main = mtxt,
+                      color = "Reds",
+                      fontsize = 20)
+        dev.off()
+        
+      }
 
         
       if (target_ant %in% plot_ant){
