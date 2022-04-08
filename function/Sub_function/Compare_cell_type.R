@@ -184,11 +184,11 @@ all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
   plot(p_patch_1 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
-  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_1.pdf", paper = "a4")
+  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_2.pdf", paper = "a4")
   plot(p_patch_2 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
-  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_2.pdf", paper = "a4")
+  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_3.pdf", paper = "a4")
   plot(p_patch_3 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
@@ -196,7 +196,7 @@ all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
 
 Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
   
-  target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
+  target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant & df_p_3_gp$s_ctc != 0.5
   target_df <- df_p_3_gp[target_flag, ]
   
   if (nrow(target_df) == 0){
