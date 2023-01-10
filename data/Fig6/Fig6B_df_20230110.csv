@@ -1,0 +1,17 @@
+﻿phenotype,snp_num,peak,significant
+CD,119,within_peak,sig
+CD,135,within_peak,non-sig
+CD,125,out_peak,sig
+CD,117,out_peak,non-sig
+IBD,152,within_peak,sig
+IBD,163,within_peak,non-sig
+IBD,176,out_peak,sig
+IBD,154,out_peak,non-sig
+SLE,75,within_peak,sig
+SLE,184,within_peak,non-sig
+SLE,100,out_peak,sig
+SLE,184,out_peak,non-sig
+MS,105,within_peak,sig
+MS,141,within_peak,non-sig
+MS,123,out_peak,sig
+MS,92,out_peak,non-sig
