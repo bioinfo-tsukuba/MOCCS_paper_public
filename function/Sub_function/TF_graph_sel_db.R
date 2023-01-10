@@ -44,7 +44,7 @@ TF_graph_sel_db <- function(ctc_spe, df_p_3, receiver_tf_list, t_num = 10){
     max_val <- max(adjm[, t_num + 1])
     max_val_dc <- round(max_val * 100)
     
-    col_gg <- colorRampPalette(RColorBrewer::brewer.pal(100, "Reds"))
+    col_gg <- colorRampPalette(RColorBrewer::brewer.pal(9, "Reds"))
     
     print(paste0("minval: ", min_val))
     print(paste0("maxval: ", max_val))

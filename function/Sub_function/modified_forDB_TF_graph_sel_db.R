@@ -6,6 +6,7 @@ TF_graph_sel_db <- function(ctc_spe, df_p_3, receiver_tf_list, t_num = 10){
   for (i in 1:length(receiver_tf_list)){
     
     at_1 <- receiver_tf_list[i]
+    print(paste0("target_TF : ", at_1))
     
     k_sim_2_mat <- readRDS(paste0("~/MOCCS_paper_public/data/Fig2/obj/k_sim_pearson_mat/k_sim_pearson_mat_", at_1, ".rds"))
     
@@ -49,48 +50,52 @@ TF_graph_sel_db <- function(ctc_spe, df_p_3, receiver_tf_list, t_num = 10){
     print(paste0("minval: ", min_val))
     print(paste0("maxval: ", max_val))
     
-    if (min_val != 0){
-      col_min <- col_gg(100)[min_val_dc]
-    } else {
-      col_min <- "white"
-    }
+    if(is.na(min_val) == FALSE & is.na(max_val) == FALSE){
+      if (min_val != 0){
+        col_min <- col_gg(100)[min_val_dc]
+      } else {
+        col_min <- "white"
+      }
+      
+      if (max_val != 1){
+        col_max <- col_gg(100)[max_val_dc]
+      } else {
+        col_max <- "red"
+      }
+      png(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_", at_1, "_color_legend.png"))
+      RColorBrewer::display.brewer.pal(9, "Reds")
+      dev.off()
+      
+      print(paste0("=== ", at_1, " ",
+                   unique(df_p_3[df_p_3$ID1_Antigen == at_1,]$ID1_Family)," ",
+                   t_ctc, " ==="))
+      t_l <- colnames(adjm)
+      for (t_i in 1:length(t_l)){
+        t_s <- t_l[t_i]
+        t_s_f <- unique(df_p_3[df_p_3$ID1_Antigen == t_s,]$ID1_Family)
+        print(paste0(t_s, " - ", t_s_f))
+      }
+      print(paste0("==="))
+      
+      g <- graph_from_adjacency_matrix(adjmatrix = adjm, weighted = TRUE)
+      V(g)$name <- colnames(adjm)
+      xy <- graphlayouts::layout_with_stress(g)
+      xy <- graphlayouts::layout_rotate(xy, 45)
+      p_gg <- ggraph(g, "manual", x = xy[,1], y = xy[,2]) +
+        geom_node_point(size = 12, colour = "grey") +
+        geom_node_text(aes(label = name)) +
+        geom_edge_link(aes(color = weight),
+                       start_cap = circle(7, 'mm'),
+                       end_cap = circle(7, 'mm'), width = 1) +
+        scale_edge_colour_gradient(low = col_min, high = col_max) +
+        theme_graph() +
+        theme(legend.position = "none") +
+        coord_equal()
+      # ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
+      ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
+    }#if(is.na(min_val) == FALSE & is.na(max_va) == FALSE)
     
-    if (max_val != 1){
-      col_max <- col_gg(100)[max_val_dc]
-    } else {
-      col_max <- "red"
-    }
-    pdf (paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_", at_1, "_color_legend.pdf"))
-    RColorBrewer::display.brewer.pal(9, "Reds")
-    dev.off()
     
-    print(paste0("=== ", at_1, " ",
-                 unique(df_p_3[df_p_3$ID1_Antigen == at_1,]$ID1_Family)," ",
-                 t_ctc, " ==="))
-    t_l <- colnames(adjm)
-    for (t_i in 1:length(t_l)){
-      t_s <- t_l[t_i]
-      t_s_f <- unique(df_p_3[df_p_3$ID1_Antigen == t_s,]$ID1_Family)
-      print(paste0(t_s, " - ", t_s_f))
-    }
-    print(paste0("==="))
-    
-    g <- graph_from_adjacency_matrix(adjmatrix = adjm, weighted = TRUE)
-    V(g)$name <- colnames(adjm)
-    xy <- graphlayouts::layout_with_stress(g)
-    xy <- graphlayouts::layout_rotate(xy, 45)
-    p_gg <- ggraph(g, "manual", x = xy[,1], y = xy[,2]) +
-      geom_node_point(size = 12, colour = "grey") +
-      geom_node_text(aes(label = name)) +
-      geom_edge_link(aes(color = weight),
-                     start_cap = circle(7, 'mm'),
-                     end_cap = circle(7, 'mm'), width = 1) +
-      scale_edge_colour_gradient(low = col_min, high = col_max) +
-      theme_graph() +
-      theme(legend.position = "none") +
-      coord_equal()
-    # ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-    ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)  
     
   }
   

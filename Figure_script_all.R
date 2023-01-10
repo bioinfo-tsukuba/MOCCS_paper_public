@@ -140,7 +140,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], 
 ### Figure6 ###
 #################
 ## Fig. 6B --------
-source("~/MOCCS_paper_public/function/Fig6B_plot.R")
+source("~/MOCCS_paper_public/function/Fig6B_plot_v3.R")
 annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
 Fig6B <- Fig6B_plot(annotation_path)
 plot(Fig6B)
