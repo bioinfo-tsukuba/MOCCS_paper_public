@@ -1,0 +1,17 @@
+phenotype,snp_num,color,fisher_p
+CD,119,within_peak_sig,0.3230530135274595
+CD,135,within_peak_non-sig,0.3230530135274595
+CD,125,out_peak_sig,0.3230530135274595
+CD,117,out_peak_non-sig,0.3230530135274595
+IBD,152,within_peak_sig,0.2080023161315585
+IBD,163,within_peak_non-sig,0.2080023161315585
+IBD,176,out_peak_sig,0.2080023161315585
+IBD,154,out_peak_non-sig,0.2080023161315585
+SLE,75,within_peak_sig,0.14125408478128773
+SLE,184,within_peak_non-sig,0.14125408478128773
+SLE,100,out_peak_sig,0.14125408478128773
+SLE,184,out_peak_non-sig,0.14125408478128773
+MS,105,within_peak_sig,0.002070803521847204
+MS,141,within_peak_non-sig,0.002070803521847204
+MS,123,out_peak_sig,0.002070803521847204
+MS,92,out_peak_non-sig,0.002070803521847204
