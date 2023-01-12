@@ -42,6 +42,18 @@ Violinplot <- function(df_p_3_gp, target_ant, plot_ant){
 
   target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
   target_df <- df_p_3_gp[target_flag, ]
+  
+  
+  ####### 20230112 Added ######
+  tmp1 <- target_df %>% select(ID1, ID1_Cell_type_class)
+  tmp2 <- target_df %>% select(ID2, ID2_Cell_type_class)
+  colnames(tmp1) <- c("ID", "Cell_type_class")
+  colnames(tmp2) <- c("ID", "Cell_type_class")
+  tmp3 <- rbind(tmp1, tmp2) %>% distinct()
+  rm_CTC <- tmp3 %>% group_by(Cell_type_class) %>% summarise(n = n()) %>% filter(n == 1) %>% .$Cell_type_class
+  target_df_old <- target_df
+  target_df <- target_df_old %>% filter(!ID1_Cell_type_class %in% rm_CTC & !ID2_Cell_type_class %in% rm_CTC) 
+  #############################
 
   target_df[target_df$s_ctc == 1, ] %>%
     mutate(Group = "Same") -> df_same
@@ -107,6 +119,17 @@ Violinplot_2 <- function(df_p_3_gp, target_ant){
   target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant
   target_df <- df_p_3_gp[target_flag, ]
   
+  ####### 20230112 Added ######
+  tmp1 <- target_df %>% select(ID1, ID1_Cell_type_class)
+  tmp2 <- target_df %>% select(ID2, ID2_Cell_type_class)
+  colnames(tmp1) <- c("ID", "Cell_type_class")
+  colnames(tmp2) <- c("ID", "Cell_type_class")
+  tmp3 <- rbind(tmp1, tmp2) %>% distinct()
+  rm_CTC <- tmp3 %>% group_by(Cell_type_class) %>% summarise(n = n()) %>% filter(n == 1) %>% .$Cell_type_class
+  target_df_old <- target_df
+  target_df <- target_df_old %>% filter(!ID1_Cell_type_class %in% rm_CTC & !ID2_Cell_type_class %in% rm_CTC) 
+  #############################
+  
   target_df[target_df$s_ctc == 1, ] %>%
     mutate(Group = "Same") -> df_same
   
@@ -145,10 +168,16 @@ Violinplot_2 <- function(df_p_3_gp, target_ant){
 
 all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
   
-  p_violin_list <- vector("list", length(ant_list))
-  for (ant_ind in 1:length(ant_list)){
-    res.viol <- Violinplot_2(df_p_3_gp, target_ant = ant_list[ant_ind])
-    p_violin_list[[ant_ind]] <- res.viol$p_violin
+  
+  ########## 2023/01/12 Added ############
+  p_violin_list <- list()
+  for (tgt_ant in ant_list){
+    res.viol <- Violinplot_2(df_p_3_gp, target_ant = tgt_ant)
+    if(is.null(res.viol$p_violin)==TRUE){
+      p_violin_list[[tgt_ant]] <- "NULL"
+    }else{
+      p_violin_list[[tgt_ant]] <- res.viol$p_violin 
+    }
   }
   
   sig_ant <- ant_list[sig_flag_list == "*"]
@@ -167,18 +196,47 @@ all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
   
   p_patch_2 <- c()
   p_patch_2 <- p_violin_list[[sig_vec[21]]]
-  for (i in 22:40){
+  for (i in 22:length(sig_vec)){
     i_2 <- sig_vec[i]
     p_patch_2 <- p_patch_2 + p_violin_list[[i_2]]
   }
+  ########################################
   
-  p_patch_3 <- c()
-  p_patch_3 <- p_violin_list[[sig_vec[41]]]
-  p_patch_3 <- p_patch_3 + p_violin_list[[sig_vec[42]]]
-  for (i in 1:18){
-    i_2 <- sig_vec[i]
-    p_patch_3 <- p_patch_3 + p_violin_list[[i_2]]
-  }
+  
+  #p_violin_list <- vector("list", length(ant_list))
+  #for (ant_ind in 1:length(ant_list)){
+    #res.viol <- Violinplot_2(df_p_3_gp, target_ant = ant_list[ant_ind])
+    #p_violin_list[[ant_ind]] <- res.viol$p_violin
+  #}
+  
+  #sig_ant <- ant_list[sig_flag_list == "*"]
+  #sig_ant_2 <- sig_ant[order(sig_ant)]
+  #sig_vec <- c()
+  #for (sig_i in 1:length(sig_ant_2)){
+    #sig_vec <- append(sig_vec, seq(1:length(ant_list))[sig_ant_2[sig_i] == ant_list])
+  #}
+  
+  #p_patch_1 <- c()
+  #p_patch_1 <- p_violin_list[[sig_vec[1]]]
+  #for (i in 2:20){
+    #i_2 <- sig_vec[i]
+    #p_patch_1 <- p_patch_1 + p_violin_list[[i_2]]
+  #}
+  
+  #p_patch_2 <- c()
+  #p_patch_2 <- p_violin_list[[sig_vec[21]]]
+  #for (i in 22:40){
+    #i_2 <- sig_vec[i]
+    #p_patch_2 <- p_patch_2 + p_violin_list[[i_2]]
+  #}
+  
+  #p_patch_3 <- c()
+  #p_patch_3 <- p_violin_list[[sig_vec[41]]]
+  #p_patch_3 <- p_patch_3 + p_violin_list[[sig_vec[42]]]
+  #for (i in 1:18){
+    #i_2 <- sig_vec[i]
+    #p_patch_3 <- p_patch_3 + p_violin_list[[i_2]]
+  #}
   
   pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_1.pdf", paper = "a4")
   plot(p_patch_1 + plot_layout(nrow = 5, ncol = 4), height = 50)
@@ -188,9 +246,9 @@ all_Violin_plot <- function(df_p_3_gp, ant_list, sig_flag_list){
   plot(p_patch_2 + plot_layout(nrow = 5, ncol = 4), height = 50)
   dev.off()
   
-  pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_3.pdf", paper = "a4")
-  plot(p_patch_3 + plot_layout(nrow = 5, ncol = 4), height = 50)
-  dev.off()
+  #pdf("~/MOCCS_paper_public/plot/FigS7/FigS7_viol_3.pdf", paper = "a4")
+  #plot(p_patch_3 + plot_layout(nrow = 5, ncol = 4), height = 50)
+  #dev.off()
   
 }
 
