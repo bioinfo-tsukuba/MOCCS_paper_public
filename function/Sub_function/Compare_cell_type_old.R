@@ -199,17 +199,6 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
   target_flag <- df_p_3_gp$ID1_Antigen == target_ant & df_p_3_gp$ID2_Antigen == target_ant & df_p_3_gp$s_ctc != 0.5
   target_df <- df_p_3_gp[target_flag, ]
   
-  ####### 20230112 Added ######
-  tmp1 <- target_df %>% select(ID1, ID1_Cell_type_class)
-  tmp2 <- target_df %>% select(ID2, ID2_Cell_type_class)
-  colnames(tmp1) <- c("ID", "Cell_type_class")
-  colnames(tmp2) <- c("ID", "Cell_type_class")
-  tmp3 <- rbind(tmp1, tmp2) %>% distinct()
-  rm_CTC <- tmp3 %>% group_by(Cell_type_class) %>% summarise(n = n()) %>% filter(n == 1) %>% .$Cell_type_class
-  target_df_old <- target_df
-  target_df <- target_df_old %>% filter(!ID1_Cell_type_class %in% rm_CTC & !ID2_Cell_type_class %in% rm_CTC) 
-  #############################
-  
   if (nrow(target_df) == 0){
     
     return(NULL)
@@ -271,15 +260,14 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
         mtxt <- paste0(target_ant, "")
       }
       
-      #col_8 <- RColorBrewer::brewer.pal(8, "Accent")
-      #col_20 <- colorRampPalette(col_8)(20)
-      #col_id <- c(seq(from = 1, to = 16, by = 5),
-                  #seq(from = 2, to = 17, by = 5),
-                  #seq(from = 3, to = 18, by = 5),
-                  #seq(from = 4, to = 19, by = 5),
-                  #seq(from = 5, to = 20, by = 5))
-      #col_20_2 <- col_20[col_id]
-      col_20_2 <- qualitative_hcl(length(unique(annot$Cell_type_class)), c = 50, l = 70)
+      col_8 <- RColorBrewer::brewer.pal(8, "Accent")
+      col_20 <- colorRampPalette(col_8)(20)
+      col_id <- c(seq(from = 1, to = 16, by = 5),
+                  seq(from = 2, to = 17, by = 5),
+                  seq(from = 3, to = 18, by = 5),
+                  seq(from = 4, to = 19, by = 5),
+                  seq(from = 5, to = 20, by = 5))
+      col_20_2 <- col_20[col_id]
       
       if (sig_flag == "*"){
       
