@@ -448,7 +448,7 @@ Make_TF_table2 <- function(){
     tgt_sample_num <- union(unique(target_df$ID1), unique(target_df$ID2)) %>% length()
     sample_num_list <- c(sample_num_list, tgt_sample_num)
     
-    tgt_ctc_num <- tmp3$Cell_type_class %>% unique() %>% length()
+    tgt_ctc_num <- union(unique(target_df$ID1_Cell_type_class), unique(target_df$ID2_Cell_type_class)) %>% length()
     ctc_num_list <- c(ctc_num_list, tgt_ctc_num)
   }
   
