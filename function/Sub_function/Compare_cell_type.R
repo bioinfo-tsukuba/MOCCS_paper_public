@@ -423,6 +423,7 @@ CircleChart <- function(sig_flag_list){
 Make_TF_table <- function(ant_list){
   
   sig_flag_list <- readRDS("~/MOCCS_paper_public/data/Fig3/obj/sig_flag_list.rds")
+  sig_flag_list_2 <- sig_flag_list[!sig_flag_list == "NULL"]
   
   sig_symbol_list <- ant_list[sig_flag_list == "*"]
   sig_symbol_list_2 <- ant_list[sig_flag_list == ""]
