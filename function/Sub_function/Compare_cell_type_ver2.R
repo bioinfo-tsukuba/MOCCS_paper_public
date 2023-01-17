@@ -435,8 +435,8 @@ Make_TF_table2 <- function(){
     target_df <- df_p_3_gp[target_flag, ]
     
     ####### 20230112 Added ######
-    tmp1 <- target_df %>% select(ID1, ID1_Cell_type_class)
-    tmp2 <- target_df %>% select(ID2, ID2_Cell_type_class)
+    tmp1 <- target_df %>% dplyr::select(ID1, ID1_Cell_type_class)
+    tmp2 <- target_df %>% dplyr::select(ID2, ID2_Cell_type_class)
     colnames(tmp1) <- c("ID", "Cell_type_class")
     colnames(tmp2) <- c("ID", "Cell_type_class")
     tmp3 <- rbind(tmp1, tmp2) %>% distinct()
