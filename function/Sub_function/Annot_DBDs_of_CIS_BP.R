@@ -1,5 +1,5 @@
 Annot_DBDs_of_CIS_BP <- function(df_raw,
-                                 TF_info_dir = "~/MOCCS-DB_paper/annotation/CIS-BP/Homo_sapiens_2021_04_21_1_47_am/TF_Information.txt"){
+                                 TF_info_dir = "~/MOCCS_paper_public/annotation/CIS-BP/Homo_sapiens_2021_04_21_1_47_am/TF_Information.txt"){
   
   library("tidyverse")
   
