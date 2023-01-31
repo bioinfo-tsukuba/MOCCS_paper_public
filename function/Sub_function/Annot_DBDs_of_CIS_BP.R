@@ -57,11 +57,15 @@ Annot_DBDs_of_CIS_BP <- function(df_raw,
   ## Symbol ごとに検索する
   input_TF_DBDs_list_with_NA <- c()
   input_TF_FamilyName_list_with_NA <- c()
-  
+  i <- 0
   for (symbol_num_index in 1:length(input_TF_symbol_list)){
   
       input_TF_ID <- input_TF_symbol_list_ID[symbol_num_index, "ENTREZID"]
       info_row_num <- match(input_TF_ID, TF_info_symbol_uniq_ID[,"ENTREZID"])
+      
+      if (is.na(info_row_num)){
+        i <- i + 1
+      }
       
       input_TF_DBDs <- TF_info_uniq_DBDs[info_row_num]
       input_TF_FamilyName <- TF_info_uniq_FamilyName[info_row_num]

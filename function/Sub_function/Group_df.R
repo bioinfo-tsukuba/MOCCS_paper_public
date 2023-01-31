@@ -28,7 +28,7 @@ Group_df <- function(df_p_3){
       }
     }
   }
-  unk_flag <- df_p_3$ID1_Family == "No_annotation" | df_p_3$ID2_Family == "No_annotation" | df_p_3$ID1_Family == "Uknown" | df_p_3$ID2_Family == "Unknown"
+  unk_flag <- df_p_3$ID1_Family == "No_annotation" | df_p_3$ID2_Family == "No_annotation" | df_p_3$ID1_Family == "Unknown" | df_p_3$ID2_Family == "Unknown"
   s_ant_f[unk_flag] <- 0.5
   
   df_p_3 %>% mutate(s_ctc = s_ctc) %>%

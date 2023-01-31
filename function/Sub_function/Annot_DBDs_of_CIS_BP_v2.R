@@ -100,7 +100,7 @@ Annot_DBDs_of_CIS_BP_v2 <- function(df_raw,
           input_TF_FamilyName_list_with_NA <- append(input_TF_FamilyName_list_with_NA,
                                                      NA)
           
-        } else { # 探索インデックスが値を持つとき
+        } else { # info_row_num_2が値を持つとき
           
           i4 <- i4 + 1
           
