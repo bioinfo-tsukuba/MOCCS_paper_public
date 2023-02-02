@@ -58,7 +58,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1G.pdf"), Fig1G, width = 7, hei
 ##################
 ### Figure2-3 ###
 #################
-source("~/MOCCS_paper_public/function/Fig2_3_plot.R")
+source("~/MOCCS_paper_public/function/Fig2_3_plot_v2.R")
 Fig2_3_plot(calc_opt = FALSE)
 
 
