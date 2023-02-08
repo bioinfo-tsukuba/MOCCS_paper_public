@@ -76,10 +76,12 @@ FigS9 <- FigS9_plot(path, target_TF)
 FigS9_plot <- (FigS9[[1]][[1]] + FigS9[[1]][[2]] + FigS9[[1]][[3]]) / (FigS9[[1]][[4]] + FigS9[[1]][[5]] + FigS9[[1]][[6]])
 plot(FigS9_plot)
 plot(FigS9[[2]])
+plot(FigS9[[3]])
+plot(FigS9[[4]])
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS9/FigS9_position_", target_TF ,".pdf"), FigS9_plot, width = 21, height = 14)
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS9/FigS9_", target_TF ,".pdf"), FigS9[[2]], width = 7, height = 7)
-
-
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS9/FigS9_allTF_PBS_Spe.pdf"), FigS9[[3]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS9/FigS9_allTF_PBS_Pear.pdf"), FigS9[[4]], width = 7, height = 7)
 
 
 ## Fig. S10 --------
