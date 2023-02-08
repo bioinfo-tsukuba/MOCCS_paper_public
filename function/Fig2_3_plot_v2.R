@@ -1,4 +1,4 @@
-Fig2_3_plot <- function(calc_opt = FALSE){
+Fig2_3_plot_v2 <- function(calc_opt = FALSE){
   
   library(dplyr)
   
@@ -54,9 +54,8 @@ Fig2_3_plot <- function(calc_opt = FALSE){
     df_p_3_gp <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_p_3_gp.rds")
     system("wget https://figshare.com/ndownloader/files/34692271 -P ~/MOCCS_paper_public/data/Fig2/obj")
     system("mv ~/MOCCS_paper_public/data/Fig2/obj/34692271 ~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
-    df_poi <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
     all_ns <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/all_ns.rds")
-    
+    df_poi <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_poi.rds")
   }
   
 
@@ -80,7 +79,7 @@ Fig2_3_plot <- function(calc_opt = FALSE){
   source("~/MOCCS_paper_public/function/sub_function/Top_k_sim.R")
   flag_3 <- !(df_p_1$ID1 %in% all_ns | df_p_1$ID2 %in% all_ns)
   flag_4 <- !(df_p_2$ID1 %in% all_ns | df_p_2$ID2 %in% all_ns)
-  Top_k_sim(df_p_1[flag_3, ], df_p_2[flag_4, ], calc_opt = FALSE, perm_num = 1000)
+  Top_k_sim(df_p_1[flag_3, ], df_p_2[flag_4, ], calc_opt = TRUE, perm_num = 1000)
   
   print("Fig. 2E")
   

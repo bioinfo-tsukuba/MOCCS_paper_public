@@ -335,7 +335,7 @@ Collect_not_top_n <- function(df_p_3){
 }
 
 Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
-  
+
   top_ant <- sum(res_orig_top$ant_col_list)
   not_top_ant <- sum(res_orig_not_top$ant_col_list)
   top_ant_rev <- sum(res_orig_top$rev_ant_col_list)
@@ -352,7 +352,7 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   ant_mat <- rbind(c(top_ant, not_top_ant),
                    c(top_ant_rev, not_top_ant_rev))
   p_ant_chi <- chisq.test(ant_mat)$p.value
-  print(paste0("p value on antigen permutation:", p_ant_chi))
+  print(paste0("p value on antigen chi-squared-test:", p_ant_chi))
   ant_txt <- rbind(as.character(c(round(top_ant), round(not_top_ant))),
                    as.character(c(round(top_ant_rev), round(not_top_ant_rev))))
   
@@ -377,7 +377,7 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   fam_mat <- rbind(c(top_fam, not_top_fam),
                    c(top_fam_rev, not_top_fam_rev))
   p_fam_chi <- chisq.test(fam_mat)$p.value
-  print(paste0("p value on family permutation:", p_fam_chi))
+  print(paste0("p value on family chi-squared-test:", p_fam_chi))
   fam_txt <- rbind(as.character(c(round(top_fam), round(not_top_fam))),
                    as.character(c(round(top_fam_rev), round(not_top_fam_rev))))
   
@@ -399,7 +399,7 @@ Heatmap_chi_sq_test <- function(res_orig_top, res_orig_not_top){
   ctc_mat <- rbind(c(top_ctc, not_top_ctc),
                    c(top_ctc_rev, not_top_ctc_rev))
   p_ctc_chi <- chisq.test(ctc_mat)$p.value
-  print(paste0("p value on cell type class permutation:", p_ctc_chi))
+  print(paste0("p value on cell type class chi-squared-test:", p_ctc_chi))
   ctc_txt <- rbind(as.character(c(round(top_ctc), round(not_top_ctc))),
                    as.character(c(round(top_ctc_rev), round(not_top_ctc_rev))))
   
