@@ -70,7 +70,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/FigS3/FigS3_q001_density.pdf"), FigS3[[
 library(patchwork)
 source("~/MOCCS_paper_public/function/FigS9_plot.R")
 path <- "~/MOCCS_paper_public/data/supplement/FigS9/"
-target_TF <- "FOXA1" #FOXA1 or GATA3
+target_TF <- "GATA3" #FOXA1 or GATA3
 #annotation_path <- "~/MOCCS_paper_public/data/Fig5/"
 FigS9 <- FigS9_plot(path, target_TF)
 FigS9_plot <- (FigS9[[1]][[1]] + FigS9[[1]][[2]] + FigS9[[1]][[3]]) / (FigS9[[1]][[4]] + FigS9[[1]][[5]] + FigS9[[1]][[6]])
