@@ -341,8 +341,46 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
 
 CircleChart <- function(sig_flag_list){
   
-  sig_flag_list_2 <- sig_flag_list[!sig_flag_list == "NULL"]
+  ############################################################################
+  # 2023/02/04 added
+  sig_flag_list_2 <- sig_flag_list
+  sig_num <- sum(sig_flag_list_2 == "*")
+  sig_ratio <- sig_num / length(sig_flag_list_2)
+  nonsig_num <- sum(sig_flag_list_2 == "")
+  non_sig_ratio <- nonsig_num / length(sig_flag_list_2)
+  null_num <- sum(sig_flag_list_2 == "NULL")
+  null_ratio <- null_num / length(sig_flag_list_2)
   
+  df_circ_2 = data.frame(category  =  c("   Cell-type dependent \n    TFs",
+                                        "     Cell-type \n    non-dependent TFs",
+                                        "Null"),
+                         rate　　   =  c(round(sig_ratio, 2),
+                                       round(non_sig_ratio, 2),
+                                       round(null_ratio, 2))) %>% 
+    #arrange(desc(category)) %>% 
+    mutate(position = cumsum(rate) - rate/2)
+  
+  p_circ_2 <- ggplot(df_circ_2, aes(x = "", y = rate)) + 
+    geom_bar(stat = "identity", color = "black", fill = c( "black", "white", "gray")) +
+    coord_polar(theta = "y") +
+    theme_void() + 
+    geom_text(aes(y = position,  label = category), 
+              size = 1.8,  color = c( "white","black", "black"),  vjust = 0) + 
+    geom_text(aes(y = position,  label = paste(rate * 100, "%")), 
+              size = 1.8,  color = c( "white", "black", "black"),  vjust = 2) +
+    geom_text(aes(y = position,  label = c(paste0(sig_num, "/", length(sig_flag_list_2)),
+                                           paste0((length(sig_flag_list_2) - sig_num), "/", length(sig_flag_list_2)),
+                                           paste0(null_num, "/", length(sig_flag_list_2)))), 
+              size = 1.8,  color = c( "white","black", "black"),  vjust = 4)
+  
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.svg"),
+         plot = p_circ_2, width = 10)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.pdf"),
+         plot = p_circ_2, width = 10)
+  ############################################################################
+  
+  # old version
+  sig_flag_list_2 <- sig_flag_list[!sig_flag_list == "NULL"]
   sig_num <- sum(sig_flag_list_2 == "*")
   sig_ratio <- sig_num / length(sig_flag_list_2)
   non_sig_ratio <- (length(sig_flag_list_2) - sig_num) / length(sig_flag_list_2)
@@ -370,6 +408,8 @@ CircleChart <- function(sig_flag_list){
          plot = p_circ_1, width = 10)
   ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.pdf"),
          plot = p_circ_1, width = 10)
+  
+  ############################################################################
   
 }
 
