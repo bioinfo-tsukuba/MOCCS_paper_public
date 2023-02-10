@@ -95,9 +95,9 @@ Fig2_3_plot_v2 <- function(calc_opt = FALSE){
   print("Fig. 3D and 3E: Cell type comparison")
   
   # Fig. 3D and 3E: Cell type comparison
-  source("~/MOCCS_paper_public/function/sub_function/Compare_cell_type.R")
+  source("~/MOCCS_paper_public/function/sub_function/Compare_cell_type_ver2.R")
   flag_1 <- !(df_p_3_gp$ID1 %in% all_ns | df_p_3_gp$ID2 %in% all_ns)
-  Compare_cell_type(df_p_3_gp[flag_1, ],
+  Compare_cell_type_v2(df_p_3_gp[flag_1, ],
                     plot_ant = c("FOS", "JUN", "GATA2", "MYC"))
   
   print("Fig. 3F")

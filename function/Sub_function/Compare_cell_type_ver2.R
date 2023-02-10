@@ -1,4 +1,4 @@
-Compare_cell_type <- function(df_p_3_gp, plot_ant){
+Compare_cell_type_v2 <- function(df_p_3_gp, plot_ant){
   
   library(patchwork)
   library(ComplexHeatmap)
