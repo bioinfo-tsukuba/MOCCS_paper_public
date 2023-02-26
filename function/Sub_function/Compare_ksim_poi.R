@@ -67,21 +67,20 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   # Internal 
   group_vec <- c("a", "b", "c", "f")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"),                                          
-                     c("Same antigen", "Same family", "Same cell type class", "Different cell type"),
-                     c("Same antigen", "Same family", "Different cell type class", "Different cell type"),
-                     #c("Different antigen", "Same family", "Same cell type class", "Same cell type"),　　　　　　　　　　　　
-                     #c("Different antigen", "Different family", "Same cell type class", "Same cell type"),  
+                     #c("Same antigen", "Same family", "Same cell type class", "Different cell type"),
+                     #c("Same antigen", "Same family", "Different cell type class", "Different cell type"),
+                     c("Different antigen", "Same family", "Same cell type class", "Same cell type"),　　　　　　　　　　　　
+                     c("Different antigen", "Different family", "Same cell type class", "Same cell type"),  
                      c("Different antigen", "Different family", "Different cell type class", "Different cell type"))
-  
   df_gg_2_3 <- Plot_group_3(df_gg, group_vec, group_mat)
   Plot_group_2d(df_gg_2_3)
   
   group_vec <- c("a", "d", "e", "f")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"),                                          
-                     #c("Same antigen", "Same family", "Same cell type class", "Different cell type"),
-                     #c("Same antigen", "Same family", "Different cell type class", "Different cell type"),
-                     c("Different antigen", "Same family", "Same cell type class", "Same cell type"),　　　　　　　　　　　　
-                     c("Different antigen", "Different family", "Same cell type class", "Same cell type"),  
+                     c("Same antigen", "Same family", "Same cell type class", "Different cell type"),
+                     c("Same antigen", "Same family", "Different cell type class", "Different cell type"),
+                     #c("Different antigen", "Same family", "Same cell type class", "Same cell type"),　　　　　　　　　　　　
+                     #c("Different antigen", "Different family", "Same cell type class", "Same cell type"),  
                      c("Different antigen", "Different family", "Different cell type class", "Different cell type"))
   
   df_gg_2_4 <- Plot_group_3_2(df_gg, group_vec, group_mat)
@@ -117,8 +116,8 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   #nc_g <- "f"
   #U_test_group(df_gg_2_3, group_vec, t_sim_vec, nc_g)
   
-  ## Correlation (ctc)
-  #group_vec <- c("a", "b", "c", "d", "e", "f")
+  
+  ## Correlation (TF)
   group_vec <- c("a", "b", "c", "f")
   sim_vec <- c("k_sim_1", "k_sim_2")
   cor_vec <- c()
@@ -131,57 +130,6 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
       group_char <- group_vec[group_ind]
       sim_char <- sim_vec[sim_ind]
       df_gg_g <- df_gg_2_3[df_gg_2_3$Group == group_char, ]
-      res_cor <- cor.test(df_gg_g[, sim_char], df_gg_g$n1_by_n1all_plus_n2_by_n2all_norm, method=c("pearson"))
-      cor_vec <- append(cor_vec, res_cor$estimate)
-      p_vec <- append(p_vec, res_cor$p.value)
-      label_vec_plot <- append(label_vec_plot, group_char)
-      label_vec_sim <- append(label_vec_sim, sim_char)
-    }
-  }
-  
-  df_tmp_cor_1 <- as_tibble(label_vec_plot)
-  colnames(df_tmp_cor_1) <- c("Group")
-  df_tmp_cor_1 %>% mutate(Similarity = label_vec_sim) %>%
-    mutate(Coefficient = cor_vec) %>% mutate(p = p_vec) -> df_cor_1
-  
-  print("P-values of correlation coefficient are...")
-  print(df_cor_1$p)
-  
-  saveRDS(df_cor_1, "~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
-  df_cor_1 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
-  
-  df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_1"] <- "2_k_sim_Jaccard"
-  df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_2"] <- "1_k_sim_Pearson"
-  
-  p_bar <- ggplot(df_cor_1, aes(x = Group, y = Coefficient, fill = Similarity)) +
-    geom_bar(stat = "identity", position = position_dodge(0.7), width = 0.5) +
-    ylim(-0.15, 1) +
-    theme_bw() +
-    ylab("Separman's correlation coefficient") +
-    xlab("Group of ChIP-seq sample") +
-    ggtitle("Correlation between k-sim 1 or 2 and poi") +
-    scale_fill_brewer(palette = "Set1") +
-    theme(panel.grid.minor = element_blank()) +
-    facet_wrap(~ Similarity, ncol = 1)
-  
-  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_cor_bar.pdf"), plot = p_bar, width = 6, height = 4)  
-  
-  
-  
-  ## Correlation (TF)
-  group_vec <- c("a", "d", "e", "f")
-  sim_vec <- c("k_sim_1", "k_sim_2")
-  cor_vec <- c()
-  p_vec <- c()
-  label_vec_plot <- c()
-  label_vec_sim <- c()
-  
-  for (group_ind in 1:length(group_vec)){
-    for (sim_ind in 1:length(sim_vec)){
-      group_char <- group_vec[group_ind]
-      sim_char <- sim_vec[sim_ind]
-      df_gg_g <- df_gg_2_4[df_gg_2_4$Group == group_char, ]
       res_cor <- cor.test(df_gg_g[, sim_char], df_gg_g$n1_by_n1all_plus_n2_by_n2all_norm, method=c("pearson"))
       cor_vec <- append(cor_vec, res_cor$estimate)
       p_vec <- append(p_vec, res_cor$p.value)
@@ -216,7 +164,57 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
     facet_wrap(~ Similarity, ncol = 1)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_cor_bar.pdf"), plot = p_bar2, width = 6, height = 4)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4C_k_sim_cor_bar.pdf"), plot = p_bar2, width = 6, height = 4)  
+  
+  ## Correlation (ctc)
+  #group_vec <- c("a", "b", "c", "d", "e", "f")
+  group_vec <- c("a", "d", "e", "f")
+  sim_vec <- c("k_sim_1", "k_sim_2")
+  cor_vec <- c()
+  p_vec <- c()
+  label_vec_plot <- c()
+  label_vec_sim <- c()
+  
+  for (group_ind in 1:length(group_vec)){
+    for (sim_ind in 1:length(sim_vec)){
+      group_char <- group_vec[group_ind]
+      sim_char <- sim_vec[sim_ind]
+      df_gg_g <- df_gg_2_4[df_gg_2_4$Group == group_char, ]
+      res_cor <- cor.test(df_gg_g[, sim_char], df_gg_g$n1_by_n1all_plus_n2_by_n2all_norm, method=c("pearson"))
+      cor_vec <- append(cor_vec, res_cor$estimate)
+      p_vec <- append(p_vec, res_cor$p.value)
+      label_vec_plot <- append(label_vec_plot, group_char)
+      label_vec_sim <- append(label_vec_sim, sim_char)
+    }
+  }
+  
+  df_tmp_cor_1 <- as_tibble(label_vec_plot)
+  colnames(df_tmp_cor_1) <- c("Group")
+  df_tmp_cor_1 %>% mutate(Similarity = label_vec_sim) %>%
+    mutate(Coefficient = cor_vec) %>% mutate(p = p_vec) -> df_cor_1
+  
+  print("P-values of correlation coefficient are...")
+  print(df_cor_1$p)
+  
+  saveRDS(df_cor_1, "~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
+  df_cor_1 <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_cor_1.rds")
+  
+  df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_1"] <- "2_k_sim_Jaccard"
+  df_cor_1$Similarity[df_cor_1$Similarity == "k_sim_2"] <- "1_k_sim_Pearson"
+  
+  p_bar <- ggplot(df_cor_1, aes(x = Group, y = Coefficient, fill = Similarity)) +
+    geom_bar(stat = "identity", position = position_dodge(0.7), width = 0.5) +
+    ylim(-0.15, 1) +
+    theme_bw() +
+    ylab("Separman's correlation coefficient") +
+    xlab("Group of ChIP-seq sample") +
+    ggtitle("Correlation between k-sim 1 or 2 and poi") +
+    scale_fill_brewer(palette = "Set1") +
+    theme(panel.grid.minor = element_blank()) +
+    facet_wrap(~ Similarity, ncol = 1)
+  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4f_k_sim_cor_bar.pdf"), plot = p_bar, width = 6, height = 4)  
   
   
   return()
@@ -432,7 +430,7 @@ Plot_group_3 <- function(df_gg, group_vec, group_mat){
     facet_wrap(~ Similarity, nrow = 3)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_dist_all.pdf"), plot = p_dist, width = 10, height = 7)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4A_k_sim_dist_all.pdf"), plot = p_dist, width = 10, height = 7)  
   return(df_gg_2)
 }
 
@@ -479,8 +477,8 @@ Plot_group_3_2 <- function(df_gg, group_vec, group_mat){
     ggtitle("Comparison of k-sim 1, 2 or poi") +
     facet_wrap(~ Similarity, nrow = 3)
   
-  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_dist_all.pdf"), plot = p_dist, width = 10, height = 7)  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4D_k_sim_dist_all.png"), plot = p_dist, width = 21, height = 6)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4D_k_sim_dist_all.pdf"), plot = p_dist, width = 10, height = 7)  
   return(df_gg_2)
 }
 
@@ -488,68 +486,165 @@ Plot_group_3_2 <- function(df_gg, group_vec, group_mat){
 Plot_group_2d <- function(df_gg_2){
   
   ## 2d density
-  p_2d_1 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
-    geom_bin2d(bins = 100) +
-    #stat_density_2d(aes(fill = ..level..), geom = "polygon", bins = 100) +
-    scale_fill_continuous(type = "viridis") +
-    xlab("poi") +
-    ylab("k-sim 1") +
-    ggtitle("Two dimensional density plot of k-sim 1 and poi") +
-    theme_bw() +
-    facet_wrap(~ Group, nrow = 2) +
-    # theme(axis.text.x = element_text(size = 6)) +
-    theme(panel.grid.minor = element_blank())
+  #p_2d_1 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+    #geom_bin2d(bins = 100) +
+    #geom_density_2d() +
+    #scale_fill_continuous(type = "viridis") +
+    #xlab("poi") +
+    #ylab("k-sim 1") +
+    #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+    #theme_bw() +
+    #facet_wrap(~ Group, nrow = 2) +
+    #theme(panel.grid.minor = element_blank())
   
-  p_2d_2 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
-    geom_bin2d(bins = 100) +
-    scale_fill_continuous(type = "viridis") +
-    xlab("poi") +
-    ylab("k-sim 2") +
-    ggtitle("Two dimensional density plot of k-sim 2 and poi") +
-    theme_bw() +
-    facet_wrap(~ Group, nrow = 2) +
-    # theme(axis.text.x = element_text(size = 6)) +
-    theme(panel.grid.minor = element_blank())
+  ########################## 20230226 added ##################################################
+  library(patchwork)
+  group_list <- unique(df_gg_2$Group)
+  p_2d_1 <- c()
+  for (tgt_gp in group_list) {
+    p <- ggplot(df_gg_2[df_gg_2$Group == tgt_gp & df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+      geom_bin2d(bins = 100) +
+      geom_density_2d() +
+      scale_fill_continuous(type = "viridis") +
+      xlab("poi") +
+      ylab("k-sim Jaccard") +
+      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      theme_bw() +
+      facet_wrap(~ Group, nrow = 2) +
+      theme(panel.grid.minor = element_blank())
+    if(tgt_gp == group_list[1]){
+      p_2d_1 <- p
+    }else{
+      p_2d_1 <- p_2d_1 + p
+    }
+  }
+  plot(p_2d_1 + plot_layout(nrow = 2, ncol = 2))
+  
+  ########################################################################################################
+  
+  #p_2d_2 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+    #geom_bin2d(bins = 100) +
+    #geom_density_2d() +
+    #scale_fill_continuous(type = "viridis") +
+    #xlab("poi") +
+    #ylab("k-sim 2") +
+    #ggtitle("Two dimensional density plot of k-sim 2 and poi") +
+    #theme_bw() +
+    #facet_wrap(~ Group, nrow = 2) +
+    #theme(panel.grid.minor = element_blank())
+  
+  ########################## 20230226 added ##################################################
+  group_list <- unique(df_gg_2$Group)
+  p_2d_2 <- c()
+  for (tgt_gp in group_list) {
+    p <- ggplot(df_gg_2[df_gg_2$Group == tgt_gp & df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+      geom_bin2d(bins = 100) +
+      geom_density_2d() +
+      scale_fill_continuous(type = "viridis") +
+      xlab("poi") +
+      ylab("k-sim Pearson") +
+      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      theme_bw() +
+      facet_wrap(~ Group, nrow = 2) +
+      theme(panel.grid.minor = element_blank())
+    if(tgt_gp == group_list[1]){
+      p_2d_2 <- p
+    }else{
+      p_2d_2 <- p_2d_2 + p
+    }
+  }
+  plot(p_2d_2 + plot_layout(nrow = 2, ncol = 2))
+  
+  ########################################################################################################
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_1_2d.pdf"), plot = p_2d_1, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4B_k_sim_Jaccard_2d.pdf"), plot = p_2d_1, width = 8, height = 6)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_ctc_k_sim_2_2d.pdf"), plot = p_2d_2, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4B_k_sim_Pearson_2d.pdf"), plot = p_2d_2, width = 8, height = 6)
   
 }
 
 Plot_group_2d_2 <- function(df_gg_2){
   
   ## 2d density
-  p_2d_1 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
-    geom_bin2d(bins = 100) +
-    #stat_density_2d(aes(fill = ..level..), geom = "polygon", bins = 100) +
-    scale_fill_continuous(type = "viridis") +
-    xlab("poi") +
-    ylab("k-sim 1") +
-    ggtitle("Two dimensional density plot of k-sim 1 and poi") +
-    theme_bw() +
-    facet_wrap(~ Group, nrow = 2) +
-    # theme(axis.text.x = element_text(size = 6)) +
-    theme(panel.grid.minor = element_blank())
+  #p_2d_1 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+    #geom_bin2d(bins = 100) +
+    #geom_density_2d() +
+    #scale_fill_continuous(type = "viridis") +
+    #xlab("poi") +
+    #ylab("k-sim 1") +
+    #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+    #theme_bw() +
+    #facet_wrap(~ Group, nrow = 2) +
+    #theme(panel.grid.minor = element_blank())
   
-  p_2d_2 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
-    geom_bin2d(bins = 100) +
-    scale_fill_continuous(type = "viridis") +
-    xlab("poi") +
-    ylab("k-sim 2") +
-    ggtitle("Two dimensional density plot of k-sim 2 and poi") +
-    theme_bw() +
-    facet_wrap(~ Group, nrow = 2) +
-    # theme(axis.text.x = element_text(size = 6)) +
-    theme(panel.grid.minor = element_blank())
+  ########################## 20230226 added ##################################################
+  library(patchwork)
+  group_list <- unique(df_gg_2$Group)
+  p_2d_1 <- c()
+  for (tgt_gp in group_list) {
+    p <- ggplot(df_gg_2[df_gg_2$Group == tgt_gp & df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 1", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+      geom_bin2d(bins = 100) +
+      geom_density_2d() +
+      scale_fill_continuous(type = "viridis") +
+      xlab("poi") +
+      ylab("k-sim Jaccard") +
+      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      theme_bw() +
+      facet_wrap(~ Group, nrow = 2) +
+      theme(panel.grid.minor = element_blank())
+    if(tgt_gp == group_list[1]){
+      p_2d_1 <- p
+    }else{
+      p_2d_1 <- p_2d_1 + p
+    }
+  }
+  plot(p_2d_1 + plot_layout(nrow = 2, ncol = 2))
+  
+  ########################################################################################################
+  
+  #p_2d_2 <- ggplot(df_gg_2[df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+    #geom_bin2d(bins = 100) +
+    #geom_density_2d() +
+    #scale_fill_continuous(type = "viridis") +
+    #xlab("poi") +
+    #ylab("k-sim 2") +
+    #ggtitle("Two dimensional density plot of k-sim 2 and poi") +
+    #theme_bw() +
+    #facet_wrap(~ Group, nrow = 2) +
+    #theme(panel.grid.minor = element_blank())
+  
+  ########################## 20230226 added ##################################################
+  group_list <- unique(df_gg_2$Group)
+  p_2d_2 <- c()
+  for (tgt_gp in group_list) {
+    p <- ggplot(df_gg_2[df_gg_2$Group == tgt_gp & df_gg_2$Similarity != "poi" & df_gg_2$Similarity == "k-sim 2", ], aes(x = n1_by_n1all_plus_n2_by_n2all_norm, y = sim)) +
+      geom_bin2d(bins = 100) +
+      geom_density_2d() +
+      scale_fill_continuous(type = "viridis") +
+      xlab("poi") +
+      ylab("k-sim Pearson") +
+      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      theme_bw() +
+      facet_wrap(~ Group, nrow = 2) +
+      theme(panel.grid.minor = element_blank())
+    if(tgt_gp == group_list[1]){
+      p_2d_2 <- p
+    }else{
+      p_2d_2 <- p_2d_2 + p
+    }
+  }
+  plot(p_2d_2 + plot_layout(nrow = 2, ncol = 2))
+  
+  ########################################################################################################
+  
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_1_2d.png"), plot = p_2d_1, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_1_2d.pdf"), plot = p_2d_1, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4E_k_sim_Jaccard_2d.pdf"), plot = p_2d_1, width = 8, height = 6)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_2_2d.png"), plot = p_2d_2, width = 18, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_tf_k_sim_2_2d.pdf"), plot = p_2d_2, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4E_k_sim_Pearson_2d.pdf"), plot = p_2d_2, width = 8, height = 6)
   
 }
 
