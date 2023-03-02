@@ -11,11 +11,19 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1B.pdf"), Fig1B, width = 7, hei
 
 
 ## Fig. 1C --------
-source("~/MOCCS_paper_public/function/Fig1C_plot.R")
-target_TF <- "SPI1"
-load <- "figshare" #local or figshare
-filter <- "all" #soft or hard or all
-Fig1C_plot(target_TF, load, filter)
+#source("~/MOCCS_paper_public/function/Fig1C_plot.R")
+#target_TF <- "FOXA1"
+#load <- "local" #local or figshare
+#filter <- "hard" #soft or hard or all
+#Fig1C_plot(target_TF, load, filter)
+
+## Fig. 1C (ver2, new1D) --------
+source("~/MOCCS_paper_public/function/Fig1C_plot_v2.R")
+TF_list <- c("FOXA1", "SPI1", "CTCF")
+load <- "local" #local or figshare
+filter <- "hard" #soft or hard or all
+p <- Fig1C_plot(TF_list, load, filter)
+ggsave("~/MOCCS_paper_public/plot/Fig1/AUC_nega_3TF.pdf", p, width = 5, height = 7)
 
 ## Fig. 1D ------
 source("~/MOCCS_paper_public/function/Fig1D_plot.R")
@@ -24,7 +32,7 @@ annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
 target_ID <- "SRX067516"
 Fig1D <- Fig1D_plot(target_TF, annotation_path)
 plot(Fig1D)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_", target_TF, "_", target_ID,  ".pdf"), Fig1D, width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_", target_TF, "_", target_ID,  ".pdf"), Fig1D, width =7, height = 7)
 
 
 ## Fig. 1E --------
