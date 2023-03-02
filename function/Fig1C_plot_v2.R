@@ -224,7 +224,7 @@ Fig1C_plot <- function(TF_list, load, filter){
     xlab("TF")+
     ylab("AUC")+
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          legend.position = "none",
+          #legend.position = "none",
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
