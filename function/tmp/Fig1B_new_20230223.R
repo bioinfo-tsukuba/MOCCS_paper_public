@@ -40,8 +40,9 @@ target_tf_list <- tmp[1:20, 1] %>% .$Antigen %>% as.character()
 df_hard2 <- df_hard %>% filter(Antigen %in% target_tf_list)  %>% left_join(tmp , by = "Antigen")
 #df_hard3 <- transform(df_hard2, Antigen= factor(df_hard2$Antigen, levels = Antigen_list))
 
-#color_list <- qualitative_hcl(length(unique(df_hard3$Cell_type_class)), c = 70, l = 80)
-color_list <- rainbow(length(unique(df_hard3$Cell_type_class))) 
+#color_list <- qualitative_hcl(length(unique(df_hard3$Cell_type_class)), c = 60, l = 80)
+#color_list <- rainbow(length(unique(df_hard3$Cell_type_class))) 
+color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"))
 df_hard2 %>% ggplot(aes(x = reorder(Antigen, -n), fill = Cell_type_class))+
   geom_bar(width = 0.8,position = "fill")+
   xlab("TF") +
@@ -82,7 +83,8 @@ View(tmp2)
 df_hard3 <- df_hard %>% left_join(tmp2, by = "Cell_type_class")
 #library(colorspace)
 #color_list <- qualitative_hcl(length(unique(df_hard3$Cell_type_class)), c = 70, l = 70)
-color_list <- rainbow(length(unique(df_hard3$Cell_type_class)))
+#color_list <- rainbow(length(unique(df_hard3$Cell_type_class)))
+color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"))
 
 df_hard3 %>% ggplot(aes(x = reorder(Cell_type_class, -n), fill = Cell_type_class))+
   geom_bar(width = 0.8)+

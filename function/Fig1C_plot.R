@@ -45,8 +45,7 @@ Fig1C_plot <- function(target_TF, load, filter){
   ## calculate per sample and plot
   sample_list <- unique(target_MOCCS$ID)
   AUC_list <- list()
-  color_list <- qualitative_hcl(length(sample_list), "Dark2")
-  #color_list <- sample(color_list,500,replace=FALSE)
+  color_list <- rep(c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG")), 15)
   
   for (z in seq_along(sample_list)) {
     
@@ -96,11 +95,9 @@ Fig1C_plot <- function(target_TF, load, filter){
         plot(ROC, add = TRUE, col=color_list[z])
       }#zのifの終わり
       #dev.off()
-      
-      
     }#ifelseのifの終わり
-    
   }
+  
   print(paste0("AUC = ", AUC_list[[target_TF]]))
   return(AUC_list[[target_TF]])
 }

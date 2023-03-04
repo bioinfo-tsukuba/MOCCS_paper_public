@@ -214,7 +214,7 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
     facet_wrap(~ Similarity, ncol = 1)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4_k_sim_cor_bar.png"), plot = p_bar, width = 21, height = 4)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4f_k_sim_cor_bar.pdf"), plot = p_bar, width = 6, height = 4)  
+  ggsave(paste0("~/MOCCS_paper_public/plot/FigS4/FigS4F_k_sim_cor_bar.pdf"), plot = p_bar, width = 6, height = 4)  
   
   
   return()
@@ -506,9 +506,9 @@ Plot_group_2d <- function(df_gg_2){
       geom_bin2d(bins = 100) +
       geom_density_2d() +
       scale_fill_continuous(type = "viridis") +
-      xlab("poi") +
+      xlab("Peak overlap index") +
       ylab("k-sim Jaccard") +
-      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
       theme_bw() +
       facet_wrap(~ Group, nrow = 2) +
       theme(panel.grid.minor = element_blank())
@@ -541,9 +541,9 @@ Plot_group_2d <- function(df_gg_2){
       geom_bin2d(bins = 100) +
       geom_density_2d() +
       scale_fill_continuous(type = "viridis") +
-      xlab("poi") +
+      xlab("Peak overlap index") +
       ylab("k-sim Pearson") +
-      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
       theme_bw() +
       facet_wrap(~ Group, nrow = 2) +
       theme(panel.grid.minor = element_blank())
@@ -588,9 +588,9 @@ Plot_group_2d_2 <- function(df_gg_2){
       geom_bin2d(bins = 100) +
       geom_density_2d() +
       scale_fill_continuous(type = "viridis") +
-      xlab("poi") +
+      xlab("Peak overlap index") +
       ylab("k-sim Jaccard") +
-      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
       theme_bw() +
       facet_wrap(~ Group, nrow = 2) +
       theme(panel.grid.minor = element_blank())
@@ -623,9 +623,9 @@ Plot_group_2d_2 <- function(df_gg_2){
       geom_bin2d(bins = 100) +
       geom_density_2d() +
       scale_fill_continuous(type = "viridis") +
-      xlab("poi") +
+      xlab("Peak overlap index") +
       ylab("k-sim Pearson") +
-      ggtitle("Two dimensional density plot of k-sim 1 and poi") +
+      #ggtitle("Two dimensional density plot of k-sim 1 and poi") +
       theme_bw() +
       facet_wrap(~ Group, nrow = 2) +
       theme(panel.grid.minor = element_blank())

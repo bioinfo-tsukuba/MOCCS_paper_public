@@ -85,16 +85,16 @@ ggsave(paste0("~/MOCCS_paper_public/plot/FigS9/FigS9_allTF_PBS_Pear.pdf"), FigS9
 
 
 ## Fig. S10 --------
-source("~/MOCCS_paper_public/function/FigS10_plot.R")
+source("~/MOCCS_paper_public/function/FigS10_plot_v2.R")
 #path <- "~/MOCCS_paper_public/data/Fig6/"
 target_phenotype <- "CD"
 target_TF <- "FOS"
-FigS10B_plot_need <- "no" #"yes" or "no"
-FigS10 <- FigS10_plot(target_phenotype, target_TF, FigS10B_plot_need )
+FigS10B_plot_need <- "yes" #"yes" or "no"
+FigS10 <- FigS10_plot_v2(target_phenotype, target_TF, FigS10B_plot_need)
 plot(FigS10[[1]])
 plot(FigS10[[2]])
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/FigS10_", target_TF, ".pdf"), FigS10[[1]], width = 7, height = 7)
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/FigS10_all_barplot.pdf"), FigS10[[2]], width = 14, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/FigS10_", target_TF, "_v2.pdf"), FigS10[[1]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/FigS10_all_barplot_v2.pdf"), FigS10[[2]], width = 14, height = 7)
 
 
 ## Fig. S11 --------
