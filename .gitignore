@@ -6,3 +6,8 @@ data/Fig2/out/MOCCSout_hg38_hard_filter_annotated.rds
 data/.DS_Store
 data/Fig2/obj/df_raw.rds
 data/Fig2/obj/df_poi.rds
+data/Fig6/CD_binded_all.rds
+data/Fig6/IBD_binded_all.rds
+data/Fig6/MS_binded_all.rds
+data/Fig6/SLE_binded_all.rds
+data/Fig1/MOCCSout_hg38_all_qval_annotated.rds
