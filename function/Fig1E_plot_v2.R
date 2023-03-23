@@ -3,6 +3,7 @@ Fig1E_plot <- function(annotation_path){
   library(tidyverse)
   library(RColorBrewer)
   library(colorspace)
+  library(pROC)
   #library(reshape2)
 
   #annotation_all <- readRDS(paste0(annotation_path, "experimentList_tab4.rds"))
@@ -78,6 +79,9 @@ Fig1E_plot <- function(annotation_path){
           axis.title=element_text(size=15,face="bold"),
           aspect.ratio = 1
     )
+  
+  # wilcox.test per samples
+  
   
   return(list(p1, p2))
   
