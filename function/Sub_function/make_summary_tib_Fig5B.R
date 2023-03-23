@@ -1,4 +1,5 @@
 library(tidyverse)
+#library(exactRankTests)
 target_phenotype_list <- c("SLE", "MS", "IBD", "CD")
 #totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
 totalization <- readRDS("~/MOCCS_paper_public/data/Fig1/MOCCSout_hg38_all_qval_annotated.rds")
@@ -88,7 +89,7 @@ for (target_phenotype in target_phenotype_list) {
     tmp_within <- tgt_within %>% mutate(ratio = ratio_within)
     tmp_without <- tgt_without %>% mutate(ratio = ratio_without)
     if(nrow(tmp_within) != 0 & nrow(tmp_without) != 0){
-      tmp_df <- rbind(tmp_within, tmp_within)
+      tmp_df <- rbind(tmp_within, tmp_without)
     }else if(nrow(tmp_within) == 0){
       tmp_df <- tmp_without
     }else{
@@ -102,6 +103,46 @@ for (target_phenotype in target_phenotype_list) {
   }
   write_tsv(summary_tib2, paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, ".tsv"))
 }
+
+# wilcoxon test per TFs
+q_list_all <- list()
+p_list <- list()
+for (target_phenotype in target_phenotype_list) {
+  print(target_phenotype)
+  summary_tib2 <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, ".tsv"))
+  for (target_tf  in TF_list) {
+    print(target_tf)
+    tgt_df <- summary_tib2 %>% filter(TF == target_tf)
+    within_df <- tgt_df %>% filter(label == "within") %>% filter(significant == "significant") 
+    out_of_df <- tgt_df %>% filter(label == "without") %>% filter(significant == "significant")
+    share_ID <- intersect(unique(within_df$ID), unique(out_of_df$ID))
+    if(length(share_ID) != 0){
+      within_ratio <- within_df %>% filter(ID %in% share_ID) %>% .$ratio %>% as.numeric()
+      out_of_ratio <- out_of_df %>% filter(ID %in% share_ID) %>% .$ratio %>% as.numeric()
+      
+      res <- wilcox.exact(within_ratio, out_of_ratio, paired = T, alternative = "greater")
+      p <- res$p.value %>% as.numeric()
+      p_list[[target_tf]] <- p
+    }
+  }
+  q_list_all[[target_phenotype]] <- p.adjust(p_list)
+}
+
+df_qval <- tibble()
+for (target_phenotype in target_phenotype_list) {
+  print(target_phenotype)
+  df1 <- tibble(TF = names(q_list_all[[target_phenotype]]), qval = q_list_all[[target_phenotype]])
+  df2 <- df1 %>% mutate(phenotype = target_phenotype)
+  if(nrow(df_qval) == 0){
+    df_qval <- df2
+  }else{
+    df_qval <- rbind(df_qval, df2)
+  }
+}
+
+df_qval2 <- df_qval %>% mutate(significance_wilcoxon = ifelse(qval < 0.05, "TRUE", "FALSE"))
+write_tsv(df_qval2, "~/MOCCS_paper_public/data/Fig6/sig_ratio_wilcoxon_exact.tsv")
+
 
 for (target_phenotype in target_phenotype_list) {
   print(target_phenotype)
