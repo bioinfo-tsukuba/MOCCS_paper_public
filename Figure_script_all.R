@@ -38,10 +38,18 @@ ggsave("~/MOCCS_paper_public/plot/Fig1/AUC_nega_3TF.pdf", p, width = 5, height =
 source("~/MOCCS_paper_public/function/Fig1D_plot_v2.R")
 TF_list <- c("FOXA1", "SPI1", "CTCF")
 annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-#target_ID <- "SRX067516"
 Fig1D <- Fig1D_plot(TF_list, annotation_path)
-plot(Fig1D)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_ver2.pdf"), Fig1D, width =7, height = 7)
+plot(Fig1D[1])
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_ver2.pdf"), Fig1D[1], width =7, height = 7)
+
+# all TF p plot
+source("~/MOCCS_paper_public/function/Fig1D_plot_v2.R")
+TF_list_all <- readRDS("~/MOCCS_paper_public/data/Fig1/TF_all.rds")
+annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
+Fig1D <- Fig1D_plot(TF_list_all, annotation_path)
+plot(Fig1D[2])
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1D_ver2_allTF.pdf"), Fig1D[2], width =7, height = 7)
+
 
 
 ## Fig. 1E --------
@@ -157,11 +165,11 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], 
 ### Figure6 ###
 #################
 ## Fig. 6B --------
-source("~/MOCCS_paper_public/function/Fig6B_plot_v3.R")
-annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
-Fig6B <- Fig6B_plot(annotation_path)
-plot(Fig6B)
-ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6B.pdf"), Fig6B, width = 7, height = 7)
+source("~/MOCCS_paper_public/function/Fig6B_plot_v4.R")
+Fig6B <- Fig6B_plot_v4()
+#plot(Fig6B)
+#ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_all.pdf"), Fig6B)
+# already saved in function
 
 
 ## Fig. 6C --------
