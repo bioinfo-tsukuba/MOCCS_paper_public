@@ -13,7 +13,7 @@ Fig6B_plot_v4 <- function(){
       ggplot(aes(x = TF, y = ratio, fill = label2)) +
       geom_boxplot(notchwidth = 0.3, width = 0.7) +
       scale_fill_manual(values = c( "#696969", "#DC143C")) +
-      theme(plot.title = element_text(face="bold",hjust = 0.5), 
+      theme(plot.title = element_text(face="bold",hjust = 0.5, size = 8), 
             panel.grid.major = element_line(colour = "gray"),
             panel.grid.minor = element_line(colour="gray"),
             panel.background = element_blank(), 
