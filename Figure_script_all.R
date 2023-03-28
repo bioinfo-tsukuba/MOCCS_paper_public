@@ -2,15 +2,20 @@
 ### Figure1 ###
 #################
 ## Fig. 1B --------
+source("~/MOCCS_paper_public/function/Fig1B_plot_ver2.R")
+Fig1B <- Fig1B_plot_ver2()
+plot(Fig1B[1])
+plot(Fig1B[2])
+ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_TF_ver2.pdf", Fig1B[1])
+ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_CTC_ver2.pdf", Fig1B[2])
+
+## Fig. 1C --------
 source("~/MOCCS_paper_public/function/Fig1B_plot.R")
 target_ID_Fig1B <- "SRX1156473" #GATA3
 # /Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1にhg38 target_ID_Fig1BのMOCCS outputを移してから以下を実行
 Fig1B <- Fig1B_plot(target_ID_Fig1B)
 plot(Fig1B)
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1B.pdf"), Fig1B, width = 7, height = 7)
-
-
-## Fig. 1C --------
 #source("~/MOCCS_paper_public/function/Fig1C_plot.R")
 #target_TF <- "FOXA1"
 #load <- "local" #local or figshare
