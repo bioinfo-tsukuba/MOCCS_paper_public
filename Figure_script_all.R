@@ -4,10 +4,10 @@
 ## Fig. 1B --------
 source("~/MOCCS_paper_public/function/Fig1B_plot_ver2.R")
 Fig1B <- Fig1B_plot_ver2()
-plot(Fig1B[1])
-plot(Fig1B[2])
-ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_TF_ver2.pdf", Fig1B[1])
-ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_CTC_ver2.pdf", Fig1B[2])
+plot(Fig1B[[1]])
+plot(Fig1B[[2]])
+ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_TF_ver2.pdf", Fig1B[[1]])
+ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1B_CTC_ver2.pdf", Fig1B[[2]])
 
 ## Fig. 1C --------
 source("~/MOCCS_paper_public/function/Fig1B_plot.R")

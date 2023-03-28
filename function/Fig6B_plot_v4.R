@@ -1,5 +1,7 @@
 Fig6B_plot_v4 <- function(){
   
+  # based on the results; ~/MOCCS_paper_public/function/Sub_function/make_summary_tib_Fig5B.R 
+  
   library(tidyverse)
   library(patchwork)
   target_phenotype_list <- c("SLE", "MS", "IBD", "CD")
@@ -7,7 +9,8 @@ Fig6B_plot_v4 <- function(){
   
   for (target_phenotype in target_phenotype_list) {
     print(target_phenotype)
-    summary_df <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, ".tsv"))
+    #summary_df <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, ".tsv"))
+    summary_df <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, "_TF42.tsv"))
     summary_df2 <- summary_df %>% mutate(label2 = ifelse(label == "within", "within peaks", "out of peaks"))
     p <- summary_df2 %>% filter(significant == "significant") %>%
       ggplot(aes(x = TF, y = ratio, fill = label2)) +
@@ -30,6 +33,7 @@ Fig6B_plot_v4 <- function(){
       ylab("Ratio of significant SNPs") 
     plot(p)
     ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, ".pdf"), p)
+    #ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, "_TF42.pdf"), p)
     
     if(target_phenotype == target_phenotype_list[1]){
       p_patch <- p
