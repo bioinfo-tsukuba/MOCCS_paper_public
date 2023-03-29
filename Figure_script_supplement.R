@@ -127,3 +127,11 @@ plot(FigS12[[2]])
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS12/FigS12A_", target_phenotype,".pdf"), FigS12[[1]], width = 7, height = 7)
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS12/FigS12B_", target_phenotype,".pdf"), FigS12[[2]], width = 7, height = 7)
 
+## Fig. S13 ---------
+source("~/MOCCS_paper_public/function/FigS13_plot.R")
+TF_list <- c("CTCF", "SPI1", "FOXA1")
+FigS13 <- FigS13_plot(TF_list)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS13/FigS13_", names(FigS13)[1], ".pdf"),  FigS13[[1]], width = 14, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS13/FigS13_", names(FigS13)[2], ".pdf"),  FigS13[[2]], width = 14, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS13/FigS13_", names(FigS13)[3], ".pdf"),  FigS13[[3]], width = 14, height = 7)
+
