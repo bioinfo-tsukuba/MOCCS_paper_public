@@ -173,7 +173,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig5/Fig5E_bar_plot.pdf"), Fig5E[[2]], 
 source("~/MOCCS_paper_public/function/Fig6B_plot_v4.R")
 Fig6B <- Fig6B_plot_v4()
 #plot(Fig6B)
-#ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_all.pdf"), Fig6B)
+#ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_all_TF42.pdf"), Fig6B)
 # already saved in function
 
 
@@ -200,6 +200,35 @@ plot(Fig6D[[2]])
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6D_", target_phenotype,"_TF.pdf"), Fig6D[[2]], width = 7, height = 7)
 
 
+## Fig6CD devide by dMOCCS2score > 0 or dMOCCS2score < 0 -----
+source("~/MOCCS_paper_public/function/Sub_function/Fig6CD_plot_seihu.R")
+target_phenotype <- "SLE"
+annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
+threshold <- 150
+Fig6D <- Fig6CD_plot_seihu(target_phenotype, annotation_path, threshold)
+plot(Fig6D[[1]])
+plot(Fig6D[[2]])
+plot(Fig6D[[3]])
+plot(Fig6D[[4]])
+
+# Fig6CD label ---
+source("~/MOCCS_paper_public/function/Sub_function/Fig6CD_label.R")
+figure <- "D" #C or D 
+labels <- make_label(figure)
+plot(labels[[1]])
+plot(labels[[2]])
+plot(labels[[3]])
+plot(labels[[4]])
+if(figure == "C"){
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/SLE_rs.pdf", labels[[2]])
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/SLE_ref.pdf", labels[[3]])
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/SLE_alt.pdf", labels[[4]])
+}else if(figure == "D"){
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/CD_rs.pdf", labels[[2]])
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/CD_ref.pdf", labels[[3]])
+  ggsave("~/MOCCS_paper_public/plot/Fig6/CD_SLE_label/CD_alt.pdf", labels[[4]])
+}
+
 ## Fig. 6E --------
 source("~/MOCCS_paper_public/function/Fig6E_plot.R")
 target_phenotype <- "CD"
@@ -209,7 +238,7 @@ target_position <- "chr15_67150258"
 
 annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
 threshold <- 100
-Fig6E <- Fig6E_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+Fig6E <- Fig6E_plo_seihut(target_phenotype, target_rs, target_position ,annotation_path, threshold)
 plot(Fig6E[[1]])
 plot(Fig6E[[2]])
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_CL.pdf"), Fig6E[[1]], width = 7, height = 7)
@@ -231,6 +260,18 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_CL.pdf
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/Fig6E_", target_phenotype,"_TF.pdf"), Fig6E[[2]], width = 14, height = 14)
 
 
+# devide by dMOCCS2score and dMOCCS2score < 0
+source("~/MOCCS_paper_public/function/Sub_function/Fig6E_plot_seihu.R")
+target_phenotype <- "CD"
+
+target_rs <- "rs17293632"
+target_position <- "chr15_67150258"
+
+annotation_path <- "~/MOCCS_paper_public/data/Fig6/"
+threshold <- 100
+Fig6E <- Fig6E_plot(target_phenotype, target_rs, target_position ,annotation_path, threshold)
+plot(Fig6E[[1]])
+plot(Fig6E[[2]])
 
 
 

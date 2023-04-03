@@ -32,8 +32,8 @@ Fig6B_plot_v4 <- function(){
       ggtitle(target_phenotype) +
       ylab("Ratio of significant SNPs") 
     plot(p)
-    ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, ".pdf"), p)
-    #ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, "_TF42.pdf"), p)
+    #ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, ".pdf"), p)
+    ggsave(paste0("~/MOCCS_paper_public/plot/Fig6/snp_sig_ratio_", target_phenotype, "_TF42.pdf"), p)
     
     if(target_phenotype == target_phenotype_list[1]){
       p_patch <- p

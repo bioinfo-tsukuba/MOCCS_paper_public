@@ -9,8 +9,7 @@ FigS10_plot_v5 <- function(){
   for (target_phenotype in target_phenotype_list) {
     print(target_phenotype)
     
-    
-    summary_df <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/sig_snp_ratio_", target_phenotype, ".tsv"))
+    summary_df <- read_tsv(paste0("~/MOCCS_paper_public/data/Fig6/1kGP/", target_phenotype, "_summary_TF42.tsv"))
     summary_df2 <- summary_df %>% mutate(label2 = ifelse(label == "within", "within peaks", "out of peaks"))
     
     patch <- c()
@@ -33,7 +32,7 @@ FigS10_plot_v5 <- function(){
               axis.title.x = element_text(size=3,face="bold"),
               axis.text.y =element_text(size=1.5,face="bold"),
               axis.title=element_text(size=5,face="bold"),
-              #legend.position = 'none',
+              legend.position = 'none',
               legend.title = element_blank(),
               aspect.ratio = 1
         )+
@@ -46,7 +45,8 @@ FigS10_plot_v5 <- function(){
         patch <- patch + p
       }
     }
-    ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/", target_phenotype, "_snp_count_sig.pdf"), patch)
+    plot(patch)
+    #ggsave(paste0("~/MOCCS_paper_public/plot/FigS10/", target_phenotype, "_snp_count_sig_1kGP.pdf"), patch)
     patch_list[[target_phenotype]] <- patch
     
   } #for (target_phenotype in target_phenotype_list) 
