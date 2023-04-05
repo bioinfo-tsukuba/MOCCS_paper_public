@@ -268,7 +268,8 @@ Plot_group_1 <- function(df_gg, group_vec, group_mat){
     facet_wrap(~ Similarity, nrow = 3)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1G_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
   
   #svg(file=paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
   #plot(p_dist)
@@ -322,7 +323,8 @@ Plot_group_1_2 <- function(df_gg, group_vec, group_mat){
     facet_wrap(~ Similarity, nrow = 3)
   
   #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.png"), plot = p_dist, width = 21, height = 6)  
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2_k_sim_dist_main.pdf"), plot = p_dist, width = 7, height = 7)
   
   #svg(file=paste0("~/MOCCS_paper_public/plot/Fig2/Fig2B/Fig2B_k_sim_dist_main.svg"), width = 21, height = 6)
   #plot(p_dist)

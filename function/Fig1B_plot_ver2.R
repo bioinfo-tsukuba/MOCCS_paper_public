@@ -15,7 +15,9 @@ Fig1B_plot_ver2 <- function(){
   df_hard <- annotation_hg38 %>% filter(ID %in% ID_hard) %>% mutate(filter = "Hard")
   df_plot <- rbind(df_all, df_hard)
   
-  target_tf_list <- tmp[1:20, 1] %>% .$Antigen %>% as.character()
+  tmp <- df_hard %>% group_by(Antigen) %>% summarise(n = n()) %>% arrange(desc(n))
+  target_tf_list <- tmp$Antigen[1:20]%>% as.character()
+  #target_tf_list <- tmp[1:20, 1] %>% .$Antigen %>% as.character()
   df_hard2 <- df_hard %>% filter(Antigen %in% target_tf_list)  %>% left_join(tmp , by = "Antigen")
   color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"))
   
@@ -36,6 +38,8 @@ Fig1B_plot_ver2 <- function(){
           aspect.ratio = 0.8
     )
   
+  
+  tmp2 <- df_hard %>% group_by(Cell_type_class) %>% summarise(n = n()) %>% arrange(desc(n))
   df_hard3 <- df_hard %>% left_join(tmp2, by = "Cell_type_class")
   color_list <- c(brewer.pal(10,"Spectral"),brewer.pal(10,"BrBG"))
   

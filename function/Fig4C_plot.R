@@ -1,162 +1,22 @@
-Fig4C_plot <- function(simulation_path){
+Fig4C_plot <- function(target_TF){
   
   library(tidyverse)
-  library(patchwork)
-  df <- readRDS(paste0(simulation_path,"summary_table_for_plot.rds"))
-  df_differential <- df %>% filter(sig_or_dif == "differential")
-  df_differential2 <- df_differential %>% pivot_longer(cols = c(-a, -N, -sigma, -q, -FDR, -sig_or_dif), names_to = "sensi_or_spe", values_to = "value")
+  if(target_TF == "HOXB13"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336358", "rb"))
+  }else if(target_TF == "GATA3"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336355", "rb"))
+  }else if(target_TF == "FOXA1"){
+    target_df <- read_tsv(url("https://figshare.com/ndownloader/files/34336352", "rb"))
+  }
+  #totalization <- readRDS(url("https://figshare.com/ndownloader/files/34065686","rb")) #MOCCSout_hg38_all_qval_annotated.rds
+  totalization <- readRDS("~/MOCCS_paper_public/data/Fig2/out/MOCCSout_hg38_hard_filter_annotated.rds")
+  annotation <- totalization %>% select(ID, Antigen, Cell_type_class, Cell_type) %>% filter(Antigen == target_TF) %>% distinct()
+  target_df <- target_df %>% left_join(annotation, by = "ID")
   
-  
-  # sensitivity
-  # alpha
-  df_differential2$FDR <- format(df_differential2$FDR, digits = 2)
-  p1 <- df_differential2 %>% filter(sensi_or_spe == "sensi")%>% filter(N == 12000 & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = a, y = value))+
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Sensitivity") +
-    #xlab("α") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  
-  # N
-  df_differential2$N <- as.character(df_differential2$N)
-  df_differential2 <- transform(df_differential2, N= factor(N, levels = c("6000", "12000")))
-  p2 <- df_differential2 %>% filter(sensi_or_spe == "sensi")%>% filter(a == "[0.1,0.2]" & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = N, y = value))+
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Sensitivity") +
-    #xlab("N") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"), 
-          aspect.ratio = 1
-    )
-  
-  # sigma
-  df_differential2 <- transform(df_differential2, sigma= factor(sigma, levels = c("W5", "W2")))
-  p3 <- df_differential2 %>% filter(sensi_or_spe == "sensi")%>% filter(a == "[0.1,0.2]" & N == 12000 & q == 0.05) %>%
-    ggplot(aes(x = sigma, y = value)) +
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Sensitivity") +
-    #xlab("σ") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  # specificity
-  # alpha
-  df_differential2$FDR <- format(df_differential2$FDR, digits = 2)
-  p4 <- df_differential2 %>% filter(sensi_or_spe == "spe")%>% filter(N == 12000 & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = a, y = value))+
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Specificity") +
-    #xlab("α") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  
-  # N
-  df_differential2$N <- as.character(df_differential2$N)
-  df_differential2 <- transform(df_differential2, N= factor(N, levels = c("6000", "12000")))
-  p5 <- df_differential2  %>% filter(sensi_or_spe == "spe") %>% filter(a == "[0.1,0.2]" & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = N, y = value))+
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Specificity") +
-    #xlab("N") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  # sigma
-  df_differential2 <- transform(df_differential2, sigma= factor(sigma, levels = c("W5", "W2")))
-  p6 <- df_differential2 %>% filter(sensi_or_spe == "spe")%>% filter(a == "[0.1,0.2]" & N == 12000 & q == 0.05) %>%
-    ggplot(aes(x = sigma, y = value)) +
-    geom_col(width = 0.4) +
-    ylim(0,1.2)+
-    ylab("Specificity") +
-    #xlab("σ") +
-    xlab("") +
-    geom_hline(yintercept=1, linetype="dashed") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  # FDR
-  # alpha
-  #df_differential2$FDR <- format(df_differential2$FDR, digits = 2)
-  df_differential2$FDR<- as.numeric(df_differential2$FDR)
-  p7 <- df_differential2 %>% filter(sensi_or_spe == "spe")%>% filter(N == 12000 & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = a, y = FDR))+
-    geom_col(width = 0.4) +
-    ylim(c(0, 0.05)) +
-    geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
-    #xlab("α") +
-    xlab("") +
+  p1 <- target_df  %>% ggplot(aes(x = dMOCCS2score, y = pbs))+
+    geom_point(size = 1, alpha = 1)+
+    geom_smooth(se = FALSE, method = lm) +
+    ggtitle(target_TF)+
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
           panel.grid.major = element_line(colour = "gray"),
           panel.grid.minor = element_line(colour="gray"),
@@ -165,59 +25,8 @@ Fig4C_plot <- function(simulation_path){
           axis.text=element_text(size=12,face="bold"),
           axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
           axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
+          axis.title=element_text(size=14,face="bold")
     )
-  
-  
-  # N
-  df_differential2$N <- as.character(df_differential2$N)
-  df_differential2 <- transform(df_differential2, N= factor(N, levels = c("6000", "12000")))
-  p8 <- df_differential2 %>% filter(sensi_or_spe == "spe")%>% filter(a == "[0.1,0.2]" & sigma == "W5" & q == 0.05) %>%
-    ggplot(aes(x = N, y = FDR))+
-    geom_col(width = 0.4) +
-    ylim(c(0, 0.05)) +
-    geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
-    #xlab("N") +
-    xlab("") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  # sigma
-  df_differential2 <- transform(df_differential2, sigma= factor(sigma, levels = c("W5", "W2")))
-  p9 <- df_differential2 %>% filter(sensi_or_spe == "spe")%>% filter(a == "[0.1,0.2]" & N == 12000 & q == 0.05) %>%
-    ggplot(aes(x = sigma, y = FDR)) +
-    geom_col(width = 0.4) +
-    ylim(c(0, 0.05)) +
-    geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
-    #xlab("σ") +
-    xlab("") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          aspect.ratio = 1
-    )
-  
-  p_all_1 <- (p1 | p2 | p3) 
-  p_all_2 <- (p4 | p5 | p6)
-  p_all_3 <- (p7 | p8 | p9)
-  return(list(p_all_1, p_all_2, p_all_3))
+  return(p1)
   
 }

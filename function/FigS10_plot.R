@@ -1,6 +1,7 @@
 FigS10_plot <- function(target_phenotype, target_tf, FigS10B_plot_need ){
   
   library(tidyverse)
+  options(timeout=1000)
   if(target_phenotype == "CD"){
     target_df <- readRDS(url("https://figshare.com/ndownloader/files/34065827", "rb"))
   }else if(target_phenotype == "MS"){

@@ -2,6 +2,7 @@ FigS1_plot <- function(path){
   
   library(tidyverse)
   library(GGally)
+  options(timeout=1000)
   df_tidy <- readRDS(paste0(path, "DROMPA_SUMMARY_hg38.rds"))
   experimentList_tab4 <- readRDS(url("https://figshare.com/ndownloader/files/34065671", "rb"))
   experimentList_tab5 <- experimentList_tab4 %>% filter(Genome == "hg38" & Antigen_class == "TFs and others") %>% select(ID, peaks)

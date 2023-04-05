@@ -4,6 +4,7 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
   # t_ctc_list <- c("Blood", "Breast")
   # t_num <- 15
   
+  library(tidyverse)
   library(ggraph)
   library(igraph)
   
@@ -65,7 +66,8 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
   } else {
     col_max <- "red"
   }
-  pdf (paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_color_legend.pdf"))
+  #pdf (paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_color_legend.pdf"))
+  pdf (paste0("~/MOCCS_paper_public/plot/Fig2/Fig2F/Fig2F_", a1, "_color_legend.pdf"))
   RColorBrewer::display.brewer.pal(9, "Reds")
   dev.off()
 
@@ -98,8 +100,8 @@ TF_graph_sel_3 <- function(a1, t_ctc_list, t_num){
       theme(legend.position = "none") +
       coord_equal()
       # labs(title = paste0(a1 , " in ", t_ctc))
-    # ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-    ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3F/Fig3F_", a1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2F/Fig2F_", a1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
 
   }
     

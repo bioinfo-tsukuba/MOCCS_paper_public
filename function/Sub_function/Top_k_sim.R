@@ -512,7 +512,8 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_1
   
-  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_ant.pdf", plot = p_l_1, width = 6)
+  #ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_ant.pdf", plot = p_l_1, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1I_ant.pdf", plot = p_l_1, width = 6)
 
   df_l_2 <- tibble(
     Label = append(fam_lab_list_2_ord, fam_lab_list_3_orig),
@@ -534,7 +535,8 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_2
   
-  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_fam.pdf", plot = p_l_2, width = 6)
+  #ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_fam.pdf", plot = p_l_2, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig1/Fig1I_fam.pdf", plot = p_l_1, width = 6)
   
   df_l_3 <- tibble(
     Label = append(ctc_lab_list_2_ord, ctc_lab_list_3_orig),
@@ -557,7 +559,8 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_3
 
-  ggsave("~/MOCCS_paper_public/plot/Fig3/Fig3C/Fig3C_ctc.pdf", plot = p_l_3, width = 6)
+  #ggsave("~/MOCCS_paper_public/plot/Fig3/Fig3C/Fig3C_ctc.pdf", plot = p_l_3, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2C_ctc.pdf", plot = p_l_3, width = 6)
   
   df_l_1 %>% mutate(Group = "Antigen") -> df_l_1_tmp
   df_l_2 %>% mutate(Group = "Family") -> df_l_2_tmp
@@ -578,7 +581,8 @@ Perm_collect <- function(res_orig_top_perm_list, res_orig_top){
     geom_segment(x = 1, xend = 1, y = 1.1, yend = 1.05) +
     geom_segment(x = 2, xend = 2, y = 1.1, yend = 1.05) -> p_l_comb
   
-  ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_comb.pdf", plot = p_l_comb, width = 6)
+  #ggsave("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_comb.pdf", plot = p_l_comb, width = 6)
+  ggsave("~/MOCCS_paper_public/plot/Fig1Fig1I_comb.pdf", plot = p_l_comb, width = 6)
   
   
   return()

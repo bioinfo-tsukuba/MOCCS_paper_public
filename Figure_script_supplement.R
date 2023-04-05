@@ -3,36 +3,30 @@
 ##################
 ## Fig. S1  --------
 ### Fig. S1B --------
+source("~/MOCCS_paper_public/function/FigS1B.R")
+target_TF <- "CTCF"
+annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
+FigS1B <- FigS1B_plot(target_TF, annotation_path)
+plot(FigS1B)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1B_", target_TF,".pdf"), FigS1B, width = 7, height = 7)
+
+
+### Fig. S1C  --------
 source("~/MOCCS_paper_public/function/FigS1_plot.R")
 path <- "~/MOCCS_paper_public/data/supplement/"
 FigS1 <- FigS1_plot(path)
 FigS1
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1B.pdf"), FigS1, width = 14, height = 14)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1C.pdf"), FigS1, width = 14, height = 14)
 
-### Fig. S1C with soft filter (Added, 2023/01/07) --------
-source("~/MOCCS_paper_public/function/Fig1E_plot.R")
+
+### Fig. S1D --------
+source("~/MOCCS_paper_public/function/FigS1D.R")
 annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-Fig1E <- Fig1E_plot(annotation_path)
-plot(Fig1E[[1]])
-plot(Fig1E[[2]])
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1C_CL.pdf"), Fig1E[[1]], width = 7, height = 7)
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1C_TF.pdf"), Fig1E[[2]], width = 7, height = 7)
-
-### Fig. S1D, with soft filter (Added, 2023/01/07) --------
-source("~/MOCCS_paper_public/function/Fig1F_plot.R")
-target_TF <- "CTCF"
-annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-Fig1F <- Fig1F_plot(target_TF, annotation_path)
-plot(Fig1F)
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1D_", target_TF,".pdf"), Fig1F, width = 7, height = 7)
-
-
-# Fig. S1E, with soft filter (Added, 2023/01/07) --------
-source("~/MOCCS_paper_public/function/Fig1G_plot.R")
-annotation_path <- "~/MOCCS_paper_public/data/Fig1/"
-Fig1G <- Fig1G_plot(annotation_path)
-plot(Fig1G)
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1E.pdf"), Fig1G, width = 7, height = 7)
+FigS1D <- FigS1D_plot(annotation_path)
+plot(FigS1D[[1]])
+plot(FigS1D[[2]])
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1D_CL.pdf"), FigS1D[[1]], width = 7, height = 7)
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS1/FigS1D_TF.pdf"), FigS1D[[2]], width = 7, height = 7)
 
 
 ## Fig. S2 (FigS1 in new version (2022/02/21)) --------
@@ -53,17 +47,7 @@ plot(FigS3[[2]])
 plot(FigS3[[3]])
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS3/FigS3_sample_hist.pdf"), FigS3[[1]], width = 7, height = 7)
 ggsave(paste0("~/MOCCS_paper_public/plot/FigS3/FigS3_q005_density.pdf"), FigS3[[2]], width =7, height = 7)
-ggsave(paste0("~/MOCCS_paper_public/plot/FigS3/FigS3_q001_density.pdf"), FigS3[[3]], width = 7, height = 7)
-
-
-## Fig. S4 --------
-
-## Fig. S5 --------
-
-## Fig. S6 --------
-
-## Fig. S7 --------
-
+ggsave(paste0("~/MOCCS_paper_public/plot/FigS3/FigS3_q001_density.pdf"), FigS3[[3]], width = 7, height = 7)S
 
 
 ## Fig. S9 --------

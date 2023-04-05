@@ -133,17 +133,20 @@ UMAP_df <- function(df_raw, df_fam, all_ns){
     theme(panel.grid.minor = element_blank()) +
     facet_wrap(~ Plot)
   
-  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.png"), plot = p_umap_1, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 6, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant_legend.pdf"), plot = p_umap_1_new, width = 8, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant.pdf"), plot = p_umap_1, width = 6, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1H_umap_ant.pdf"), plot = p_umap_1, width = 6, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_ant_legend.pdf"), plot = p_umap_1_new, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1H_umap_ant_legend.pdf"), plot = p_umap_1_new, width = 8, height = 6)
 
-  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.png"), plot = p_umap_2, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 6, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam_legend.pdf"), plot = p_umap_2_new, width = 8, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam.pdf"), plot = p_umap_2, width = 6, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1H_umap_fam.pdf"), plot = p_umap_2, width = 6, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C/Fig2C_umap_fam_legend.pdf"), plot = p_umap_2_new, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1H_umap_fam_legend.pdf"), plot = p_umap_2_new, width = 8, height = 6)
   
-  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.png"), plot = p_umap_3, width = 5)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 6, height = 6)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap_legend.pdf"), plot = p_umap_3_anno, width = 8, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap.pdf"), plot = p_umap_3, width = 6, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C_umap.pdf"), plot = p_umap_3, width = 6, height = 6)
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3B/Fig3B_umap_legend.pdf"), plot = p_umap_3_anno, width = 8, height = 6)
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2C_umap_legend.pdf"), plot = p_umap_3_anno, width = 8, height = 6)
 
   #creturn()
   

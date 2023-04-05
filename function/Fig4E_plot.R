@@ -1,112 +1,143 @@
-Fig4E_plot <- function(target_ID1 = "", 
-                       target_ID2 = "", 
-                       target_CT = ""){
+Fig4E_plot <- function(target_TF, path){
   
   library(tidyverse)
-  library(ggrepel)
-  totalization <- readRDS("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig1/MOCCSout_hg38_hard_filter_annotated.rds")
-  
-  target_MOCCS1 <- totalization %>% filter(ID == target_ID1) %>% select(kmer, auc, count, MOCCS2score, Antigen, Cell_type_class, Cell_type)
-  colnames(target_MOCCS1) <- c("kmer", "auc1", "count1", "MOCCS2score1", "Antigen1", "Cell_type_class1", "Cell_type1")
-  TF1 <- target_MOCCS1$Antigen1 %>% unique() %>% as.character()
-  CTC1 <- target_MOCCS1$Cell_type_class1 %>% unique() %>% as.character()
-  CT1 <- target_MOCCS1$Cell_type1 %>% unique() %>% as.character()
-  
-  target_MOCCS2 <- totalization %>% filter(ID == target_ID2) %>% select(kmer, auc, count, MOCCS2score, Antigen, Cell_type_class, Cell_type)
-  colnames(target_MOCCS2) <- c("kmer", "auc2", "count2", "MOCCS2score2", "Antigen2", "Cell_type_class2", "Cell_type2")
-  TF2 <- target_MOCCS2$Antigen2 %>% unique() %>% as.character()
-  CTC2 <- target_MOCCS2$Cell_type_class2 %>% unique() %>% as.character()
-  CT2 <- target_MOCCS2$Cell_type2 %>% unique() %>% as.character()
-  
-  df_join <- target_MOCCS1 %>% left_join(target_MOCCS2, by = "kmer") %>% drop_na(auc1, auc2)
-  
-  # calculate dMOCCS2score and p value
-  W <- 350
-  p_list_2 <- c()
-  p_list_sig_1 <- c()
-  p_list_sig_2 <- c()
-  if(nrow(df_join) != 0){
-    for(z in 1:nrow(df_join)){
-      
-      count_i <- df_join[z,"count1"] %>% as.numeric()
-      count_j <- df_join[z,"count2"] %>% as.numeric()
-      
-      #AUC
-      auc_i <- df_join[z,"auc1"] %>% as.numeric()
-      auc_j <- df_join[z,"auc2"] %>% as.numeric()
-      
-      var_i <- W^2/12/count_i
-      var_j <- W^2/12/count_j
-      
-      # MOCCS2score
-      moccs2score_i <- auc_i / sqrt(var_i)
-      moccs2score_j <- auc_j / sqrt(var_j)
-      
-      # sample内のpvalue (significant k-mer)
-      target_p_i <- 1-pnorm(auc_i, mean = 0, sd = sqrt(W^2/12/count_i))
-      target_p_j <- 1-pnorm(auc_j, mean = 0, sd = sqrt(W^2/12/count_j))
-      
-      p_list_sig_1 <- c(p_list_sig_1, target_p_i)
-      p_list_sig_2 <- c(p_list_sig_2, target_p_j)
-      
-      # 2sample間のpvalue (differential k-mer)
-      if (auc_i >= auc_j){
-        p <- 1 - pnorm((auc_i-auc_j)/sqrt(var_i + var_j) , 0, 1) 
-        p_list_2 <- c(p_list_2, p)
-      }else{
-        p <- 1 - pnorm((auc_j-auc_i)/sqrt(var_j + var_i) , 0, 1) 
-        p_list_2 <- c(p_list_2, p) 
-      }
-    } 
-  }
-  
-  df_join2 <- df_join %>% mutate(p_value = p_list_2, p_list_sig_1 = p_list_sig_1 , p_list_sig_2 = p_list_sig_2)
-  q_list_2 <- p.adjust(p_list_2)
-  q_list_sig_1 <- p.adjust(p_list_sig_1)
-  q_list_sig_2 <- p.adjust(p_list_sig_2)
-  df_join3 <- df_join2 %>% mutate(q_value = q_list_2, q_list_sig_1 = q_list_sig_1, q_list_sig_2 = q_list_sig_2) 
-  df_join4 <- df_join3 %>% mutate(color = ifelse(q_value < 0.05, "differential", "non differential")) %>% distinct()
-  if(target_ID1 == "SRX150546" & target_ID2 == "SRX190276"){
-    df_join5 <- df_join4 %>% mutate(color4 = ifelse((str_detect(kmer, "CCCCC") | str_detect(kmer, "GGGGG")), "CTCF PWM motif", "non significant"))
-    df_join6 <- df_join5 %>% mutate(color5 = ifelse((kmer %in%  "TGACTC" | kmer %in%  "GACTCA" | kmer %in% "TGAGTC" | kmer %in% "GAGTCA"), "JUN PWM motif", "non significant"))
+  options(timeout=1000)
+  url_list <- read_csv("~/MOCCS_paper_public/data/Fig5/Fig5E_url_list.csv", col_names = FALSE)
+  colnames(url_list) <- c("TF", "url")
+  target_url <- url_list %>% filter(TF == target_TF) %>% .$url %>% as.character()
+  if(target_TF != "CTCF"){
+    df_all <- readRDS(url(target_url, "rb"))
+    df_all2 <- df_all %>% mutate(position = end - 6 + posi)
+    df3 <- df_all2 %>% mutate(fdrp_bh_ref_log = -log10(fdrp_bh_ref),
+                              fdrp_bh_alt_log = -log10(fdrp_bh_alt), 
+                              ASB = ifelse(fdrp_bh_ref_log <= fdrp_bh_alt_log, fdrp_bh_alt_log, fdrp_bh_ref_log), 
+                              x_axis = ifelse(fdrp_bh_ref_log <= fdrp_bh_alt_log, "positive", "negative"))
+    df4 <- df3 %>% filter(x_axis == "positive") %>% mutate(ASB_plot = ASB)
+    df5 <- df3 %>% filter(x_axis == "negative") %>% mutate(ASB_plot = -ASB)
+    df6 <- rbind(df4, df5)
+    threshold <- -log10(0.05)
+    df11 <- df6 %>% mutate(color1 = ifelse((ASB_plot < -threshold  & q_value < 0.05 & dMOCCS2score > 0) | (ASB_plot > threshold  & q_value < 0.05 & dMOCCS2score < 0), "concordant", "disconcordant")) 
+    df12 <- df11 %>% filter(color1 == "concordant") %>% mutate(color2 = color1) %>%
+      select(-fdrp_bh_ref, -fdrp_bh_alt, -MOCCS2score_before, -MOCCS2score_after, -fdrp_bh_ref_log, -fdrp_bh_alt_log)
+    df13 <- df11 %>%  filter(color1 == "disconcordant") %>% mutate(color2 = ifelse((q_value < 0.05 & abs(ASB_plot) > threshold), "disconcordant", "nondifferent")) %>%
+      select(-fdrp_bh_ref, -fdrp_bh_alt, -MOCCS2score_before, -MOCCS2score_after, -fdrp_bh_ref_log, -fdrp_bh_alt_log)
+    rm(df11)
+    df14 <- rbind(df12, df13)
+    rm(df12, df13)
+    
+    p1 <- df14 %>% ggplot(aes(x = ASB_plot, y = dMOCCS2score, color = color2)) +
+      geom_point(size = 0.5, alpha = 0.7) +
+      xlab("ASB significance") +
+      ylab("dMOCCS2score") +
+      scale_color_manual(
+        values = c(
+          concordant = "#DC143C",
+          disconcordant = "#1E90FF", 
+          nondifferent = "gray"
+        )
+      )+
+      ggtitle(paste0(target_TF, " ", "dMOCCS2score q<0.05, threshold q<0.05"  ))+
+      theme(plot.title = element_text(face="bold",hjust = 0.5), 
+            panel.grid.major = element_line(colour = "gray"),
+            panel.grid.minor = element_line(colour="gray"),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour="black"),
+            axis.text=element_text(size=12,face="bold"),
+            axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+            axis.text.y =element_text(size=10,face="bold"),
+            axis.title=element_text(size=14,face="bold")
+      ) 
+    
     
   }else{
-    df_join5 <- df_join4 %>% mutate(color4 = "")
-    df_join6 <- df_join5 %>% mutate(color5 = "")
+    #CTCF
+    #df_all1 <- readRDS(paste0("/home/s-tahara/allele_binding_SNP_hg38/ADASTRA/data/dMOCCS2score_output_all/ADASTRA_dMOCCS2score_", target_TF, "_all_part1.rds")) 
+    df_all1 <- readRDS(url("https://figshare.com/ndownloader/files/34065725", "rb"))
+    df_all2 <- readRDS(url("https://figshare.com/ndownloader/files/34065728", "rb"))
+    df_all3 <- readRDS(url("https://figshare.com/ndownloader/files/34065737", "rb"))
+    df_all4 <- readRDS(url("https://figshare.com/ndownloader/files/34065740", "rb"))
+    df_all <- df_all1 %>% add_row(df_all2, df_all3, df_all4)
+    
+    df_all2 <- df_all %>% mutate(position = end - 6 + posi)
+    rm(df_all)
+    df3 <- df_all2 %>% mutate(fdrp_bh_ref_log = -log10(fdrp_bh_ref),
+                              fdrp_bh_alt_log = -log10(fdrp_bh_alt), 
+                              ASB = ifelse(fdrp_bh_ref_log <= fdrp_bh_alt_log, fdrp_bh_alt_log, fdrp_bh_ref_log), 
+                              x_axis = ifelse(fdrp_bh_ref_log <= fdrp_bh_alt_log, "positive", "negative"))
+    rm(df_all2)
+    df4 <- df3 %>% filter(x_axis == "positive") %>% mutate(ASB_plot = ASB)
+    df5 <- df3 %>% filter(x_axis == "negative") %>% mutate(ASB_plot = -ASB)
+    rm(df3)
+    df6 <- rbind(df4, df5)
+    rm(df4, df5)
+    threshold <- -log10(0.05)
+    df11 <- df6 %>% mutate(color1 = ifelse((ASB_plot < -threshold  & q_value < 0.05 & dMOCCS2score > 0) | (ASB_plot > threshold  & q_value < 0.05 & dMOCCS2score < 0), "concordant", "disconcordant")) 
+    rm(df6)
+    df12 <- df11 %>% filter(color1 == "concordant") %>% mutate(color2 = color1) %>%
+      select(-fdrp_bh_ref, -fdrp_bh_alt, -MOCCS2score_before, -MOCCS2score_after, -fdrp_bh_ref_log, -fdrp_bh_alt_log)
+    df13 <- df11 %>%  filter(color1 == "disconcordant") %>% mutate(color2 = ifelse((q_value < 0.05 & abs(ASB_plot) > threshold), "disconcordant", "nondifferent")) %>%
+      select(-fdrp_bh_ref, -fdrp_bh_alt, -MOCCS2score_before, -MOCCS2score_after, -fdrp_bh_ref_log, -fdrp_bh_alt_log)
+    rm(df11)
+    df14 <- rbind(df12, df13)
+    rm(df12, df13)
+    
+    p1 <- df14 %>% ggplot(aes(x = ASB_plot, y = dMOCCS2score, color = color2)) +
+      geom_point(size = 0.5, alpha = 0.7) +
+      xlab("ASB significance") +
+      ylab("dMOCCS2score") +
+      scale_color_manual(
+        values = c(
+          concordant = "#DC143C",
+          disconcordant = "#1E90FF", 
+          nondifferent = "gray"
+        )
+      )+
+      ggtitle(paste0(target_TF, " ", "dMOCCS2score q<0.05, threshold q<0.05"  ))+
+      theme(plot.title = element_text(face="bold",hjust = 0.5), 
+            panel.grid.major = element_line(colour = "gray"),
+            panel.grid.minor = element_line(colour="gray"),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour="black"),
+            axis.text=element_text(size=12,face="bold"),
+            axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+            axis.text.y =element_text(size=10,face="bold"),
+            axis.title=element_text(size=14,face="bold")
+      ) 
+    
+    
   }
-  df_join7 <- df_join6 %>% unite("color6", c(color4, color5), sep = "_")
-  df_join7$color6 <- gsub("non significant", "", df_join7$color6)
-  df_join7$color6 <- gsub("_", "", df_join7$color6)
-  df_join8 <- df_join7 %>% mutate(kmer_lab = ifelse((color6 == "significantbothCTCF PWM motif" | color6 == "significantbothJUN PWM motif"), kmer, "")) %>% distinct()
   
-  selected_kmer <- df_join8 %>% filter(color6 == "CTCF PWM motif" | color6 == "JUN PWM motif") %>% .$kmer %>% unique()
-  df_join9 <- df_join8 %>% mutate(kmer2 = df_join8$kmer)
-  df_join9$kmer2[!df_join9$kmer2 %in% selected_kmer] <- ""
-  
-  p2 <- df_join9 %>% ggplot(aes(x = MOCCS2score1, y = MOCCS2score2, color = color, label = kmer2)) +
-    geom_point(size = 0.8, alpha = 0.8) +
-    #geom_text(aes(x =  MOCCS2score1 + 5, y = MOCCS2score2 + 5), size = 3) +
-    ggtitle(target_CT) +
-    geom_text_repel(size = 7) +
-    xlab(paste0(target_ID1, "  (", TF1, ")")) +
-    ylab(paste0(target_ID2, "  (", TF2, ")")) +
-    scale_color_manual(values = c("#ff0000", "#000080")) +
-    #xlim(c(-10, 70)) +
-    #ylim(c(-10, 70)) +
-    labs(color="") +
-    theme(plot.title = element_text(face="bold",hjust = 0.5), 
-          panel.grid.major = element_line(colour = "gray"),
-          panel.grid.minor = element_line(colour="gray"),
-          panel.background = element_blank(), 
-          axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          legend.position = 'none',
-          aspect.ratio = 1
-    )
+  # bar plot
+    
+    bar_df <- read_csv("~/MOCCS_paper_public/data/Fig5/Fig5E_barplot.csv")
+    bar_df2 <- bar_df %>% pivot_longer(-c(Antigen, number_of_concordant_SNPs_q005, number_of_disconcordant_SNPs_q005, 
+                                          nega_number_of_concordant_SNPs_q005, nega_number_of_disconcordant_SNPs_q005, 
+                                          nega_concordant_ratio_q005, nega_disconcordant_ratio_q005 ,
+                                          q_value),
+                                       names_to = "concordant_or_disconcordant", values_to = "ratio")
+    bar_df3 <- bar_df2 %>% mutate(color = gsub("_ratio_q005", "", bar_df2$concordant_or_disconcordant))
+    
+    bar_df3$color2 <- factor(bar_df3$color, levels = c("disconcordant", "concordant"))
+    tf_factor_list <- bar_df3 %>% filter(color2 == "concordant") %>% arrange(desc(ratio)) %>% .$Antigen %>% as.character() %>% unique()
+    bar_df3$Antigen <- factor(bar_df3$Antigen, levels = tf_factor_list)
+    p2 <- bar_df3 %>% ggplot(aes(x = Antigen, y = ratio, fill = color2)) +
+      geom_bar(stat = "identity", position = "fill") +
+      #geom_text(aes(label = ratio), size = 2, hjust = 0.5, vjust = 3, position = "stack") +
+      scale_fill_manual(values = c("#1E90FF", "#DC143C")) +
+      theme(plot.title = element_text(face="bold",hjust = 0.5), 
+            panel.grid.major = element_line(colour = "gray"),
+            panel.grid.minor = element_line(colour="gray"),
+            panel.background = element_blank(), 
+            axis.line = element_line(colour="black"),
+            axis.text=element_text(size=12,face="bold"),
+            axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+            axis.text.y =element_text(size=10,face="bold"),
+            axis.title=element_text(size=14,face="bold"),
+            aspect.ratio = 1
+      )+
+      labs(fill = "")
   
   
-  return(p2)
+  return(list(p1, p2))
+  
 }

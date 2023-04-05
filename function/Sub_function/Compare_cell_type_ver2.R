@@ -102,7 +102,8 @@ Violinplot <- function(df_p_3_gp, target_ant, plot_ant){
       # ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_violin_plot_k_sim_jaccard_",
       #              target_ant, ".png"),
       #       plot = p_violin, width = 3, height = 6)
-      ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_violin_plot_k_sim_jaccard_",
+      #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_violin_plot_k_sim_jaccard_",
+      ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_violin_plot_k_sim_jaccard_",
                     target_ant, ".svg"),
              plot = p_violin, width = 3, height = 6)
     }
@@ -310,7 +311,8 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
       
       if (target_ant %in% plot_ant){
         
-        svg(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".svg"),
+        #svg(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".svg"),
+        svg(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_heatmap_k_sim_jaccard_", target_ant, ".svg"),
             width = 8, height = 7.2)
         NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
                       labRow = NA, labCol = NA,
@@ -321,7 +323,8 @@ Heatmap <- function(df_p_3_gp, target_ant, sig_flag, plot_ant){
                       width = 0.3, height = 0.3)
         dev.off()
         
-        pdf(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".pdf"),
+        #pdf(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3D/Fig3D_heatmap_k_sim_jaccard_", target_ant, ".pdf"),
+        pdf(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2D/Fig2D_heatmap_k_sim_jaccard_", target_ant, ".pdf"),
             width = 8, height = 7.2)
         NMF::aheatmap(df_heatmap_2, Rowv = NA, Colv = NA,
                       labRow = NA, labCol = NA,
@@ -373,9 +376,12 @@ CircleChart <- function(sig_flag_list){
                                            paste0(null_num, "/", length(sig_flag_list_2)))), 
               size = 1.8,  color = c( "white","black", "black"),  vjust = 4)
   
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.svg"),
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.svg"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_circle_chart_alltf.svg"),
          plot = p_circ_2, width = 10)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.pdf"),
+  
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart_alltf.pdf"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_circle_chart_alltf.pdf"),
          plot = p_circ_2, width = 10)
   ############################################################################
   
@@ -404,9 +410,11 @@ CircleChart <- function(sig_flag_list){
                                            paste0((length(sig_flag_list_2) - sig_num), "/", length(sig_flag_list_2)))), 
               size = 4.5,  color = c("white", "black"),  vjust = 4)
   
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.svg"),
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.svg"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_circle_chart.svg"),
          plot = p_circ_1, width = 10)
-  ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.pdf"),
+  #ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E/Fig3E_circle_chart.pdf"),
+  ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_circle_chart.pdf"),
          plot = p_circ_1, width = 10)
   
   ############################################################################

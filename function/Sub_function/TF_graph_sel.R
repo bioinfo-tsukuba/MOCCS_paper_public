@@ -63,7 +63,8 @@ TF_graph_sel <- function(ctc_spe, df_p_3){
     } else {
       col_max <- "red"
     }
-    pdf (paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_", at_1, "_color_legend.pdf"))
+    #pdf (paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_", at_1, "_color_legend.pdf"))
+    pdf (paste0("~/MOCCS_paper_public/plot/Fig1/Fig1J/Fig1J_", at_1, "_color_legend.pdf"))
     RColorBrewer::display.brewer.pal(9, "Reds")
     dev.off()
     
@@ -93,7 +94,8 @@ TF_graph_sel <- function(ctc_spe, df_p_3){
       theme(legend.position = "none") +
       coord_equal()
     # ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".png"), plot = p_gg, width = 5, height = 5)
-    ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    #ggsave(paste0("~/MOCCS_paper_public/plot/Fig2/Fig2E/Fig2E_top_10_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
+    ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1J/Fig1J_top_10_", at_1, "_", t_ctc, ".pdf"), plot = p_gg, width = 5, height = 5)  
     
   }
   
