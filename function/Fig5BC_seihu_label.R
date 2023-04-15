@@ -2,6 +2,7 @@ make_label <- function(figure){
   
   
   if(figure == "C"){
+    # SLE -------
     target_phenotype <- "SLE"
     GWAS_df <- suppressMessages(read_tsv(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/GWAS_catalog_phenotype/", target_phenotype, ".tsv")))
     GWAS_df2 <- GWAS_df  %>% drop_na(`SNPS`, `STRONGEST SNP-RISK ALLELE`) %>% 
@@ -42,10 +43,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -70,10 +71,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -104,10 +105,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -129,10 +130,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -160,10 +161,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -172,7 +173,7 @@ make_label <- function(figure){
       ggtitle(target_phenotype) +
       coord_flip()
     
-    # SNP_rs label ----- ##ここから！！
+    # SNP_rs label ----- 
     #x_lab_ID <- df3  %>% #unite("ID_snp_for_join", c(ID, snp_for_join)) %>% 
       #filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% select(SNP_rs)
     #saveRDS(x_lab_ID, paste0("/Users/saeko/MOCCS_paper_public/data/Fig6/label/", target_phenotype, "_label_TF_minus.rds"))
@@ -188,10 +189,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -222,10 +223,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -247,10 +248,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -262,6 +263,7 @@ make_label <- function(figure){
     
   }else if(figure == "D"){
     
+    # CD ----
     target_phenotype <- "CD"
     GWAS_df <- read_tsv(paste0("/Users/saeko/Documents/MOCCS/paper_figure/MOCCS-DB_paper/data/Fig6/GWAS_catalog_phenotype/", target_phenotype, ".tsv"))
     GWAS_df2 <- GWAS_df  %>% drop_na(`SNPS`, `STRONGEST SNP-RISK ALLELE`) %>% 
@@ -302,10 +304,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -330,10 +332,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -364,10 +366,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -389,10 +391,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -419,10 +421,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -435,7 +437,7 @@ make_label <- function(figure){
     #x_lab_ID <- df3  %>% #unite("ID_snp_for_join", c(ID, snp_for_join)) %>% 
       #filter(max_abs_dMOCCS2score > threshold) %>% arrange(desc(max_abs_dMOCCS2score)) %>% select(SNP_rs)
     #saveRDS(x_lab_ID, paste0("/Users/saeko/MOCCS_paper_public/data/Fig6/label/", target_phenotype, "_label_TF_minus.rds"))
-    x_lab_ID <- readRDS("/Users/saeko/MOCCS_paper_public/data/Fig6/label/SLE_label_TF_rs_minus_added.rds")
+    x_lab_ID <- readRDS("/Users/saeko/MOCCS_paper_public/data/Fig6/label/CD_label_TF_rs_minus_added.rds")
     x_lab_ID2 <- x_lab_ID %>% .$SNP_rs %>% as.character() %>% rev()
     
     
@@ -447,10 +449,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -481,10 +483,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+
@@ -506,10 +508,10 @@ make_label <- function(figure){
             panel.grid.minor = element_blank(),
             panel.background = element_blank(), 
             axis.line = element_line(colour="black"),
-            axis.text=element_text(size=12,face="bold"),
-            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-            axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold"),
+            axis.text=element_text(size=12,face="bold", colour = "black"),
+            axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour = "black"),
+            axis.text.y =element_text(size=10,face="bold", colour = "black", family = "Courier"),
+            axis.title=element_text(size=14,face="bold", colour = "black"),
             #legend.position = 'none',
             legend.title = element_blank()
       )+

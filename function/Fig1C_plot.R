@@ -1,7 +1,7 @@
 Fig1C_plot <- function(target_ID_Fig1C){
   
   library(tidyverse)
-  MOCCS_output_path <- paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1B, "_6mer_v2.auc_count.txt")
+  MOCCS_output_path <- paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1C, "_6mer_v2.auc_count.txt")
   MOCCS_output_target <- read_tsv(MOCCS_output_path)
   
   ## urlで読み込む場合
@@ -22,15 +22,15 @@ Fig1C_plot <- function(target_ID_Fig1C){
       target_p <- 1-pnorm(target_AUC, mean = 0, sd = sqrt(W^2/12/target_kmer_count))
       return(target_p)
     })
-        
+    
     # sampleごとに多重検定補正
     p_list <- unlist(p_list)
     q_list <- p.adjust(p_list)
-        
+    
     # IDとpvalueとqvalueを足したtableにして返す 
-    MOCCS_output_target_2 <- MOCCS_output_target %>% mutate(p_value = p_list, q_value = q_list, ID = rep(target_ID_Fig1B, nrow(MOCCS_output_target)))
+    MOCCS_output_target_2 <- MOCCS_output_target %>% mutate(p_value = p_list, q_value = q_list, ID = rep(target_ID_Fig1C, nrow(MOCCS_output_target)))
   } #if
-  saveRDS(MOCCS_output_target_2, paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1B, "_MOCCSout_qval.rds"))
+  saveRDS(MOCCS_output_target_2, paste0("~/MOCCS_paper_public/data/Fig1/", target_ID_Fig1C, "_MOCCSout_qval.rds"))
   
   
   # plot
@@ -44,13 +44,23 @@ Fig1C_plot <- function(target_ID_Fig1C){
     geom_text(aes(y = Inf,label=kmer_label),size=9,hjust=0, vjust = 1) +
     xlab("k-mer") +
     ylab("MOCCS2score") +
-    ggtitle(paste0(target_ID_Fig1B ," example of MOCCS2score distribution"))+
-    theme(axis.text.x = element_blank(),
-          axis.line.x.bottom  = element_blank(),
-          plot.title = element_text(hjust = 0.5),
-          title=element_text(size=12,face="bold"),
-          aspect.ratio = 1) +
-    theme(aspect.ratio = 1)
+    #ggtitle(paste0(target_ID_Fig1C ," example of MOCCS2score distribution"))+
+    #scale_x_discrete(limits=MOCCS_output_target_2$kmer) +
+    #scale_x_continuous()
+    #xlim(c(0,10))+
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.background = element_blank(), 
+      #axis.line = element_line(colour="black"),
+      axis.line.x = element_blank(),
+      axis.line.y = element_line(colour="black", size = 1),
+      plot.title = element_text(hjust = 0.5),
+      #axis.text=element_text(size=5,colour="black"),
+      axis.text.x =element_blank(),
+      axis.text.y =element_text(size=10,colour="black"),
+      aspect.ratio = 1) #+
+    #theme(aspect.ratio = 1)
   return(p)
   
 }

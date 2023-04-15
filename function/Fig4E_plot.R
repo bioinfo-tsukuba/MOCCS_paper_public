@@ -45,7 +45,8 @@ Fig4E_plot <- function(target_TF, path){
             axis.text=element_text(size=12,face="bold"),
             axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
             axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold")
+            axis.title=element_text(size=14,face="bold"),
+            aspect.ratio = 0.85
       ) 
     
     
@@ -94,6 +95,7 @@ Fig4E_plot <- function(target_TF, path){
       )+
       ggtitle(paste0(target_TF, " ", "dMOCCS2score q<0.05, threshold q<0.05"  ))+
       theme(plot.title = element_text(face="bold",hjust = 0.5), 
+            legend.position = 'none',
             panel.grid.major = element_line(colour = "gray"),
             panel.grid.minor = element_line(colour="gray"),
             panel.background = element_blank(), 
@@ -101,7 +103,8 @@ Fig4E_plot <- function(target_TF, path){
             axis.text=element_text(size=12,face="bold"),
             axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
             axis.text.y =element_text(size=10,face="bold"),
-            axis.title=element_text(size=14,face="bold")
+            axis.title=element_text(size=14,face="bold"),
+            aspect.ratio = 0.7
       ) 
     
     

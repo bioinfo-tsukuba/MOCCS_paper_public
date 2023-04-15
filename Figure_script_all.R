@@ -74,7 +74,9 @@ simulation_path <- "~/MOCCS_paper_public/data/Fig4/"
 Fig3C <- Fig3C_plot(simulation_path)
 Fig3C_plot <- Fig3C[[1]] / Fig3C[[2]] / Fig3C[[3]]
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3C_all.pdf"), Fig3C_plot, width = 14, height = 14)
-
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3C_sensi.pdf"), Fig3C[[1]], width = 14, height = 14)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3C_spe.pdf"), Fig3C[[2]], width = 14, height = 14)
+ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3C_FDR.pdf"), Fig3C[[3]], width = 14, height = 14)
 
 ## Fig. 3D --------
 source("~/MOCCS_paper_public/function/Fig3D_plot.R")
@@ -122,7 +124,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4C_", target_TF,".pdf"), Fig4C,
 ### scatter plot and bar plot
 source("~/MOCCS_paper_public/function/Fig4E_plot.R")
 path <- "~/MOCCS_paper_public/data/Fig5/"
-target_TF <- "FOXA1"
+target_TF <- "GATA3"
 Fig4E <- Fig4E_plot(target_TF, path)
 plot(Fig4E[[1]])
 plot(Fig4E[[2]])
@@ -134,6 +136,45 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4E_bar_plot.pdf"), Fig4E[[2]], 
 ##################
 ### Figure5 ###
 #################
+# Fig5BC, label---------
+# devide by dMOCCS2score>0 and dMOCCS2score < 0 (label)
+source("~/MOCCS_paper_public/function/Fig5BC_seihu_label.R")
+figure <- "C" #C or D 
+labels <- make_label(figure)
+
+# dMOCCS2score > 0
+plot(labels[[1]])
+plot(labels[[2]])
+plot(labels[[3]])
+plot(labels[[4]])
+
+# dMOCCS2score < 0
+plot(labels[[5]])
+plot(labels[[6]])
+plot(labels[[7]])
+plot(labels[[8]])
+
+if(figure == "C"){
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_ID_plus.pdf", labels[[1]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_rs_plus.pdf", labels[[2]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_ref_plus.pdf", labels[[3]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_alt_plus.pdf", labels[[4]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_ID_minus.pdf", labels[[5]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_rs_minus.pdf", labels[[6]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_ref_minus.pdf", labels[[7]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/SLE_alt_minus.pdf", labels[[8]])
+}else if(figure == "D"){
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_ID_plus.pdf", labels[[1]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_rs_plus.pdf", labels[[2]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_ref_plus.pdf", labels[[3]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_alt_plus.pdf", labels[[4]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_ID_minus.pdf", labels[[5]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_rs_minus.pdf", labels[[6]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_ref_minus.pdf", labels[[7]])
+  ggsave("~/MOCCS_paper_public/plot/Fig5/CD_SLE_label/CD_alt_minus.pdf", labels[[8]])
+}
+
+
 ## Fig. 5B --------
 source("~/MOCCS_paper_public/function/Fig5B_plot.R")
 target_phenotype <- "SLE"
@@ -166,8 +207,8 @@ plot(Fig5BC[[3]])
 plot(Fig5BC[[4]])
 
 # Fig5BC label ---
-source("~/MOCCS_paper_public/function/Fig5BC_label.R")
-figure <- "C" #C or D 
+source("~/MOCCS_paper_public/function/Fig5BC_seihu_label.R")
+figure <- "D" #C or D 
 labels <- make_label(figure)
 plot(labels[[1]])
 plot(labels[[2]])
@@ -219,3 +260,5 @@ threshold <- 100
 Fig5D <- Fig5D_plot(target_phenotype, target_rs, target_position , threshold)
 plot(Fig5D[[1]])
 plot(Fig5D[[2]])
+
+

@@ -84,14 +84,15 @@ Fig3E_plot <- function(target_ID1 = "",
   df_join9 <- df_join8 %>% mutate(kmer2 = df_join8$kmer)
   df_join9$kmer2[!df_join9$kmer2 %in% selected_kmer] <- ""
   
-  p2 <- df_join9 %>% ggplot(aes(x = MOCCS2score1, y = MOCCS2score2, color = color, label = kmer2)) +
+  p2 <- df_join9 %>% ggplot(aes(x = MOCCS2score1, y = MOCCS2score2, color = color
+                                , label = kmer2
+                                )) +
     geom_point(size = 0.8, alpha = 0.8) +
-    #geom_text(aes(x =  MOCCS2score1 + 5, y = MOCCS2score2 + 5), size = 3) +
-    ggtitle(target_CT) +
+    #ggtitle(target_CT) +
     geom_text_repel(size = 7) +
     xlab(paste0(target_ID1, "  (", TF1, ")")) +
     ylab(paste0(target_ID2, "  (", TF2, ")")) +
-    scale_color_manual(values = c("#ff0000", "#000080")) +
+    scale_color_manual(values = c("red3", "#000080")) +
     #xlim(c(-10, 70)) +
     #ylim(c(-10, 70)) +
     labs(color="") +
@@ -100,11 +101,12 @@ Fig3E_plot <- function(target_ID1 = "",
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
-          axis.title=element_text(size=14,face="bold"),
-          legend.position = 'none',
+          axis.text=element_text(size=12, colour="black"),
+          axis.text.x =element_text(size=10, colour="black"),
+          axis.text.y =element_text(size=10, colour="black"),
+          axis.title=element_text(size=14, colour="black"),
+          #legend.position = 'none',
+          legend.position = "bottom",
           aspect.ratio = 1
     )
   

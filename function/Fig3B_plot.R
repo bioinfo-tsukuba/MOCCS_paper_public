@@ -8,7 +8,7 @@ Fig3B_plot <- function(simu_name){
     geom_point(size = 1) +
     scale_colour_manual(
       values = c(
-        differential = "red",
+        differential = "red3",
         nondifferential = "gray"
       )
     )+
@@ -18,14 +18,16 @@ Fig3B_plot <- function(simu_name){
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
           axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
+          axis.text.x =element_text(size=10,face="bold"),
           axis.text.y =element_text(size=10,face="bold"),
           axis.title=element_text(size=14,face="bold"),
           legend.title = element_blank(),
           aspect.ratio = 1
     ) +
-    xlab("MOCCS2score1") +
-    ggtitle(paste0(simu_name, "_q005"))
+    xlab("MOCCS2score of ChIP-seq sample 1") +
+    ylab("MOCCS2score of ChIP-seq sample 2") +
+    ggtitle("k-mer plot from simulation result")
+    #ggtitle(paste0(simu_name, "_q005"))
   
   return(p)
   

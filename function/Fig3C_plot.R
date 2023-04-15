@@ -14,7 +14,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = a, y = value))+
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Sensitivity") +
+    #ylab("Sensitivity") +
+    ylab("")+
     #xlab("α") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -23,9 +24,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10,colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -38,7 +39,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = N, y = value))+
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Sensitivity") +
+    #ylab("Sensitivity") +
+    ylab("")+
     #xlab("N") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -47,9 +49,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"), 
           aspect.ratio = 1
     )
@@ -60,7 +62,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = sigma, y = value)) +
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Sensitivity") +
+    #ylab("Sensitivity") +
+    ylab("")+
     #xlab("σ") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -69,9 +72,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12,colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -83,7 +86,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = a, y = value))+
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Specificity") +
+    #ylab("Specificity") +
+    ylab("")+
     #xlab("α") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -92,9 +96,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -107,7 +111,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = N, y = value))+
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Specificity") +
+    #ylab("Specificity") +
+    ylab("")+
     #xlab("N") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -116,9 +121,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -129,7 +134,8 @@ Fig3C_plot <- function(simulation_path){
     ggplot(aes(x = sigma, y = value)) +
     geom_col(width = 0.4) +
     ylim(0,1.2)+
-    ylab("Specificity") +
+    #ylab("Specificity") +
+    ylab("")+
     #xlab("σ") +
     xlab("") +
     geom_hline(yintercept=1, linetype="dashed") +
@@ -138,9 +144,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -154,7 +160,8 @@ Fig3C_plot <- function(simulation_path){
     geom_col(width = 0.4) +
     ylim(c(0, 0.05)) +
     geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
+    #ylab("FDR") +
+    ylab("")+
     #xlab("α") +
     xlab("") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
@@ -162,9 +169,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -178,7 +185,8 @@ Fig3C_plot <- function(simulation_path){
     geom_col(width = 0.4) +
     ylim(c(0, 0.05)) +
     geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
+    #ylab("FDR") +
+    ylab("")+
     #xlab("N") +
     xlab("") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
@@ -186,9 +194,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
@@ -200,7 +208,8 @@ Fig3C_plot <- function(simulation_path){
     geom_col(width = 0.4) +
     ylim(c(0, 0.05)) +
     geom_hline(yintercept=0.05, linetype="dashed") +
-    ylab("FDR") +
+    #ylab("FDR") +
+    ylab("")+
     #xlab("σ") +
     xlab("") +
     theme(plot.title = element_text(face="bold",hjust = 0.5), 
@@ -208,9 +217,9 @@ Fig3C_plot <- function(simulation_path){
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12, colour = "black"),
+          axis.text.x =element_text(size=10, colour = "black"),
+          axis.text.y =element_text(size=10, colour = "black"),
           axis.title=element_text(size=14,face="bold"),
           aspect.ratio = 1
     )
