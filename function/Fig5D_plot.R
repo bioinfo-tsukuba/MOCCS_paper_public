@@ -63,9 +63,9 @@ Fig5D_plot <- function(target_phenotype, target_rs, target_position, threshold){
           panel.grid.minor = element_line(colour="gray"),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=10,face="bold"),
+          axis.text=element_text(size=12,face="bold", colour="black"),
+          axis.text.x =element_text(size=6,face="bold", angle = 45, hjust = 1, colour="black"),
+          axis.text.y =element_text(size=10,face="bold", colour="black"),
           axis.title=element_text(size=14,face="bold"),
           #legend.position = 'none',
           legend.title = element_blank()
