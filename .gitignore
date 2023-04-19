@@ -11,3 +11,5 @@ data/Fig6/IBD_binded_all.rds
 data/Fig6/MS_binded_all.rds
 data/Fig6/SLE_binded_all.rds
 data/Fig1/MOCCSout_hg38_all_qval_annotated.rds
+plot/Fig4/Fig4E_scatter_FOXA1.pdf
+plot/Fig4/Fig4E_scatter_GATA3.pdf

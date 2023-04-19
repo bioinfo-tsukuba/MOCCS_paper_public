@@ -293,10 +293,10 @@ Fig1E_plot <- function(TF_list, annotation_path){
           panel.grid.minor = element_blank(),
           panel.background = element_blank(), 
           axis.line = element_line(colour="black"),
-          axis.text=element_text(size=12,face="bold"),
-          axis.text.x =element_text(size=10,face="bold", angle = 45, hjust = 1),
-          axis.text.y =element_text(size=15,face="bold"),
-          axis.title=element_text(size=15,face="bold"),
+          axis.text=element_text(size=12, colour="black"),
+          axis.text.x =element_text(size=10, angle = 45, hjust = 1, colour="black"),
+          axis.text.y =element_text(size=15, colour="black"),
+          axis.title=element_text(size=15, colour="black"),
           aspect.ratio = 0.7
     )
   

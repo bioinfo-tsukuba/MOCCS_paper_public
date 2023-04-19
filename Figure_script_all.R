@@ -20,7 +20,7 @@ plot(Fig1C)
 ggsave(paste0("~/MOCCS_paper_public/plot/Fig1/Fig1C.pdf"), Fig1C, width = 7, height = 7)
 
 
-## Fig. 1D ------------
+F## Fig. 1D ------------
 source("~/MOCCS_paper_public/function/Fig1D_plot_v2.R")
 TF_list <- c("FOXA1", "SPI1", "CTCF")
 load <- "local" #local or figshare
@@ -113,7 +113,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig3/Fig3E_", target_CT, "_", target_ID
 #################
 ## Fig. 4C --------
 source("~/MOCCS_paper_public/function/Fig4C_plot.R")
-target_TF <- "HOXB13"
+target_TF <- "GATA3"
 #annotation_path <- "~/MOCCS_paper_public/data/Fig5/"
 Fig4C <- Fig4C_plot(target_TF)
 plot(Fig4C)
@@ -124,7 +124,7 @@ ggsave(paste0("~/MOCCS_paper_public/plot/Fig4/Fig4C_", target_TF,".pdf"), Fig4C,
 ### scatter plot and bar plot
 source("~/MOCCS_paper_public/function/Fig4E_plot.R")
 path <- "~/MOCCS_paper_public/data/Fig5/"
-target_TF <- "GATA3"
+target_TF <- "FOXA1"
 Fig4E <- Fig4E_plot(target_TF, path)
 plot(Fig4E[[1]])
 plot(Fig4E[[2]])

@@ -41,7 +41,7 @@ Fig1C_plot <- function(target_ID_Fig1C){
   
   p <- MOCCS_output_target_2 %>% ggplot(aes(x = reorder(kmer, desc(MOCCS2score)), y = MOCCS2score)) +
     geom_col() +
-    geom_text(aes(y = Inf,label=kmer_label),size=9,hjust=0, vjust = 1) +
+    #geom_text(aes(y = Inf,label=kmer_label),size=9,hjust=0, vjust = 1) +
     xlab("k-mer") +
     ylab("MOCCS2score") +
     #ggtitle(paste0(target_ID_Fig1C ," example of MOCCS2score distribution"))+
