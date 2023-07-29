@@ -1,5 +1,9 @@
 Fig1G_2_plot_v2 <- function(calc_opt = FALSE){
   
+  ########################################
+  ##### For New Fig 2G-3  (2023/07/29)#####
+  ########################################
+  
   library(dplyr)
   
   if (calc_opt){
@@ -59,31 +63,31 @@ Fig1G_2_plot_v2 <- function(calc_opt = FALSE){
   }
   
 
-  print("Fig. 2B and S4: Comparison with poi")
+  print("Fig. 2G, 3B and S4: Comparison with poi") #2023/07/29
   
-  # Fig. 1G and S4: Comparison with poi
+  # Fig. New 2G, 3B and S4: Comparison with poi (2023/07/29)
   source("~/MOCCS_paper_public/function/sub_function/Compare_ksim_poi.R")
   flag_1 <- !(df_p_3_gp$ID1 %in% all_ns | df_p_3_gp$ID2 %in% all_ns)
   flag_2 <- !(df_poi$ID1 %in% all_ns | df_poi$ID2 %in% all_ns)
   Compare_ksim_poi(df_p_3_gp[flag_1, ], df_poi[flag_2, ])
   
-  print("Fig. 1H and 2B: UMAP")
+  print("Fig. 2H and 3C: UMAP") #2023/07/29
   
-  # Fig. 1H and 2B: UMAP
+  # Fig. New 2H and 3C: UMAP (2023/07/29)
   source("~/MOCCS_paper_public/function/sub_function/Umap_df.R")
   UMAP_df(df_raw, df_fam, all_ns)
   
-  print("Fig 1I, 2C and S5: Permutation and Chi squared tests")
+  print("Fig 2I, 3C : Permutation (and Chi squared tests)") #2023/07/29
   
-  # Fig 1H, 2C and S5: Permutation and Chi squared tests
+  # Fig New 2I, 3C : Permutation (2023/07/29)
   source("~/MOCCS_paper_public/function/sub_function/Top_k_sim.R")
   flag_3 <- !(df_p_1$ID1 %in% all_ns | df_p_1$ID2 %in% all_ns)
   flag_4 <- !(df_p_2$ID1 %in% all_ns | df_p_2$ID2 %in% all_ns)
   Top_k_sim(df_p_1[flag_3, ], df_p_2[flag_4, ], calc_opt = TRUE, perm_num = 1000)
   
-  print("Fig. 1J")
+  print("Fig. 2J") #2023/07/29
   
-  # Fig. 1J
+  # Fig. New 2J (2023/07/29)
   flag_5 <- !(df_p_3$ID1 %in% all_ns | df_p_3$ID2 %in% all_ns)
   if (calc_opt){
     source("~/MOCCS_paper_public/function/sub_function/TF_graph_2.R")
@@ -92,17 +96,17 @@ Fig1G_2_plot_v2 <- function(calc_opt = FALSE){
   source("~/MOCCS_paper_public/function/sub_function/TF_graph_sel.R")
   TF_graph_sel(ctc_spe = NULL, df_p_3[flag_5, ])
   
-  print("Fig. 2D and 2E: Cell type comparison")
+  print("Fig. 3D and 3E: Cell type comparison") #2023/07/29
   
-  # Fig. 2D and 2E: Cell type comparison
+  # Fig. New 3D and 3E: Cell type comparison (2023/07/29)
   source("~/MOCCS_paper_public/function/sub_function/Compare_cell_type_ver2.R")
   flag_1 <- !(df_p_3_gp$ID1 %in% all_ns | df_p_3_gp$ID2 %in% all_ns)
   Compare_cell_type_v2(df_p_3_gp[flag_1, ],
                     plot_ant = c("FOS", "JUN", "GATA2", "MYC"))
   
-  print("Fig. 2F")
+  print("Fig. 3F") #2023/07/29
   
-  # Fig. 2F
+  # Fig. New 3F (2023/07/29)
   flag_5 <- !(df_p_3$ID1 %in% all_ns | df_p_3$ID2 %in% all_ns)
   if (calc_opt){
     source("~/MOCCS_paper_public/function/sub_function/TF_graph_3.R")

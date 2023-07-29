@@ -47,6 +47,7 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   #df_gg <- readRDS("~/MOCCS_paper_public/data/Fig2/obj/df_gg.rds")
   
   # Figure 2B (2023/01/16 modified)
+  # Figure New 2G (2023/07/29 modified)
   group_vec <- c("A", "B", "C")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"), 
                      c("Different antigen", "Same family", "Same cell type class", "Same cell type"),　　　　　　　　　　　　
@@ -56,6 +57,7 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   
   
   # Figure 3B (2023/01/16 Added)
+  # Figure New 3B (2023/07/29 modified)
   group_vec <- c("A", "D", "E")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"), 
                      c("Same antigen", "Same family", "Same cell type class", "Different cell type"),　　　　　　　　　　　　
@@ -63,7 +65,7 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
   file_pre <- c("main")
   df_gg_2_2 <- Plot_group_1_2(df_gg, group_vec, group_mat)
   
-  # Figure 4SA
+  # Figure S4&S5 (2023/07/29)
   # Internal 
   group_vec <- c("a", "b", "c", "f")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"),                                          
@@ -74,6 +76,7 @@ Compare_ksim_poi <- function(df_p_3_gp, df_poi){
                      c("Different antigen", "Different family", "Different cell type class", "Different cell type"))
   df_gg_2_3 <- Plot_group_3(df_gg, group_vec, group_mat)
   Plot_group_2d(df_gg_2_3)
+  
   
   group_vec <- c("a", "d", "e", "f")
   group_mat <- rbind(c("Same antigen", "Same family", "Same cell type class", "Same cell type"),                                          
